@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    body {
+      width: 250px;
+      padding: 15px;
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    .container {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      margin: 0 0 15px 0;
+      font-size: 18px;
+      color: #333;
+      text-align: center;
+    }
+
+    .action-btn {
+      width: 100%;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      padding: 14px 20px;
+      font-size: 16px;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+      font-family: inherit;
+      margin-bottom: 10px;
+    }
+
+    .action-btn:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+      background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+    }
+
+    .action-btn:active:not(:disabled) {
+      transform: translateY(0);
+    }
+
+    .action-btn:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+
+    #content-analysis-btn {
+      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    }
+
+    #content-analysis-btn:hover:not(:disabled) {
+      background: linear-gradient(135deg, #f5576c 0%, #f093fb 100%);
+    }
+
+    .info {
+      margin-top: 15px;
+      font-size: 12px;
+      color: #666;
+      text-align: center;
+      line-height: 1.4;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>AI Content Assistant</h2>
+    <button id="buying-advice-btn" class="action-btn">💡 Buying advice</button>
+    <button id="content-analysis-btn" class="action-btn">🔍 Content analysis</button>
+    <div class="info">
+      Get AI-powered analysis for the current page
+    </div>
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>
