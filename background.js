@@ -65,11 +65,10 @@ async function handleOpenGemini(productUrl) {
 }
 
 function createBuyingAdviceQuestion(productUrl) {
-  const question = `I need buying advice for this product:
-
-${productUrl}
-
-Please help me understand:
+  const context = `Context: ${productUrl}
+  `;
+  const question = `
+I need buying advice for this product, please help me understand:
 - Is this a good deal?
 - What are the pros and cons?
 - Are there better alternatives?
@@ -79,7 +78,7 @@ Please help me understand:
 - What's the price history? Has it been cheaper before?
 - Are there any hidden or long-term costs (accessories, maintenance, subscriptions)?`;
   
-  return question;
+  return context + question;
 }
 
 async function handleOpenGeminiContentAnalysis(productUrl) {
@@ -127,12 +126,13 @@ async function handleOpenGeminiContentAnalysis(productUrl) {
 }
 
 function createContentAnalysisQuestion(productUrl) {
-  const question = `Context: ${productUrl}
-
+  const context = `Context: ${productUrl}
+  `;
+  const question = `
 Analyze this content for editorial bias
 Identify any omitted context, missing facts, or logical leaps
 Verify authenticity and logic
 What is the primary goal (e.g., to inform, persuade, or sell). Identify if the content uses 'outrage engagement' or specific emotional triggers to influence a vote, a purchase, or social sharing.`;
   
-  return question;
+  return context + question;
 }
