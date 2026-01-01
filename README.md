@@ -1,4 +1,4 @@
-# Product Buying Advice Extension
+# AskAIShortcut
 
 A cross-browser extension that adds a "Buying advice" button to product pages, allowing you to instantly get AI-powered buying advice from Google Gemini.
 
