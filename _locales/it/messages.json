@@ -15,7 +15,7 @@
     "message": "⚙️ Opzioni"
   },
   "settingsTitle": {
-    "message": "⚙️ Impostazioni Assistente IA"
+    "message": "⚙️ Impostazioni"
   },
   "settingsSubtitle": {
     "message": "Personalizza i nomi dei tuoi pulsanti e le domande. Il contesto (URL attuale) è sempre incluso automaticamente."
@@ -103,5 +103,18 @@
   },
   "languageHelperText": {
     "message": "Seleziona la tua lingua preferita (verrà applicata immediatamente)"
+  },
+  "aiServiceUrl": {
+    "message": "🔗 URL Gemini:"
+  },
+  "aiServiceUrlHelperText": {
+    "message": "Inserisci l'URL dove Gemini dovrebbe aprirsi"
+  },
+  "aiServiceUrlRequired": {
+    "message": "L'URL di Gemini è obbligatorio"
+  },
+  "invalidUrl": {
+    "message": "Formato URL non valido"
   }
 }
+

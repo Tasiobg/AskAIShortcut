@@ -42,13 +42,23 @@ let currentButtons = [];
 // Load and render buttons
 async function loadSettings() {
   try {
-    const result = await storage.sync.get({ buttons: defaults.buttons, language: 'en' });
+    const result = await storage.sync.get({ 
+      buttons: defaults.buttons, 
+      language: 'en',
+      geminiUrl: 'https://gemini.google.com/app'
+    });
     currentButtons = result.buttons || defaults.buttons;
     
     // Set the language selector
     const languageSelect = document.getElementById('language-select');
     if (languageSelect) {
       languageSelect.value = result.language || 'en';
+    }
+    
+    // Set the Gemini URL
+    const geminiUrlInput = document.getElementById('gemini-url');
+    if (geminiUrlInput) {
+      geminiUrlInput.value = result.geminiUrl || 'https://gemini.google.com/app';
     }
     
     renderButtons();
@@ -167,7 +177,27 @@ async function saveSettings() {
   }
 
   try {
-    await storage.sync.set({ buttons: currentButtons });
+    const geminiUrl = document.getElementById('gemini-url').value.trim();
+    
+    if (!geminiUrl) {
+      const errorMsg = getMessage('aiServiceUrlRequired') || 'AI Service URL is required';
+      showStatus(errorMsg, 'error');
+      return;
+    }
+    
+    // Validate URL format
+    try {
+      new URL(geminiUrl);
+    } catch (e) {
+      const errorMsg = getMessage('invalidUrl') || 'Invalid URL format';
+      showStatus(errorMsg, 'error');
+      return;
+    }
+    
+    await storage.sync.set({ 
+      buttons: currentButtons,
+      geminiUrl: geminiUrl
+    });
     const successMsg = i18n.getMessage('settingsSavedSuccessfully') || '✓ Settings saved successfully!';
     showStatus(successMsg, 'success');
   } catch (error) {
@@ -183,8 +213,18 @@ async function resetSettings() {
   if (confirm(confirmMsg)) {
     try {
       const newDefaults = initializeDefaults();
-      await storage.sync.set({ buttons: newDefaults.buttons });
+      await storage.sync.set({ 
+        buttons: newDefaults.buttons,
+        geminiUrl: 'https://gemini.google.com/app'
+      });
       currentButtons = JSON.parse(JSON.stringify(newDefaults.buttons));
+      
+      // Reset the AI Service URL field
+      const geminiUrlInput = document.getElementById('gemini-url');
+      if (geminiUrlInput) {
+        geminiUrlInput.value = 'https://gemini.google.com/app';
+      }
+      
       renderButtons();
       const successMsg = i18n.getMessage('settingsResetToDefaults') || '✓ Settings reset to defaults!';
       showStatus(successMsg, 'success');

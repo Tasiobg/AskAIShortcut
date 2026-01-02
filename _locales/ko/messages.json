@@ -15,7 +15,7 @@
     "message": "⚙️ 버튼 사용자 지정"
   },
   "settingsTitle": {
-    "message": "⚙️ AI 어시스턴트 설정"
+    "message": "⚙️ 설정"
   },
   "settingsSubtitle": {
     "message": "버튼 이름과 질문을 사용자 지정하세요. 컨텍스트(현재 URL)는 항상 자동으로 포함됩니다."
@@ -103,6 +103,19 @@
   },
   "languageHelperText": {
     "message": "원하는 언어를 선택하세요 (즉시 적용됩니다)"
+  },
+  "aiServiceUrl": {
+    "message": "🔗 Gemini URL："
+  },
+  "aiServiceUrlHelperText": {
+    "message": "Gemini를 열기 URL을 입력하세요"
+  },
+  "aiServiceUrlRequired": {
+    "message": "Gemini URL은 필수입니다"
+  },
+  "invalidUrl": {
+    "message": "유효하지 않은 URL 형식"
   }
 }
+
 

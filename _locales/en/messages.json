@@ -20,7 +20,7 @@
     "description": "Settings link text"
   },
   "settingsTitle": {
-    "message": "⚙️ AI Assistant Settings",
+    "message": "⚙️ Settings",
     "description": "Title of the settings page"
   },
   "settingsSubtitle": {
@@ -154,5 +154,17 @@
   },
   "languageHelperText": {
     "message": "Select your preferred language (will be applied immediately)"
+  },
+  "aiServiceUrl": {
+    "message": "🔗 AI Service URL:"
+  },
+  "aiServiceUrlHelperText": {
+    "message": "Enter the URL where AI Service should open"
+  },
+  "aiServiceUrlRequired": {
+    "message": "AI Service URL is required"
+  },
+  "invalidUrl": {
+    "message": "Invalid URL format"
   }
 }

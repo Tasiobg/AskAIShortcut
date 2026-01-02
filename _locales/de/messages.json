@@ -15,7 +15,7 @@
     "message": "⚙️ Optionen"
   },
   "settingsTitle": {
-    "message": "⚙️ KI-Assistent Einstellungen"
+    "message": "⚙️ Einstellungen"
   },
   "settingsSubtitle": {
     "message": "Passen Sie Ihre Schaltflächennamen und Fragen an. Der Kontext (aktuelle URL) wird immer automatisch eingefügt."
@@ -103,5 +103,18 @@
   },
   "languageHelperText": {
     "message": "Wählen Sie Ihre bevorzugte Sprache (wird sofort angewendet)"
+  },
+  "aiServiceUrl": {
+    "message": "🔗 KI-Service-URL:"
+  },
+  "aiServiceUrlHelperText": {
+    "message": "Geben Sie die URL ein, wo der KI-Service sich öffnen soll"
+  },
+  "aiServiceUrlRequired": {
+    "message": "KI-Service-URL ist erforderlich"
+  },
+  "invalidUrl": {
+    "message": "Ungültiges URL-Format"
   }
 }
+

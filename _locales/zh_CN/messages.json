@@ -15,7 +15,7 @@
     "message": "⚙️ 选项"
   },
   "settingsTitle": {
-    "message": "⚙️ AI助手设置"
+    "message": "⚙️ 设置"
   },
   "settingsSubtitle": {
     "message": "自定义您的按钮名称和问题。上下文（当前URL）始终自动包含。"
@@ -103,5 +103,18 @@
   },
   "languageHelperText": {
     "message": "选择您首选的语言（将立即应用）"
+  },
+  "aiServiceUrl": {
+    "message": "🔗 Gemini URL："
+  },
+  "aiServiceUrlHelperText": {
+    "message": "输入 Gemini 应打开的 URL"
+  },
+  "aiServiceUrlRequired": {
+    "message": "Gemini URL 是必需的"
+  },
+  "invalidUrl": {
+    "message": "不效的 URL 格式"
   }
 }
+

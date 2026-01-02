@@ -225,11 +225,7 @@
 <body>
   <div class="container">
     <h1 data-i18n="settingsTitle">⚙️ AI Assistant Settings</h1>
-    <p class="subtitle" data-i18n="settingsSubtitle">Customize your button names and questions. The context (current URL) is always included automatically.</p>
-    
-    <div class="info-box">
-      💡 <strong><span data-i18n="tip">Tip:</span></strong> <span data-i18n="tipText">The context (current page URL) is automatically added before your question, so you don't need to include it in your question text.</span>
-    </div>
+
 
     <div style="margin-bottom: 30px; padding: 20px; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #667eea;">
       <div class="field-group">
@@ -248,6 +244,14 @@
           <option value="ar" data-language-name="العربية">العربية</option>
         </select>
         <div class="helper-text" data-i18n="languageHelperText">Select your preferred language (will be applied immediately)</div>
+      </div>
+    </div>
+
+    <div style="margin-bottom: 30px; padding: 20px; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #667eea;">
+      <div class="field-group">
+        <label for="gemini-url" data-i18n="aiServiceUrl">🔗 AI Service URL:</label>
+        <input type="text" id="gemini-url" placeholder="https://gemini.google.com/app" style="width: 100%; padding: 10px; font-size: 14px; border: 2px solid #ddd; border-radius: 6px; box-sizing: border-box; font-family: inherit;">
+        <div class="helper-text" data-i18n="aiServiceUrlHelperText">Enter the URL where AI Service should open</div>
       </div>
     </div>
 

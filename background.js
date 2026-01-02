@@ -109,16 +109,20 @@ runtime.onMessage.addListener((message, sender, sendResponse) => {
 
 async function handleOpenGeminiWithQuestion(questionText, productUrl) {
   try {
+    // Get the AI Service URL from storage or use default
+    const result = await storage.sync.get({ geminiUrl: 'https://gemini.google.com/app' });
+    const geminiUrl = result.geminiUrl || 'https://gemini.google.com/app';
+    
     // Create the question with context
     const question = createQuestionWithContext(productUrl, questionText);
     
-    // Open Gemini in a new tab
+    // Open AI Service in a new tab
     const tab = await tabs.create({
-      url: 'https://gemini.google.com/app',
+      url: geminiUrl,
       active: true
     });
 
-    console.log('Opened Gemini tab:', tab.id);
+    console.log('Opened AI Service tab:', tab.id);
 
     // Wait for the tab to load, then inject the script to fill the input
     return new Promise((resolve, reject) => {
@@ -167,8 +171,7 @@ async function handleOpenGeminiWithQuestion(questionText, productUrl) {
 
 // Helper function to create question with context
 function createQuestionWithContext(productUrl, questionText) {
-  const context = `Context: ${productUrl}
-  `;
+  const context = `Context: ${productUrl}\n  `;
   return context + questionText;
 }
 

@@ -15,7 +15,7 @@
     "message": "⚙️ Opciones"
   },
   "settingsTitle": {
-    "message": "⚙️ Configuración del Asistente de IA"
+    "message": "⚙️ Configuración"
   },
   "settingsSubtitle": {
     "message": "Personaliza los nombres de tus botones y preguntas. El contexto (URL actual) siempre se incluye automáticamente."
@@ -103,5 +103,17 @@
   },
   "languageHelperText": {
     "message": "Selecciona tu idioma preferido (se aplicará inmediatamente)"
+  },
+  "aiServiceUrl": {
+    "message": "🔗 URL del Servicio de IA:"
+  },
+  "aiServiceUrlHelperText": {
+    "message": "Ingresa la URL donde debe abrir el Servicio de IA"
+  },
+  "aiServiceUrlRequired": {
+    "message": "La URL del Servicio de IA es requerida"
+  },
+  "invalidUrl": {
+    "message": "Formato de URL inválido"
   }
 }
