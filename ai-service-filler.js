@@ -11,7 +11,18 @@
   runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.action === 'fillAIServiceInput') {
       console.log('AskAIShortcut: Received fillAIServiceInput message');
-      fillAIServiceInput(message.question);
+      
+      // Wait for page to be ready before attempting to fill
+      if (document.readyState === 'loading') {
+        console.log('AskAIShortcut: Page still loading, waiting for DOMContentLoaded...');
+        document.addEventListener('DOMContentLoaded', () => {
+          setTimeout(() => fillAIServiceInput(message.question), 500); // Small delay after DOM ready
+        });
+      } else {
+        // Page already loaded, add small delay to ensure dynamic content is ready
+        setTimeout(() => fillAIServiceInput(message.question), 500);
+      }
+      
       sendResponse({ status: 'success' });
     }
     return true;
