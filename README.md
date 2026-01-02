@@ -5,10 +5,13 @@ A cross-browser extension that adds a "Buying advice" button to product pages, a
 ## Features
 
 - 💡 One-click buying advice from extension popup
+- 🔍 Content analysis button for editorial bias detection
 - 🤖 Automatically opens Gemini with a pre-filled question including the page URL
+- ⚙️ Customizable button names and questions
 - 🌐 Works on all websites
 - 🎨 Beautiful popup interface
 - 🌐 Cross-browser compatible (Chrome, Edge, Firefox, Brave, Opera)
+- 💾 Settings saved in sync storage (syncs across devices)
 
 ## Installation
 
@@ -42,19 +45,43 @@ A cross-browser extension that adds a "Buying advice" button to product pages, a
 
 ## How to Use
 
+### Basic Usage
+
 1. Visit any webpage (works best on product pages)
 
 2. Click the extension icon in your browser toolbar
 
-3. A popup menu appears with the **"💡 Buying advice"** button
+3. A popup menu appears with two buttons:
+   - **"💡 Buying advice"** - Get AI-powered buying advice
+   - **"🔍 Content analysis"** - Analyze content for bias and authenticity
 
-4. Click the button in the popup
+4. Click a button in the popup
 
-5. A new tab opens with Google Gemini, pre-filled with a buying advice question including:
-   - The current page URL
-   - Specific questions about value, pros/cons, alternatives
+5. A new tab opens with Google Gemini, pre-filled with your question including:
+   - The current page URL as context
+   - Your customized question template
 
-6. Review the AI-generated advice or press Enter to submit the question
+6. Review the AI-generated response or press Enter to submit the question
+
+### Customizing Buttons
+
+1. Click the extension icon in your browser toolbar
+options.html         # Settings page UI
+├── options.js           # Settings page logic
+├── background.js        # Handles tab creation and coordination
+├── gemini-filler.js     # Fills Gemini input field
+├── content.js           # Injects button into web pagesf the popup
+
+3. The settings page opens where you can:
+   - Change button names (e.g., "💡 Buying advice" → "🛒 Shopping Help")
+   - Modify question templates for each button
+   - Keep the context (URL) automatic while customizing questions
+
+4. Click **"💾 Save Settings"** to save your changes
+
+5. Click **"🔄 Reset to Defaults"** to restore original settings
+
+**Note:** The context (current page URL) is always automatically included, so you only need to customize the question text.
 
 ## Files Structure
 
@@ -68,13 +95,24 @@ extension/
 └── icons/               # Extension icons (16x16, 48x48, 128x128)
     └── README.md        # Instructions for creating icons
 ```
+Customize Button Names and Questions
 
-## Customization
+1. Right-click the extension icon and select "Options"
+   - Or click "⚙️ Customize buttons" in the popup menu
 
-### Modify the Question Template
+2. Modify:
+   - **Button Name**: The text displayed on the button
+   - **Question Template**: The question sent to Gemini (context/URL is auto-added)
 
-Edit the `createBuyingAdviceQuestion()` function in [background.js](background.js) to customize the buying advice prompt.
+3. Save your changes
 
+### Advanced Customization
+
+**Change Popup Appearance:**
+Edit [popup.html](popup.html) to modify colors, style, or layout.
+
+**Modify Default Settings:**
+Edit the `defaults` object in [options.js](options.js) and [background.js](background.js)
 ### Change Popup Appearance
 
 Edit [popup.html](popup.html) and [popup.js](popup.js) to modify the popup menu colors, style, or layout.

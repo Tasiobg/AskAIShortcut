@@ -167,7 +167,7 @@
         }
 
         console.log('Buying Advice Extension: Successfully filled input field!');
-        showNotification('Buying advice question loaded! You can edit or press Enter to submit.');
+        showNotification('AskAIShortcut has loaded the question! You can edit or press Enter to submit.');
       } catch (error) {
         console.error('Buying Advice Extension: Error filling input:', error);
       }
@@ -179,7 +179,8 @@
       notification.style.cssText = `
         position: fixed;
         top: 20px;
-        right: 20px;
+        left: 50%;
+        transform: translateX(-50%);
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         color: white;
         padding: 16px 24px;
@@ -199,7 +200,7 @@
         notification.style.opacity = '0';
         notification.style.transition = 'opacity 0.3s ease-out';
         setTimeout(() => notification.remove(), 300);
-      }, 5000);
+      }, 20000);
     }
 
     // Try immediately

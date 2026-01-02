@@ -56,20 +56,28 @@
       cursor: not-allowed;
     }
 
-    #content-analysis-btn {
-      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-    }
-
-    #content-analysis-btn:hover:not(:disabled) {
-      background: linear-gradient(135deg, #f5576c 0%, #f093fb 100%);
-    }
-
     .info {
       margin-top: 15px;
       font-size: 12px;
       color: #666;
       text-align: center;
       line-height: 1.4;
+    }
+
+    .settings-link {
+      display: block;
+      margin-top: 10px;
+      font-size: 12px;
+      color: #667eea;
+      text-align: center;
+      text-decoration: none;
+      cursor: pointer;
+      transition: color 0.3s ease;
+    }
+
+    .settings-link:hover {
+      color: #764ba2;
+      text-decoration: underline;
     }
   </style>
 </head>
@@ -81,6 +89,7 @@
     <div class="info">
       Get AI-powered analysis for the current page
     </div>
+    <a href="#" id="settings-link" class="settings-link">⚙️ Customize buttons</a>
   </div>
   <script src="popup.js"></script>
 </body>

@@ -17,6 +17,20 @@
   }
   window.buyingAdviceExtensionInjected = true;
 
+  // Default button name
+  const defaultButtonName = '💡 Buying advice';
+  let buttonName = defaultButtonName;
+
+  // Get button name from storage
+  chrome.storage.sync.get({ button1Name: defaultButtonName }, (result) => {
+    buttonName = result.button1Name;
+    // Update button text if it's already created
+    const existingButton = document.getElementById('buying-advice-button');
+    if (existingButton && !existingButton.disabled) {
+      existingButton.textContent = buttonName;
+    }
+  });
+
   // Get the current product page URL
   function getProductUrl() {
     return window.location.href;
@@ -27,7 +41,7 @@
     const button = document.createElement('button');
     button.id = 'buying-advice-button';
     button.className = 'buying-advice-btn';
-    button.textContent = '💡 Buying advice';
+    button.textContent = buttonName;
     
     button.addEventListener('click', async () => {
       console.log('Buying Advice Extension: Button clicked!');
@@ -52,14 +66,14 @@
           }
           setTimeout(() => {
             button.disabled = false;
-            button.textContent = '💡 Buying advice';
+            button.textContent = buttonName;
           }, 2000);
         });
       } catch (error) {
         console.error('Buying Advice Extension: Exception -', error);
         alert('Error: ' + error.message);
         button.disabled = false;
-        button.textContent = '💡 Buying advice';
+        button.textContent = buttonName;
       }
     });
 
