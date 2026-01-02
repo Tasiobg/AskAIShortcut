@@ -53,38 +53,16 @@
       console.log('Buying Advice Extension: Searching for input field...');
 
       // First, try to find the currently focused element
-      const focusedElement = document.activeElement;
-      if (focusedElement && focusedElement !== document.body) {
-        const style = window.getComputedStyle(focusedElement);
-        const rect = focusedElement.getBoundingClientRect();
+      const focusedElement = getFocusedInputElement();
+      
+      if (focusedElement) {
+        console.log('Buying Advice Extension: Found focused input element:', focusedElement.tagName);
+        foundInput = true;
+        clearTimeout(timeoutId);
+        if (observer) observer.disconnect();
         
-        // Check if it's a valid input element (textarea, input, contenteditable, or rich-textarea)
-        const isValidInput = 
-          focusedElement.tagName === 'TEXTAREA' ||
-          focusedElement.tagName === 'INPUT' ||
-          focusedElement.hasAttribute('contenteditable') ||
-          focusedElement.tagName === 'RICH-TEXTAREA' ||
-          focusedElement.matches('p[contenteditable="true"]');
-        
-        if (isValidInput && 
-            style.display !== 'none' && 
-            style.visibility !== 'hidden' && 
-            style.opacity !== '0' &&
-            rect.width >= 10 && 
-            rect.height >= 10) {
-          console.log('Buying Advice Extension: Found focused input element:', focusedElement.tagName);
-          foundInput = true;
-          clearTimeout(timeoutId);
-          if (observer) observer.disconnect();
-          
-          // If it's a <p> inside rich-textarea, use the parent rich-textarea
-          const inputField = (focusedElement.tagName === 'P' && focusedElement.closest('rich-textarea')) 
-            ? focusedElement.closest('rich-textarea') 
-            : focusedElement;
-          
-          fillInputField(inputField, question);
-          return true;
-        }
+        fillInputField(focusedElement, question);
+        return true;
       }
 
       // If no focused element found, fall back to selector search
@@ -93,14 +71,7 @@
         
         for (const inputField of elements) {
           // Skip hidden or invisible elements
-          const style = window.getComputedStyle(inputField);
-          if (style.display === 'none' || style.visibility === 'hidden' || style.opacity === '0') {
-            continue;
-          }
-
-          // Skip if dimensions are too small (likely hidden)
-          const rect = inputField.getBoundingClientRect();
-          if (rect.width < 10 || rect.height < 10) {
+          if (!isElementVisible(inputField)) {
             continue;
           }
 
@@ -117,59 +88,196 @@
       return false;
     }
 
+    function getFocusedInputElement() {
+      const focusedElement = document.activeElement;
+      
+      // Check if focused element is a valid input
+      if (!focusedElement || focusedElement === document.body) {
+        return null;
+      }
+
+      // Check if element is visible
+      if (!isElementVisible(focusedElement)) {
+        return null;
+      }
+
+      // Comprehensive check for valid input types
+      const isValidInput = isInputElement(focusedElement);
+      
+      if (!isValidInput) {
+        return null;
+      }
+
+      // If it's a <p> or other child inside rich-textarea, use the parent rich-textarea
+      if (focusedElement.closest('rich-textarea')) {
+        return focusedElement.closest('rich-textarea');
+      }
+
+      return focusedElement;
+    }
+
+    function isElementVisible(element) {
+      const style = window.getComputedStyle(element);
+      const rect = element.getBoundingClientRect();
+      
+      return (
+        style.display !== 'none' &&
+        style.visibility !== 'hidden' &&
+        style.opacity !== '0' &&
+        rect.width >= 10 &&
+        rect.height >= 10
+      );
+    }
+
+    function isInputElement(element) {
+      // Standard form inputs
+      if (element.tagName === 'TEXTAREA' || element.tagName === 'INPUT') {
+        return true;
+      }
+
+      // Custom web components
+      if (element.tagName === 'RICH-TEXTAREA') {
+        return true;
+      }
+
+      // Contenteditable elements
+      if (element.hasAttribute('contenteditable')) {
+        return true;
+      }
+
+      // Check for common input patterns
+      if (element.tagName === 'DIV' && element.hasAttribute('contenteditable')) {
+        return true;
+      }
+
+      if (element.tagName === 'P' && element.hasAttribute('contenteditable')) {
+        return true;
+      }
+
+      // Check for role-based input elements
+      if (element.getAttribute('role') === 'textbox') {
+        return true;
+      }
+
+      return false;
+    }
+
     function fillInputField(inputField, text) {
       console.log('Buying Advice Extension: Filling input field...');
       console.log('Element tag:', inputField.tagName);
 
       try {
-        // Focus the rich-textarea first
+        // Focus the element first
         inputField.focus();
         inputField.click();
 
-        // Special handling for rich-textarea (Gemini's custom component)
+        // Dispatch focus event to ensure proper initialization
+        inputField.dispatchEvent(new FocusEvent('focus', { bubbles: true, cancelable: true }));
+
+        // Handle based on element type
         if (inputField.tagName === 'RICH-TEXTAREA') {
-          console.log('Filling RICH-TEXTAREA (custom web component)');
-          
-          // Find the <p> tag inside rich-textarea
-          const paragraph = inputField.querySelector('p');
-          if (paragraph) {
-            console.log('Found <p> tag inside rich-textarea');
-            paragraph.textContent = text;
-            paragraph.focus();
-            
-            // Dispatch events on the paragraph
-            paragraph.dispatchEvent(new InputEvent('input', { bubbles: true, cancelable: true }));
-            paragraph.dispatchEvent(new Event('change', { bubbles: true, cancelable: true }));
-          }
-          
-          // Also dispatch events on the rich-textarea itself
-          inputField.dispatchEvent(new InputEvent('input', { bubbles: true, cancelable: true }));
-          inputField.dispatchEvent(new Event('change', { bubbles: true, cancelable: true }));
-          inputField.dispatchEvent(new KeyboardEvent('keydown', { bubbles: true }));
-          inputField.dispatchEvent(new KeyboardEvent('keyup', { bubbles: true }));
-          
-          console.log('Successfully filled rich-textarea');
-          
+          fillRichTextarea(inputField, text);
         } else if (inputField.tagName === 'TEXTAREA' || inputField.tagName === 'INPUT') {
-          console.log('Filling TEXTAREA/INPUT element');
-          inputField.value = text;
-          
-          // Trigger events
-          inputField.dispatchEvent(new Event('input', { bubbles: true, cancelable: true }));
-          inputField.dispatchEvent(new Event('change', { bubbles: true, cancelable: true }));
-          inputField.dispatchEvent(new KeyboardEvent('keydown', { bubbles: true }));
-          inputField.dispatchEvent(new KeyboardEvent('keyup', { bubbles: true }));
-        } else if (inputField.hasAttribute('contenteditable')) {
-          console.log('Filling contenteditable element');
-          inputField.textContent = text;
-          inputField.dispatchEvent(new InputEvent('input', { bubbles: true, cancelable: true }));
-          inputField.dispatchEvent(new Event('change', { bubbles: true, cancelable: true }));
+          fillFormElement(inputField, text);
+        } else if (inputField.hasAttribute('contenteditable') || inputField.getAttribute('role') === 'textbox') {
+          fillContenteditableElement(inputField, text);
+        } else {
+          // Fallback: try as contenteditable first, then as form element
+          if (inputField.textContent !== undefined) {
+            fillContenteditableElement(inputField, text);
+          } else {
+            fillFormElement(inputField, text);
+          }
         }
 
         console.log('Buying Advice Extension: Successfully filled input field!');
         showNotification('AskAIShortcut has loaded the question! You can edit or press Enter to submit.');
       } catch (error) {
         console.error('Buying Advice Extension: Error filling input:', error);
+      }
+    }
+
+    function fillRichTextarea(richTextarea, text) {
+      console.log('Filling RICH-TEXTAREA (custom web component)');
+      
+      // Find the <p> tag inside rich-textarea
+      let paragraph = richTextarea.querySelector('p');
+      
+      if (paragraph) {
+        console.log('Found <p> tag inside rich-textarea');
+        // Clear existing content
+        paragraph.textContent = '';
+        
+        // Set text content
+        paragraph.textContent = text;
+        paragraph.focus();
+        
+        // Trigger input events on the paragraph
+        dispatchInputEvents(paragraph);
+      }
+      
+      // Trigger events on the rich-textarea itself
+      dispatchInputEvents(richTextarea);
+      
+      console.log('Successfully filled rich-textarea');
+    }
+
+    function fillFormElement(formElement, text) {
+      console.log('Filling TEXTAREA/INPUT element');
+      
+      // Store original value for comparison
+      const originalValue = formElement.value;
+      
+      // Set the value
+      formElement.value = text;
+      
+      // If value didn't change, try setting it character by character
+      if (formElement.value === originalValue && text.length > 0) {
+        console.log('Direct assignment failed, trying character-by-character method');
+        formElement.value = '';
+        for (const char of text) {
+          formElement.value += char;
+        }
+      }
+      
+      // Trigger all input events
+      dispatchInputEvents(formElement);
+    }
+
+    function fillContenteditableElement(element, text) {
+      console.log('Filling contenteditable element');
+      
+      // Clear existing content
+      element.textContent = '';
+      
+      // Create a text node with the text
+      const textNode = document.createTextNode(text);
+      element.appendChild(textNode);
+      
+      // Move cursor to end
+      const range = document.createRange();
+      const sel = window.getSelection();
+      range.selectNodeContents(element);
+      range.collapse(false);
+      sel.removeAllRanges();
+      sel.addRange(range);
+      
+      // Trigger input events
+      dispatchInputEvents(element);
+    }
+
+    function dispatchInputEvents(element) {
+      // Create and dispatch a comprehensive set of events
+      const events = [
+        new Event('input', { bubbles: true, cancelable: true }),
+        new Event('change', { bubbles: true, cancelable: true }),
+        new KeyboardEvent('keydown', { bubbles: true, cancelable: true }),
+        new KeyboardEvent('keyup', { bubbles: true, cancelable: true }),
+        new KeyboardEvent('keypress', { bubbles: true, cancelable: true })
+      ];
+      
+      for (const event of events) {
+        element.dispatchEvent(event);
       }
     }
 
