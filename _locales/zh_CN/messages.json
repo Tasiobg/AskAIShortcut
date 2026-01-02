@@ -3,7 +3,7 @@
     "message": "AskAIShortcut"
   },
   "appDescription": {
-    "message": "一键获得AI驱动的产品购买建议"
+    "message": "获取当前页面的AI驱动分析"
   },
   "aiContentAssistant": {
     "message": "AI 内容助手"

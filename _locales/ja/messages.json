@@ -3,7 +3,7 @@
     "message": "AskAIShortcut"
   },
   "appDescription": {
-    "message": "ワンクリックでAIを搭載した商品購入アドバイスを取得"
+    "message": "現在のページのAI駆動分析を取得"
   },
   "aiContentAssistant": {
     "message": "AIコンテンツアシスタント"

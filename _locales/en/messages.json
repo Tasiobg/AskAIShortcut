@@ -4,7 +4,7 @@
     "description": "The name of the application"
   },
   "appDescription": {
-    "message": "Get AI-powered buying advice for products with one click",
+    "message": "Get AI-powered analysis for the current page",
     "description": "The description of the application"
   },
   "aiContentAssistant": {
