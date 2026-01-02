@@ -120,13 +120,13 @@
     "message": "Seleziona la tua lingua preferita (verrà applicata immediatamente)"
   },
   "aiServiceUrl": {
-    "message": "🔗 URL Gemini:"
+    "message": "🔗 URL Chat IA:"
   },
   "aiServiceUrlHelperText": {
-    "message": "Inserisci l'URL dove Gemini dovrebbe aprirsi"
+    "message": "Inserisci l'URL dove la Chat IA dovrebbe aprirsi"
   },
   "aiServiceUrlRequired": {
-    "message": "L'URL di Gemini è obbligatorio"
+    "message": "L'URL della Chat IA è obbligatorio"
   },
   "invalidUrl": {
     "message": "Formato URL non valido"

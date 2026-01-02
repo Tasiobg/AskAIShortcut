@@ -76,7 +76,7 @@
     "description": "Success message after saving"
   },
   "urlSaved": {
-    "message": "✓ AI Service URL saved successfully!",
+    "message": "✓ AI Chat URL saved successfully!",
     "description": "Success message after saving URL"
   },
   "buttonSaved": {
@@ -176,13 +176,13 @@
     "message": "Select your preferred language (will be applied immediately)"
   },
   "aiServiceUrl": {
-    "message": "🔗 AI Service URL:"
+    "message": "🔗 AI Chat URL:"
   },
   "aiServiceUrlHelperText": {
-    "message": "Enter the URL where AI Service should open"
+    "message": "Enter the URL where AI Chat should open"
   },
   "aiServiceUrlRequired": {
-    "message": "AI Service URL is required"
+    "message": "AI Chat URL is required"
   },
   "invalidUrl": {
     "message": "Invalid URL format"

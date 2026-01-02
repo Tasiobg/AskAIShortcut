@@ -62,7 +62,7 @@ async function loadSettings() {
       languageSelect.value = result.language || 'en';
     }
     
-    // Set the AI Service URL
+    // Set the AI Chat URL
     const aiServiceUrlInput = document.getElementById('ai-service-url');
     if (aiServiceUrlInput) {
       let aiServiceUrl = result.aiServiceUrl || 'https://gemini.google.com/app';
@@ -193,18 +193,24 @@ function checkButtonChanged(index) {
 async function saveUrlSettings() {
   const urlInput = document.getElementById('ai-service-url');
   const saveBtn = document.getElementById('save-url-btn');
-  const url = urlInput.value.trim();
+  let url = urlInput.value.trim();
   
   if (!url) {
     showStatus(getMessage('urlCannotBeEmpty') || 'URL cannot be empty', 'error');
     return;
   }
   
+  // Add protocol if missing
+  if (!url.match(/^https?:\/\//i)) {
+    url = 'https://' + url;
+    urlInput.value = url; // Update the input field to show the complete URL
+  }
+  
   try {
     await chrome.storage.sync.set({ aiServiceUrl: url });
     originalAIServiceUrl = url;
     saveBtn.disabled = true;
-    showStatus(getMessage('urlSaved') || 'AI Service URL saved successfully', 'success');
+    showStatus(getMessage('urlSaved') || 'AI Chat URL saved successfully', 'success');
   } catch (error) {
     showStatus(getMessage('errorSaving') || 'Error saving settings', 'error');
   }
@@ -298,7 +304,7 @@ async function resetSettings() {
       originalButtons = JSON.parse(JSON.stringify(newDefaults.buttons));
       originalAIServiceUrl = defaultUrl;
       
-      // Reset the AI Service URL field
+      // Reset the AI Chat URL field
       const aiServiceUrlInput = document.getElementById('ai-service-url');
       if (aiServiceUrlInput) {
         aiServiceUrlInput.value = defaultUrl;

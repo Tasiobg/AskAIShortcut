@@ -118,13 +118,13 @@
     "message": "Sélectionnez votre langue préférée (sera appliquée immédiatement)"
   },
   "aiServiceUrl": {
-    "message": "🔗 URL du Service IA :"
+    "message": "🔗 URL du Chat IA :"
   },
   "aiServiceUrlHelperText": {
-    "message": "Entrez l'URL où le Service IA doit s'ouvrir"
+    "message": "Entrez l'URL où le Chat IA doit s'ouvrir"
   },
   "aiServiceUrlRequired": {
-    "message": "L'URL du Service IA est requise"
+    "message": "L'URL du Chat IA est requise"
   },
   "invalidUrl": {
     "message": "Format d'URL invalide"

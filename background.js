@@ -87,7 +87,7 @@ runtime.onMessage.addListener((message, sender, sendResponse) => {
 
 async function handleOpenAIServiceWithQuestion(questionText, productUrl) {
   try {
-    // Get the AI Service URL from storage
+    // Get the AI Chat URL from storage
     const result = await storage.sync.get({ aiServiceUrl: 'https://gemini.google.com/app' });
     const aiServiceUrl = result.aiServiceUrl || 'https://gemini.google.com/app';
     

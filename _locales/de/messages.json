@@ -120,13 +120,13 @@
     "message": "Wählen Sie Ihre bevorzugte Sprache (wird sofort angewendet)"
   },
   "aiServiceUrl": {
-    "message": "🔗 KI-Service-URL:"
+    "message": "🔗 KI-Chat-URL:"
   },
   "aiServiceUrlHelperText": {
-    "message": "Geben Sie die URL ein, wo der KI-Service sich öffnen soll"
+    "message": "Geben Sie die URL ein, wo der KI-Chat sich öffnen soll"
   },
   "aiServiceUrlRequired": {
-    "message": "KI-Service-URL ist erforderlich"
+    "message": "KI-Chat-URL ist erforderlich"
   },
   "invalidUrl": {
     "message": "Ungültiges URL-Format"

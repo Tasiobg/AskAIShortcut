@@ -105,13 +105,13 @@
     "message": "원하는 언어를 선택하세요 (즉시 적용됩니다)"
   },
   "aiServiceUrl": {
-    "message": "🔗 Gemini URL："
+    "message": "🔗 AI 채팅 URL："
   },
   "aiServiceUrlHelperText": {
-    "message": "Gemini를 열기 URL을 입력하세요"
+    "message": "AI 채팅을 열기 URL을 입력하세요"
   },
   "aiServiceUrlRequired": {
-    "message": "Gemini URL은 필수입니다"
+    "message": "AI 채팅 URL은 필수입니다"
   },
   "invalidUrl": {
     "message": "유효하지 않은 URL 형식"

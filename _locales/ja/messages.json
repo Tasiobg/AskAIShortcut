@@ -105,13 +105,13 @@
     "message": "希望する言語を選択してください（すぐに適用されます）"
   },
   "aiServiceUrl": {
-    "message": "🔗 Gemini URL："
+    "message": "🔗 AIチャットURL："
   },
   "aiServiceUrlHelperText": {
-    "message": "Gemini を開く URL を入力してください"
+    "message": "AIチャット を開く URL を入力してください"
   },
   "aiServiceUrlRequired": {
-    "message": "Gemini URL は必須です"
+    "message": "AIチャット URL は必須です"
   },
   "invalidUrl": {
     "message": "URL 形式が無効です"
