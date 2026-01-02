@@ -174,7 +174,13 @@ function checkButtonChanged(index) {
   const questionInput = document.querySelector(`textarea.button-question[data-index="${index}"]`);
   const saveBtn = document.querySelector(`.button-config-save[data-index="${index}"]`);
   
-  if (nameInput && questionInput && saveBtn && originalButtons[index]) {
+  if (nameInput && questionInput && saveBtn) {
+    // If originalButtons[index] doesn't exist, this is a new button - always allow saving
+    if (!originalButtons[index]) {
+      saveBtn.disabled = false;
+      return;
+    }
+    
     const hasChanged = 
       nameInput.value !== originalButtons[index].name ||
       questionInput.value !== originalButtons[index].question;
@@ -217,7 +223,14 @@ async function saveButtonConfig(index) {
   
   try {
     await chrome.storage.sync.set({ buttons: currentButtons });
-    originalButtons[index] = JSON.parse(JSON.stringify(currentButtons[index]));
+    // Update or add to originalButtons
+    if (originalButtons.length <= index) {
+      // New button - expand originalButtons array
+      originalButtons = JSON.parse(JSON.stringify(currentButtons));
+    } else {
+      // Existing button - update just this one
+      originalButtons[index] = JSON.parse(JSON.stringify(currentButtons[index]));
+    }
     saveBtn.disabled = true;
     showStatus(getMessage('buttonSaved') || 'Button configuration saved successfully', 'success');
   } catch (error) {
@@ -251,11 +264,14 @@ async function removeButton(index) {
 function addButton() {
   const newId = 'button' + Date.now();
   const buttonLabel = getMessage('button') || 'Button';
-  currentButtons.push({
+  const newButton = {
     id: newId,
     name: `${buttonLabel} ${currentButtons.length + 1}`,
     question: ''
-  });
+  };
+  currentButtons.push(newButton);
+  // Don't add to originalButtons yet - it will be added when saved
+  // This ensures the save button is enabled for new buttons
   renderButtons();
   // Scroll to the new button
   setTimeout(() => {
