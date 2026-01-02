@@ -12,6 +12,23 @@ let defaultButtons = [];
 // Initialize default buttons from custom i18n messages
 async function initializeDefaultButtons() {
   try {
+    // Ensure translation data is loaded
+    if (!translationData || Object.keys(translationData).length === 0) {
+      await new Promise(resolve => {
+        const checkInterval = setInterval(() => {
+          if (translationData && Object.keys(translationData).length > 0) {
+            clearInterval(checkInterval);
+            resolve();
+          }
+        }, 50);
+        // Timeout after 2 seconds
+        setTimeout(() => {
+          clearInterval(checkInterval);
+          resolve();
+        }, 2000);
+      });
+    }
+    
     defaultButtons = [
       {
         id: 'button1',
