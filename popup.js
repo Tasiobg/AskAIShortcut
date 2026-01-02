@@ -6,93 +6,91 @@ const storage = (typeof browser !== 'undefined') ? browser.storage : chrome.stor
 
 console.log('Buying Advice Extension: Popup opened');
 
-// Default settings
-const defaults = {
-  button1Name: '💡 Buying advice',
-  button2Name: '🔍 Content analysis'
-};
+// Default buttons
+const defaultButtons = [
+  {
+    id: 'button1',
+    name: '💡 Buying advice',
+    question: `I need buying advice for this product, please help me understand:
+- Is this a good deal?
+- What are the pros and cons?
+- Are there better alternatives?
+- What should I consider before buying?
+- Is this product worth the price?
+- What do the reviews say? Do they appear authentic, or do they show signs of AI generation and manipulation?
+- What's the price history? Has it been cheaper before?
+- Are there any hidden or long-term costs (accessories, maintenance, subscriptions)?`
+  },
+  {
+    id: 'button2',
+    name: '🔍 Content analysis',
+    question: `Analyze this content for editorial bias
+Identify any omitted context, missing facts, or logical leaps
+Verify authenticity and logic
+What is the primary goal (e.g., to inform, persuade, or sell). Identify if the content uses 'outrage engagement' or specific emotional triggers to influence a vote, a purchase, or social sharing.`
+  }
+];
 
-// Load button names from settings
-async function loadButtonNames() {
+// Load and render buttons
+async function loadAndRenderButtons() {
   try {
-    const settings = await storage.sync.get(defaults);
-    document.getElementById('buying-advice-btn').textContent = settings.button1Name;
-    document.getElementById('content-analysis-btn').textContent = settings.button2Name;
+    const result = await storage.sync.get({ buttons: defaultButtons });
+    const buttons = result.buttons || defaultButtons;
+    
+    const container = document.getElementById('buttons-container');
+    container.innerHTML = '';
+    
+    buttons.forEach((button, index) => {
+      const btn = document.createElement('button');
+      btn.className = 'action-btn';
+      btn.textContent = button.name;
+      btn.dataset.buttonId = button.id;
+      btn.addEventListener('click', () => handleButtonClick(button));
+      container.appendChild(btn);
+    });
   } catch (error) {
-    console.error('Error loading button names:', error);
+    console.error('Error loading buttons:', error);
   }
 }
 
-// Load button names when popup opens
-loadButtonNames();
-
-document.getElementById('buying-advice-btn').addEventListener('click', async () => {
-  console.log('Buying Advice Extension: Popup button clicked');
+// Handle button click
+async function handleButtonClick(button) {
+  console.log('Button clicked:', button.name);
   
   try {
     // Get the current active tab
     const [tab] = await tabs.query({ active: true, currentWindow: true });
     
     if (tab && tab.url) {
-      console.log('Buying Advice Extension: Current tab URL:', tab.url);
+      console.log('Current tab URL:', tab.url);
       
       // Send message to background script
       chrome.runtime.sendMessage({
-        action: 'openGemini',
+        action: 'openGeminiWithQuestion',
+        question: button.question,
         productUrl: tab.url
       }, (response) => {
         if (chrome.runtime.lastError) {
-          console.error('Buying Advice Extension: Error -', chrome.runtime.lastError);
+          console.error('Error:', chrome.runtime.lastError);
           alert('Error opening Gemini: ' + chrome.runtime.lastError.message);
         } else {
-          console.log('Buying Advice Extension: Success!');
+          console.log('Success!');
           // Close popup immediately on success
           window.close();
         }
       });
     } else {
-      console.error('Buying Advice Extension: No active tab found');
+      console.error('No active tab found');
       alert('Error: No active tab found');
     }
   } catch (error) {
-    console.error('Buying Advice Extension: Exception -', error);
+    console.error('Exception:', error);
     alert('Error: ' + error.message);
   }
-});
+}
 
-document.getElementById('content-analysis-btn').addEventListener('click', async () => {
-  console.log('Content Analysis Extension: Popup button clicked');
-  
-  try {
-    // Get the current active tab
-    const [tab] = await tabs.query({ active: true, currentWindow: true });
-    
-    if (tab && tab.url) {
-      console.log('Content Analysis Extension: Current tab URL:', tab.url);
-      
-      // Send message to background script
-      chrome.runtime.sendMessage({
-        action: 'openGeminiContentAnalysis',
-        productUrl: tab.url
-      }, (response) => {
-        if (chrome.runtime.lastError) {
-          console.error('Content Analysis Extension: Error -', chrome.runtime.lastError);
-          alert('Error opening Gemini: ' + chrome.runtime.lastError.message);
-        } else {
-          console.log('Content Analysis Extension: Success!');
-          // Close popup immediately on success
-          window.close();
-        }
-      });
-    } else {
-      console.error('Content Analysis Extension: No active tab found');
-      alert('Error: No active tab found');
-    }
-  } catch (error) {
-    console.error('Content Analysis Extension: Exception -', error);
-    alert('Error: ' + error.message);
-  }
-});
+// Load buttons when popup opens
+loadAndRenderButtons();
 
 // Settings link handler
 document.getElementById('settings-link').addEventListener('click', (e) => {
