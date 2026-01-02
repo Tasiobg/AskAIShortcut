@@ -95,8 +95,8 @@
   "noActivetabFound": {
     "message": "Fehler: Keine aktive Registerkarte gefunden"
   },
-  "errorOpeningGemini": {
-    "message": "Fehler beim Öffnen von Gemini: $1"
+  "errorOpeningAIService": {
+    "message": "Fehler beim Öffnen des KI-Dienstes: $1"
   },
   "error": {
     "message": "Fehler: $1"

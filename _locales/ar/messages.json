@@ -80,8 +80,8 @@
   "noActivetabFound": {
     "message": "خطأ: لم يتم العثور على علامة تبويب نشطة"
   },
-  "errorOpeningGemini": {
-    "message": "خطأ في فتح Gemini: $1"
+  "errorOpeningAIService": {
+    "message": "خطأ في فتح خدمة الذكاء الاصطناعي: $1"
   },
   "error": {
     "message": "خطأ: $1"

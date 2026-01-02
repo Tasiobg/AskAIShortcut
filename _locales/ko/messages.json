@@ -80,8 +80,8 @@
   "noActivetabFound": {
     "message": "오류: 활성 탭을 찾을 수 없습니다"
   },
-  "errorOpeningGemini": {
-    "message": "Gemini 열기 오류: $1"
+  "errorOpeningAIService": {
+    "message": "AI 서비스 열기 오류: $1"
   },
   "error": {
     "message": "오류: $1"

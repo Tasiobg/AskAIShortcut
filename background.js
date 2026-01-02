@@ -72,53 +72,31 @@ What is the primary goal (e.g., to inform, persuade, or sell). Identify if the c
 runtime.onMessage.addListener((message, sender, sendResponse) => {
   console.log('Extension: Message received in background', message);
   
-  if (message.action === 'openGeminiWithQuestion') {
-    handleOpenGeminiWithQuestion(message.question, message.productUrl)
+  if (message.action === 'openAIServiceWithQuestion') {
+    handleOpenAIServiceWithQuestion(message.question, message.productUrl)
       .then(() => {
         sendResponse({ status: 'success' });
       })
       .catch((error) => {
-        console.error('Error in handleOpenGeminiWithQuestion:', error);
-        sendResponse({ status: 'error', error: error.message });
-      });
-    return true; // Keep message channel open for async response
-  } else if (message.action === 'openGemini') {
-    // Legacy support for old button1 action
-    handleOpenGeminiWithQuestion(defaults.button1Question, message.productUrl)
-      .then(() => {
-        sendResponse({ status: 'success' });
-      })
-      .catch((error) => {
-        console.error('Error in handleOpenGemini:', error);
-        sendResponse({ status: 'error', error: error.message });
-      });
-    return true;
-  } else if (message.action === 'openGeminiContentAnalysis') {
-    // Legacy support for old button2 action
-    handleOpenGeminiWithQuestion(defaults.button2Question, message.productUrl)
-      .then(() => {
-        sendResponse({ status: 'success' });
-      })
-      .catch((error) => {
-        console.error('Error in handleOpenGeminiContentAnalysis:', error);
+        console.error('Error in handleOpenAIServiceWithQuestion:', error);
         sendResponse({ status: 'error', error: error.message });
       });
     return true;
   }
 });
 
-async function handleOpenGeminiWithQuestion(questionText, productUrl) {
+async function handleOpenAIServiceWithQuestion(questionText, productUrl) {
   try {
-    // Get the AI Service URL from storage or use default
-    const result = await storage.sync.get({ geminiUrl: 'https://gemini.google.com/app' });
-    const geminiUrl = result.geminiUrl || 'https://gemini.google.com/app';
+    // Get the AI Service URL from storage
+    const result = await storage.sync.get({ aiServiceUrl: 'https://gemini.google.com/app' });
+    const aiServiceUrl = result.aiServiceUrl || 'https://gemini.google.com/app';
     
     // Create the question with context
     const question = createQuestionWithContext(productUrl, questionText);
     
     // Open AI Service in a new tab
     const tab = await tabs.create({
-      url: geminiUrl,
+      url: aiServiceUrl,
       active: true
     });
 
@@ -133,15 +111,15 @@ async function handleOpenGeminiWithQuestion(questionText, productUrl) {
           
           console.log('Tab loaded, injecting script...');
           
-          // Inject the script to fill the Gemini input
+          // Inject the script to fill the AI Service input
           scripting.executeScript({
             target: { tabId: tab.id },
-            files: ['gemini-filler.js']
+            files: ['ai-service-filler.js']
           }).then(() => {
             console.log('Script injected, sending question...');
             // Send the question to the injected script
             tabs.sendMessage(tab.id, {
-              action: 'fillGeminiInput',
+              action: 'fillAIServiceInput',
               question: question
             }).then(() => {
               console.log('Question sent successfully');
@@ -164,7 +142,7 @@ async function handleOpenGeminiWithQuestion(questionText, productUrl) {
       }, 20000);
     });
   } catch (error) {
-    console.error('Error opening Gemini:', error);
+    console.error('Error opening AI Service:', error);
     throw error;
   }
 }

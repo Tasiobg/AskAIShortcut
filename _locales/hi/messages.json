@@ -80,8 +80,8 @@
   "noActivetabFound": {
     "message": "त्रुटि: कोई सक्रिय टैब नहीं मिला"
   },
-  "errorOpeningGemini": {
-    "message": "Gemini खोलने में त्रुटि: $1"
+  "errorOpeningAIService": {
+    "message": "AI सेवा खोलने में त्रुटि: $1"
   },
   "error": {
     "message": "त्रुटि: $1"

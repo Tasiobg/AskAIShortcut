@@ -133,9 +133,9 @@
     "message": "Error: No active tab found",
     "description": "Error when no tab is active"
   },
-  "errorOpeningGemini": {
-    "message": "Error opening Gemini: $1",
-    "description": "Error when opening Gemini fails",
+  "errorOpeningAIService": {
+    "message": "Error opening AI Service: $1",
+    "description": "Error when opening AI Service fails",
     "placeholders": {
       "error_message": {
         "content": "$1",

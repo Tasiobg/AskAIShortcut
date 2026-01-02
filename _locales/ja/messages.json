@@ -80,8 +80,8 @@
   "noActivetabFound": {
     "message": "エラー：アクティブなタブが見つかりません"
   },
-  "errorOpeningGemini": {
-    "message": "Geminiを開く際にエラーが発生しました：$1"
+  "errorOpeningAIService": {
+    "message": "AIサービスを開く際にエラーが発生しました：$1"
   },
   "error": {
     "message": "エラー：$1"

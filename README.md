@@ -69,8 +69,8 @@ A cross-browser extension that adds a "Buying advice" button to product pages, a
 options.html         # Settings page UI
 ├── options.js           # Settings page logic
 ├── background.js        # Handles tab creation and coordination
-├── gemini-filler.js     # Fills Gemini input field
-├── content.js           # Injects button into web pagesf the popup
+├── ai-service-filler.js # Fills AI Service input field
+├── content.js           # Injects button into web pages
 
 3. The settings page opens where you can:
    - Change button names (e.g., "💡 Buying advice" → "🛒 Shopping Help")
@@ -91,7 +91,7 @@ extension/
 ├── popup.html           # Popup menu UI
 ├── popup.js             # Popup menu logic
 ├── background.js        # Handles tab creation and coordination
-├── gemini-filler.js     # Fills Gemini input field
+├── ai-service-filler.js # Fills AI Service input field
 └── icons/               # Extension icons (16x16, 48x48, 128x128)
     └── README.md        # Instructions for creating icons
 ```

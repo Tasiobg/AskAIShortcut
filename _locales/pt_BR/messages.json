@@ -93,8 +93,9 @@
   "noActivetabFound": {
     "message": "Erro: nenhuma aba ativa encontrada"
   },
-  "errorOpeningGemini": {
-    "message": "Erro ao abrir Gemini: $1"
+
+  "errorOpeningAIService": {
+    "message": "Erro ao abrir o serviço de IA: $1"
   },
   "error": {
     "message": "Erro: $1"

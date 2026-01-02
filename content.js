@@ -2,17 +2,11 @@
 (function() {
   'use strict';
 
-  console.log('Buying Advice Extension: Content script loaded on', window.location.href);
-
-  // Don't inject on Gemini page (button is used via popup instead)
-  if (window.location.hostname.includes('gemini.google.com')) {
-    console.log('Buying Advice Extension: Skipping injection on Gemini page');
-    return;
-  }
+  console.log('AskAIShortcut: Content script loaded on', window.location.href);
 
   // Avoid injecting multiple times
   if (window.buyingAdviceExtensionInjected) {
-    console.log('Buying Advice Extension: Already injected, skipping');
+    console.log('AskAIShortcut: Already injected, skipping');
     return;
   }
   window.buyingAdviceExtensionInjected = true;
@@ -44,25 +38,26 @@
     button.textContent = buttonName;
     
     button.addEventListener('click', async () => {
-      console.log('Buying Advice Extension: Button clicked!');
+      console.log('AskAIShortcut: Button clicked!');
       button.disabled = true;
-      button.textContent = '⏳ Opening Gemini...';
+      button.textContent = '⏳ Opening AI Service...';
       
       const productUrl = getProductUrl();
-      console.log('Buying Advice Extension: Product URL:', productUrl);
+      console.log('AskAIShortcut: Product URL:', productUrl);
       
       // Send message to background script
       try {
-        console.log('Buying Advice Extension: Sending message to background...');
+        console.log('AskAIShortcut: Sending message to background...');
         chrome.runtime.sendMessage({
-          action: 'openGemini',
+          action: 'openAIServiceWithQuestion',
+          question: getMessage('buyingAdviceQuestion') || 'I need buying advice for this product, please help me understand:\n- Is this a good deal?\n- What are the pros and cons?\n- Are there better alternatives?\n- What should I consider before buying?\n- Is this product worth the price?\n- What do the reviews say? Do they appear authentic, or do they show signs of AI generation and manipulation?\n- What\'s the price history? Has it been cheaper before?\n- Are there any hidden or long-term costs (accessories, maintenance, subscriptions)?',
           productUrl: productUrl
         }, (response) => {
           if (chrome.runtime.lastError) {
-            console.error('Buying Advice Extension: Error -', chrome.runtime.lastError);
+            console.error('AskAIShortcut: Error -', chrome.runtime.lastError);
             alert('Error: ' + chrome.runtime.lastError.message);
           } else {
-            console.log('Buying Advice Extension: Response received', response);
+            console.log('AskAIShortcut: Response received', response);
           }
           setTimeout(() => {
             button.disabled = false;
@@ -70,7 +65,7 @@
           }, 2000);
         });
       } catch (error) {
-        console.error('Buying Advice Extension: Exception -', error);
+        console.error('AskAIShortcut: Exception -', error);
         alert('Error: ' + error.message);
         button.disabled = false;
         button.textContent = buttonName;

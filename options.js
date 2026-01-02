@@ -35,7 +35,7 @@ function initializeDefaults() {
 }
 
 let currentButtons = [];
-let originalGeminiUrl = '';
+let originalAIServiceUrl = '';
 let originalButtons = [];
 
 // Load and render buttons
@@ -51,7 +51,7 @@ async function loadSettings() {
     const result = await storage.sync.get({ 
       buttons: defaults.buttons, 
       language: 'en',
-      geminiUrl: 'https://gemini.google.com/app'
+      aiServiceUrl: 'https://gemini.google.com/app'
     });
     currentButtons = result.buttons || defaults.buttons;
     originalButtons = JSON.parse(JSON.stringify(currentButtons));
@@ -62,11 +62,12 @@ async function loadSettings() {
       languageSelect.value = result.language || 'en';
     }
     
-    // Set the Gemini URL
-    const geminiUrlInput = document.getElementById('gemini-url');
-    if (geminiUrlInput) {
-      originalGeminiUrl = result.geminiUrl || 'https://gemini.google.com/app';
-      geminiUrlInput.value = originalGeminiUrl;
+    // Set the AI Service URL
+    const aiServiceUrlInput = document.getElementById('ai-service-url');
+    if (aiServiceUrlInput) {
+      let aiServiceUrl = result.aiServiceUrl || 'https://gemini.google.com/app';
+      originalAIServiceUrl = aiServiceUrl;
+      aiServiceUrlInput.value = originalAIServiceUrl;
     }
     
     renderButtons();
@@ -140,7 +141,7 @@ function attachInputListeners() {
   });
   
   // Attach URL input listener
-  const urlInput = document.getElementById('gemini-url');
+  const urlInput = document.getElementById('ai-service-url');
   if (urlInput) {
     urlInput.addEventListener('input', checkUrlChanged);
   }
@@ -159,11 +160,11 @@ function updateCurrentButtons() {
 
 // Check if URL has changed from original
 function checkUrlChanged() {
-  const urlInput = document.getElementById('gemini-url');
+  const urlInput = document.getElementById('ai-service-url');
   const saveBtn = document.getElementById('save-url-btn');
   
   if (urlInput && saveBtn) {
-    const hasChanged = urlInput.value.trim() !== originalGeminiUrl;
+    const hasChanged = urlInput.value.trim() !== originalAIServiceUrl;
     saveBtn.disabled = !hasChanged;
   }
 }
@@ -190,7 +191,7 @@ function checkButtonChanged(index) {
 
 // Save URL settings
 async function saveUrlSettings() {
-  const urlInput = document.getElementById('gemini-url');
+  const urlInput = document.getElementById('ai-service-url');
   const saveBtn = document.getElementById('save-url-btn');
   const url = urlInput.value.trim();
   
@@ -200,8 +201,8 @@ async function saveUrlSettings() {
   }
   
   try {
-    await chrome.storage.sync.set({ geminiUrl: url });
-    originalGeminiUrl = url;
+    await chrome.storage.sync.set({ aiServiceUrl: url });
+    originalAIServiceUrl = url;
     saveBtn.disabled = true;
     showStatus(getMessage('urlSaved') || 'AI Service URL saved successfully', 'success');
   } catch (error) {
@@ -280,7 +281,6 @@ function addButton() {
   }, 100);
 }
 
-// Save settings
 // Reset to defaults
 async function resetSettings() {
   const confirmMsg = getMessage('areYouSureReset') || 'Are you sure you want to reset all settings to defaults?';
@@ -291,17 +291,17 @@ async function resetSettings() {
       
       await storage.sync.set({ 
         buttons: newDefaults.buttons,
-        geminiUrl: defaultUrl
+        aiServiceUrl: defaultUrl
       });
       
       currentButtons = JSON.parse(JSON.stringify(newDefaults.buttons));
       originalButtons = JSON.parse(JSON.stringify(newDefaults.buttons));
-      originalGeminiUrl = defaultUrl;
+      originalAIServiceUrl = defaultUrl;
       
       // Reset the AI Service URL field
-      const geminiUrlInput = document.getElementById('gemini-url');
-      if (geminiUrlInput) {
-        geminiUrlInput.value = defaultUrl;
+      const aiServiceUrlInput = document.getElementById('ai-service-url');
+      if (aiServiceUrlInput) {
+        aiServiceUrlInput.value = defaultUrl;
       }
       
       // Disable all save buttons

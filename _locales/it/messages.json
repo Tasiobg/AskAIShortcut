@@ -95,8 +95,8 @@
   "noActivetabFound": {
     "message": "Errore: nessuna scheda attiva trovata"
   },
-  "errorOpeningGemini": {
-    "message": "Errore nell'apertura di Gemini: $1"
+  "errorOpeningAIService": {
+    "message": "Errore nell'apertura del servizio IA: $1"
   },
   "error": {
     "message": "Errore: $1"

@@ -93,8 +93,8 @@
   "noActivetabFound": {
     "message": "Erreur : Aucun onglet actif trouvé"
   },
-  "errorOpeningGemini": {
-    "message": "Erreur lors de l'ouverture de Gemini : $1"
+  "errorOpeningAIService": {
+    "message": "Erreur lors de l'ouverture du service IA : $1"
   },
   "error": {
     "message": "Erreur : $1"

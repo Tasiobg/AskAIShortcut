@@ -4,7 +4,7 @@ const runtime = (typeof browser !== 'undefined') ? browser : chrome;
 const tabs = (typeof browser !== 'undefined') ? browser.tabs : chrome.tabs;
 // Note: storage is declared in i18n.js, which is loaded before this script
 
-console.log('Buying Advice Extension: Popup opened');
+console.log('AskAIShortcut: Popup opened');
 
 // Default buttons (will be created from i18n messages if available)
 let defaultButtons = [];
@@ -65,14 +65,14 @@ async function handleButtonClick(button) {
       
       // Send message to background script
       chrome.runtime.sendMessage({
-        action: 'openGeminiWithQuestion',
+        action: 'openAIServiceWithQuestion',
         question: button.question,
         productUrl: tab.url
       }, (response) => {
         if (chrome.runtime.lastError) {
           console.error('Error:', chrome.runtime.lastError);
-          const errorMsg = getMessage('errorOpeningGemini', chrome.runtime.lastError.message) || 
-                          'Error opening Gemini: ' + chrome.runtime.lastError.message;
+          const errorMsg = getMessage('errorOpeningAIService', chrome.runtime.lastError.message) || 
+                          'Error opening AI Service: ' + chrome.runtime.lastError.message;
           alert(errorMsg);
         } else {
           console.log('Success!');

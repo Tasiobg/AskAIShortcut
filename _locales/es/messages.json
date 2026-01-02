@@ -95,8 +95,8 @@
   "noActivetabFound": {
     "message": "Error: No se encontró pestaña activa"
   },
-  "errorOpeningGemini": {
-    "message": "Error al abrir Gemini: $1"
+  "errorOpeningAIService": {
+    "message": "Error al abrir el servicio de IA: $1"
   },
   "error": {
     "message": "Error: $1"

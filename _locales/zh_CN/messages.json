@@ -80,8 +80,8 @@
   "noActivetabFound": {
     "message": "错误：找不到活动标签页"
   },
-  "errorOpeningGemini": {
-    "message": "打开Gemini出错：$1"
+  "errorOpeningAIService": {
+    "message": "打开AI服务出错：$1"
   },
   "error": {
     "message": "错误：$1"
