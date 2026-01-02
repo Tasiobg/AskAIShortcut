@@ -7,6 +7,24 @@ const storage = (typeof browser !== 'undefined') ? browser.storage : chrome.stor
 
 console.log('Buying Advice Extension: Background script loaded');
 
+// Handle language change messages
+runtime.onMessage.addListener((request, sender, sendResponse) => {
+  if (request.action === 'languageChanged') {
+    console.log('Language changed to:', request.language);
+    // Notify all tabs to reload for language change
+    tabs.query({}, (allTabs) => {
+      allTabs.forEach(tab => {
+        tabs.sendMessage(tab.id, { action: 'reloadForLanguageChange' }, () => {
+          // Ignore errors for tabs that don't have our content script
+          runtime.lastError;
+        });
+      });
+    });
+    sendResponse({ success: true });
+  }
+  return true; // Keep the message channel open for async response
+});
+
 // Default settings
 const defaults = {
   buttons: [

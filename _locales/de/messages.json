@@ -1,0 +1,107 @@
+{
+  "appName": {
+    "message": "AskAIShortcut"
+  },
+  "appDescription": {
+    "message": "Erhalten Sie mit einem Klick KI-gestützte Kaufberatung für Produkte"
+  },
+  "aiContentAssistant": {
+    "message": "KI-Inhaltsassistent"
+  },
+  "getAiAnalysis": {
+    "message": "Erhalten Sie KI-gestützte Analysen für die aktuelle Seite"
+  },
+  "customizeButtons": {
+    "message": "⚙️ Optionen"
+  },
+  "settingsTitle": {
+    "message": "⚙️ KI-Assistent Einstellungen"
+  },
+  "settingsSubtitle": {
+    "message": "Passen Sie Ihre Schaltflächennamen und Fragen an. Der Kontext (aktuelle URL) wird immer automatisch eingefügt."
+  },
+  "tip": {
+    "message": "Tipp:"
+  },
+  "tipText": {
+    "message": "Der Kontext (aktuelle Seiten-URL) wird automatisch vor Ihrer Frage hinzugefügt, daher müssen Sie ihn nicht in Ihren Fragetext einfügen."
+  },
+  "buttonName": {
+    "message": "Schaltflächenname:"
+  },
+  "questionTemplate": {
+    "message": "Frage-Vorlage:"
+  },
+  "thisIsTheText": {
+    "message": "Dies ist der Text, der auf der Schaltfläche angezeigt wird"
+  },
+  "contextWillBePrepended": {
+    "message": "Der Kontext (URL) wird dieser Frage automatisch vorangestellt"
+  },
+  "addNewButton": {
+    "message": "➕ Neue Schaltfläche hinzufügen"
+  },
+  "saveSettings": {
+    "message": "💾 Einstellungen speichern"
+  },
+  "resetToDefaults": {
+    "message": "🔄 Auf Standardwerte zurücksetzen"
+  },
+  "removeButton": {
+    "message": "✕ Entfernen"
+  },
+  "button": {
+    "message": "Schaltfläche"
+  },
+  "settingsSavedSuccessfully": {
+    "message": "✓ Einstellungen erfolgreich gespeichert!"
+  },
+  "errorSavingSettings": {
+    "message": "Fehler beim Speichern der Einstellungen"
+  },
+  "settingsResetToDefaults": {
+    "message": "✓ Einstellungen auf Standardwerte zurückgesetzt!"
+  },
+  "errorResettingSettings": {
+    "message": "Fehler beim Zurücksetzen der Einstellungen"
+  },
+  "errorLoadingSettings": {
+    "message": "Fehler beim Laden der Einstellungen"
+  },
+  "areYouSureReset": {
+    "message": "Sind Sie sicher, dass Sie alle Einstellungen auf Standardwerte zurücksetzen möchten?"
+  },
+  "removeButtonConfirm": {
+    "message": "Schaltfläche \"$1\" entfernen?"
+  },
+  "mustHaveAtLeastOne": {
+    "message": "Sie müssen mindestens eine Schaltfläche haben"
+  },
+  "noActivetabFound": {
+    "message": "Fehler: Keine aktive Registerkarte gefunden"
+  },
+  "errorOpeningGemini": {
+    "message": "Fehler beim Öffnen von Gemini: $1"
+  },
+  "error": {
+    "message": "Fehler: $1"
+  },
+  "buyingAdvice": {
+    "message": "💡 Kaufberatung"
+  },
+  "buyingAdviceQuestion": {
+    "message": "Ich benötige Kaufberatung für dieses Produkt, helfen Sie mir zu verstehen:\n- Ist dies ein guter Deal?\n- Was sind die Vor- und Nachteile?\n- Gibt es bessere Alternativen?\n- Was sollte ich vor dem Kauf beachten?\n- Ist dieses Produkt seinen Preis wert?\n- Was sagen die Rezensionen? Wirken sie authentisch oder zeigen sie Anzeichen von KI-Generierung und Manipulation?\n- Wie ist die Preisgeschichte? War es schon günstiger?\n- Gibt es versteckte oder langfristige Kosten (Zubehör, Wartung, Abos)?"
+  },
+  "contentAnalysis": {
+    "message": "🔍 Inhaltsanalyse"
+  },
+  "contentAnalysisQuestion": {
+    "message": "Analysieren Sie diesen Inhalt auf redaktionelle Voreingenommenheit\nIdentifizieren Sie fehlende Kontexte, fehlende Fakten oder logische Lücken\nÜberprüfen Sie Authentizität und Logik\nWas ist das primäre Ziel (z. B. informieren, überreden oder verkaufen)? Identifizieren Sie, ob der Inhalt \"Empörungsengagement\" oder spezifische emotionale Auslöser verwendet, um Abstimmungen, Käufe oder Freigaben zu beeinflussen."
+  },
+  "language": {
+    "message": "🌐 Sprache:"
+  },
+  "languageHelperText": {
+    "message": "Wählen Sie Ihre bevorzugte Sprache (wird sofort angewendet)"
+  }
+}

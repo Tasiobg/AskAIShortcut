@@ -1,0 +1,107 @@
+{
+  "appName": {
+    "message": "AskAIShortcut"
+  },
+  "appDescription": {
+    "message": "Ottieni consigli di acquisto alimentati dall'IA per i prodotti con un clic"
+  },
+  "aiContentAssistant": {
+    "message": "Assistente Contenuti IA"
+  },
+  "getAiAnalysis": {
+    "message": "Ottieni analisi alimentata dall'IA per la pagina attuale"
+  },
+  "customizeButtons": {
+    "message": "⚙️ Opzioni"
+  },
+  "settingsTitle": {
+    "message": "⚙️ Impostazioni Assistente IA"
+  },
+  "settingsSubtitle": {
+    "message": "Personalizza i nomi dei tuoi pulsanti e le domande. Il contesto (URL attuale) è sempre incluso automaticamente."
+  },
+  "tip": {
+    "message": "Suggerimento:"
+  },
+  "tipText": {
+    "message": "Il contesto (URL della pagina attuale) viene aggiunto automaticamente prima della tua domanda, quindi non è necessario includerlo nel testo della domanda."
+  },
+  "buttonName": {
+    "message": "Nome Pulsante:"
+  },
+  "questionTemplate": {
+    "message": "Modello Domanda:"
+  },
+  "thisIsTheText": {
+    "message": "Questo è il testo visualizzato sul pulsante"
+  },
+  "contextWillBePrepended": {
+    "message": "Il contesto (URL) verrà aggiunto automaticamente prima di questa domanda"
+  },
+  "addNewButton": {
+    "message": "➕ Aggiungi Nuovo Pulsante"
+  },
+  "saveSettings": {
+    "message": "💾 Salva Impostazioni"
+  },
+  "resetToDefaults": {
+    "message": "🔄 Ripristina Impostazioni Predefinite"
+  },
+  "removeButton": {
+    "message": "✕ Rimuovi"
+  },
+  "button": {
+    "message": "Pulsante"
+  },
+  "settingsSavedSuccessfully": {
+    "message": "✓ Le impostazioni sono state salvate con successo!"
+  },
+  "errorSavingSettings": {
+    "message": "Errore durante il salvataggio delle impostazioni"
+  },
+  "settingsResetToDefaults": {
+    "message": "✓ Le impostazioni sono state ripristinate alle impostazioni predefinite!"
+  },
+  "errorResettingSettings": {
+    "message": "Errore durante il ripristino delle impostazioni"
+  },
+  "errorLoadingSettings": {
+    "message": "Errore durante il caricamento delle impostazioni"
+  },
+  "areYouSureReset": {
+    "message": "Sei sicuro di voler ripristinare tutte le impostazioni alle impostazioni predefinite?"
+  },
+  "removeButtonConfirm": {
+    "message": "Rimuovere il pulsante \"$1\"?"
+  },
+  "mustHaveAtLeastOne": {
+    "message": "Devi avere almeno un pulsante"
+  },
+  "noActivetabFound": {
+    "message": "Errore: nessuna scheda attiva trovata"
+  },
+  "errorOpeningGemini": {
+    "message": "Errore nell'apertura di Gemini: $1"
+  },
+  "error": {
+    "message": "Errore: $1"
+  },
+  "buyingAdvice": {
+    "message": "💡 Consigli di acquisto"
+  },
+  "buyingAdviceQuestion": {
+    "message": "Ho bisogno di consigli di acquisto per questo prodotto, aiutami a capire:\n- È un buon affare?\n- Quali sono i pro e i contro?\n- Ci sono alternative migliori?\n- Cosa devo considerare prima di acquistare?\n- Questo prodotto vale il prezzo?\n- Cosa dicono le recensioni? Sembrano autentiche o mostrano segni di generazione e manipolazione dell'IA?\n- Qual è la cronologia dei prezzi? È stato più economico prima?\n- Ci sono costi nascosti o a lungo termine (accessori, manutenzione, abbonamenti)?"
+  },
+  "contentAnalysis": {
+    "message": "🔍 Analisi Contenuti"
+  },
+  "contentAnalysisQuestion": {
+    "message": "Analizzare questo contenuto per bias editoriali\nIdentificare qualsiasi contesto omesso, fatti mancanti o salti logici\nVerificare autenticità e logica\nQual è l'obiettivo principale (ad es. informare, persuadere o vendere)? Identificare se il contenuto utilizza \"coinvolgimento con scandalo\" o specifici trigger emotivi per influenzare un voto, un acquisto o una condivisione."
+  },
+  "language": {
+    "message": "🌐 Lingua:"
+  },
+  "languageHelperText": {
+    "message": "Seleziona la tua lingua preferita (verrà applicata immediatamente)"
+  }
+}

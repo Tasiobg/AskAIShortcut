@@ -2,38 +2,37 @@
 // Use browser namespace with fallback to chrome for compatibility
 const runtime = (typeof browser !== 'undefined') ? browser : chrome;
 const tabs = (typeof browser !== 'undefined') ? browser.tabs : chrome.tabs;
-const storage = (typeof browser !== 'undefined') ? browser.storage : chrome.storage;
+// Note: storage is declared in i18n.js, which is loaded before this script
 
 console.log('Buying Advice Extension: Popup opened');
 
-// Default buttons
-const defaultButtons = [
-  {
-    id: 'button1',
-    name: '💡 Buying advice',
-    question: `I need buying advice for this product, please help me understand:
-- Is this a good deal?
-- What are the pros and cons?
-- Are there better alternatives?
-- What should I consider before buying?
-- Is this product worth the price?
-- What do the reviews say? Do they appear authentic, or do they show signs of AI generation and manipulation?
-- What's the price history? Has it been cheaper before?
-- Are there any hidden or long-term costs (accessories, maintenance, subscriptions)?`
-  },
-  {
-    id: 'button2',
-    name: '🔍 Content analysis',
-    question: `Analyze this content for editorial bias
-Identify any omitted context, missing facts, or logical leaps
-Verify authenticity and logic
-What is the primary goal (e.g., to inform, persuade, or sell). Identify if the content uses 'outrage engagement' or specific emotional triggers to influence a vote, a purchase, or social sharing.`
+// Default buttons (will be created from i18n messages if available)
+let defaultButtons = [];
+
+// Initialize default buttons from custom i18n messages
+async function initializeDefaultButtons() {
+  try {
+    defaultButtons = [
+      {
+        id: 'button1',
+        name: getMessage('buyingAdvice') || '💡 Buying advice',
+        question: getMessage('buyingAdviceQuestion') || 'I need buying advice for this product...'
+      },
+      {
+        id: 'button2',
+        name: getMessage('contentAnalysis') || '🔍 Content analysis',
+        question: getMessage('contentAnalysisQuestion') || 'Analyze this content for editorial bias...'
+      }
+    ];
+  } catch (error) {
+    console.error('Error initializing default buttons:', error);
   }
-];
+}
 
 // Load and render buttons
 async function loadAndRenderButtons() {
   try {
+    await initializeDefaultButtons();
     const result = await storage.sync.get({ buttons: defaultButtons });
     const buttons = result.buttons || defaultButtons;
     
@@ -72,7 +71,9 @@ async function handleButtonClick(button) {
       }, (response) => {
         if (chrome.runtime.lastError) {
           console.error('Error:', chrome.runtime.lastError);
-          alert('Error opening Gemini: ' + chrome.runtime.lastError.message);
+          const errorMsg = getMessage('errorOpeningGemini', chrome.runtime.lastError.message) || 
+                          'Error opening Gemini: ' + chrome.runtime.lastError.message;
+          alert(errorMsg);
         } else {
           console.log('Success!');
           // Close popup immediately on success
@@ -81,16 +82,29 @@ async function handleButtonClick(button) {
       });
     } else {
       console.error('No active tab found');
-      alert('Error: No active tab found');
+      const errorMsg = getMessage('noActivetabFound') || 'Error: No active tab found';
+      alert(errorMsg);
     }
   } catch (error) {
     console.error('Exception:', error);
-    alert('Error: ' + error.message);
+    const errorMsg = getMessage('error', error.message) || ('Error: ' + error.message);
+    alert(errorMsg);
   }
 }
 
 // Load buttons when popup opens
-loadAndRenderButtons();
+// Wait for i18n to be initialized first
+async function initPopup() {
+  // Wait a bit for i18n.js to initialize
+  let attempts = 0;
+  while (typeof getMessage === 'undefined' && attempts < 20) {
+    await new Promise(resolve => setTimeout(resolve, 50));
+    attempts++;
+  }
+  await loadAndRenderButtons();
+}
+
+initPopup();
 
 // Settings link handler
 document.getElementById('settings-link').addEventListener('click', (e) => {

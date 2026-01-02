@@ -224,27 +224,49 @@
 </head>
 <body>
   <div class="container">
-    <h1>⚙️ AI Assistant Settings</h1>
-    <p class="subtitle">Customize your button names and questions. The context (current URL) is always included automatically.</p>
+    <h1 data-i18n="settingsTitle">⚙️ AI Assistant Settings</h1>
+    <p class="subtitle" data-i18n="settingsSubtitle">Customize your button names and questions. The context (current URL) is always included automatically.</p>
     
     <div class="info-box">
-      💡 <strong>Tip:</strong> The context (current page URL) is automatically added before your question, so you don't need to include it in your question text.
+      💡 <strong><span data-i18n="tip">Tip:</span></strong> <span data-i18n="tipText">The context (current page URL) is automatically added before your question, so you don't need to include it in your question text.</span>
+    </div>
+
+    <div style="margin-bottom: 30px; padding: 20px; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #667eea;">
+      <div class="field-group">
+        <label for="language-select" data-i18n="language">🌐 Language:</label>
+        <select id="language-select" style="width: 100%; padding: 10px; font-size: 14px; border: 2px solid #ddd; border-radius: 6px; box-sizing: border-box; font-family: inherit; background: white; cursor: pointer;">
+          <option value="en" data-language-name="English">English</option>
+          <option value="es" data-language-name="Español">Español</option>
+          <option value="fr" data-language-name="Français">Français</option>
+          <option value="de" data-language-name="Deutsch">Deutsch</option>
+          <option value="pt_BR" data-language-name="Português (Brasil)">Português (Brasil)</option>
+          <option value="zh_CN" data-language-name="中文 (简体)">中文 (简体)</option>
+          <option value="ja" data-language-name="日本語">日本語</option>
+          <option value="ko" data-language-name="한국어">한국어</option>
+          <option value="hi" data-language-name="हिंदी">हिंदी</option>
+          <option value="it" data-language-name="Italiano">Italiano</option>
+          <option value="ar" data-language-name="العربية">العربية</option>
+        </select>
+        <div class="helper-text" data-i18n="languageHelperText">Select your preferred language (will be applied immediately)</div>
+      </div>
     </div>
 
     <div id="buttons-container"></div>
 
     <div class="button-group" style="margin-bottom: 30px;">
-      <button id="add-button-btn" style="background: #28a745; color: white; flex: 1;">➕ Add New Button</button>
+      <button id="add-button-btn" style="background: #28a745; color: white; flex: 1;" data-i18n="addNewButton">➕ Add New Button</button>
     </div>
 
     <div class="button-group">
-      <button id="save-btn">💾 Save Settings</button>
-      <button id="reset-btn">🔄 Reset to Defaults</button>
+      <button id="save-btn" data-i18n="saveSettings">💾 Save Settings</button>
+      <button id="reset-btn" data-i18n="resetToDefaults">🔄 Reset to Defaults</button>
     </div>
 
     <div id="status" class="status-message"></div>
   </div>
 
+  <script src="i18n.js"></script>
+  <script src="language-override.js"></script>
   <script src="options.js"></script>
 </body>
 </html>

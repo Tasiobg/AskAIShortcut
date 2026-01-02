@@ -1,0 +1,158 @@
+{
+  "appName": {
+    "message": "AskAIShortcut",
+    "description": "The name of the application"
+  },
+  "appDescription": {
+    "message": "Get AI-powered buying advice for products with one click",
+    "description": "The description of the application"
+  },
+  "aiContentAssistant": {
+    "message": "AI Content Assistant",
+    "description": "Title in the popup"
+  },
+  "getAiAnalysis": {
+    "message": "Get AI-powered analysis for the current page",
+    "description": "Info text in the popup"
+  },
+  "customizeButtons": {
+    "message": "⚙️ Options",
+    "description": "Settings link text"
+  },
+  "settingsTitle": {
+    "message": "⚙️ AI Assistant Settings",
+    "description": "Title of the settings page"
+  },
+  "settingsSubtitle": {
+    "message": "Customize your button names and questions. The context (current URL) is always included automatically.",
+    "description": "Subtitle of the settings page"
+  },
+  "tip": {
+    "message": "Tip:",
+    "description": "Tip label"
+  },
+  "tipText": {
+    "message": "The context (current page URL) is automatically added before your question, so you don't need to include it in your question text.",
+    "description": "Tip content text"
+  },
+  "buttonName": {
+    "message": "Button Name:",
+    "description": "Label for button name input"
+  },
+  "questionTemplate": {
+    "message": "Question Template:",
+    "description": "Label for question template textarea"
+  },
+  "thisIsTheText": {
+    "message": "This is the text shown on the button",
+    "description": "Helper text for button name"
+  },
+  "contextWillBePrepended": {
+    "message": "The context (URL) will be automatically prepended to this question",
+    "description": "Helper text for question template"
+  },
+  "addNewButton": {
+    "message": "➕ Add New Button",
+    "description": "Add button text"
+  },
+  "saveSettings": {
+    "message": "💾 Save Settings",
+    "description": "Save button text"
+  },
+  "resetToDefaults": {
+    "message": "🔄 Reset to Defaults",
+    "description": "Reset button text"
+  },
+  "removeButton": {
+    "message": "✕ Remove",
+    "description": "Remove button text"
+  },
+  "button": {
+    "message": "Button",
+    "description": "Generic button label"
+  },
+  "settingsSavedSuccessfully": {
+    "message": "✓ Settings saved successfully!",
+    "description": "Success message after saving"
+  },
+  "errorSavingSettings": {
+    "message": "Error saving settings",
+    "description": "Error message when saving fails"
+  },
+  "settingsResetToDefaults": {
+    "message": "✓ Settings reset to defaults!",
+    "description": "Success message after reset"
+  },
+  "errorResettingSettings": {
+    "message": "Error resetting settings",
+    "description": "Error message when reset fails"
+  },
+  "errorLoadingSettings": {
+    "message": "Error loading settings",
+    "description": "Error message when loading fails"
+  },
+  "areYouSureReset": {
+    "message": "Are you sure you want to reset all settings to defaults?",
+    "description": "Confirmation dialog for reset"
+  },
+  "removeButtonConfirm": {
+    "message": "Remove button \"$1\"?",
+    "description": "Confirmation dialog for removing a button",
+    "placeholders": {
+      "button_name": {
+        "content": "$1",
+        "example": "Buying advice"
+      }
+    }
+  },
+  "mustHaveAtLeastOne": {
+    "message": "You must have at least one button",
+    "description": "Error when trying to remove all buttons"
+  },
+  "noActivetabFound": {
+    "message": "Error: No active tab found",
+    "description": "Error when no tab is active"
+  },
+  "errorOpeningGemini": {
+    "message": "Error opening Gemini: $1",
+    "description": "Error when opening Gemini fails",
+    "placeholders": {
+      "error_message": {
+        "content": "$1",
+        "example": "Permission denied"
+      }
+    }
+  },
+  "error": {
+    "message": "Error: $1",
+    "description": "Generic error message",
+    "placeholders": {
+      "error_message": {
+        "content": "$1",
+        "example": "Something went wrong"
+      }
+    }
+  },
+  "buyingAdvice": {
+    "message": "💡 Buying advice",
+    "description": "Default button 1 name"
+  },
+  "buyingAdviceQuestion": {
+    "message": "I need buying advice for this product, please help me understand:\n- Is this a good deal?\n- What are the pros and cons?\n- Are there better alternatives?\n- What should I consider before buying?\n- Is this product worth the price?\n- What do the reviews say? Do they appear authentic, or do they show signs of AI generation and manipulation?\n- What's the price history? Has it been cheaper before?\n- Are there any hidden or long-term costs (accessories, maintenance, subscriptions)?",
+    "description": "Default button 1 question"
+  },
+  "contentAnalysis": {
+    "message": "🔍 Content analysis",
+    "description": "Default button 2 name"
+  },
+  "contentAnalysisQuestion": {
+    "message": "Analyze this content for editorial bias\nIdentify any omitted context, missing facts, or logical leaps\nVerify authenticity and logic\nWhat is the primary goal (e.g., to inform, persuade, or sell). Identify if the content uses 'outrage engagement' or specific emotional triggers to influence a vote, a purchase, or social sharing.",
+    "description": "Default button 2 question"
+  },
+  "language": {
+    "message": "🌐 Language:"
+  },
+  "languageHelperText": {
+    "message": "Select your preferred language (will be applied immediately)"
+  }
+}

@@ -1,0 +1,107 @@
+{
+  "appName": {
+    "message": "AskAIShortcut"
+  },
+  "appDescription": {
+    "message": "ワンクリックでAIを搭載した商品購入アドバイスを取得"
+  },
+  "aiContentAssistant": {
+    "message": "AIコンテンツアシスタント"
+  },
+  "getAiAnalysis": {
+    "message": "現在のページのAI駆動分析を取得"
+  },
+  "customizeButtons": {
+    "message": "⚙️ オプション"
+  },
+  "settingsTitle": {
+    "message": "⚙️ AIアシスタント設定"
+  },
+  "settingsSubtitle": {
+    "message": "ボタン名と質問をカスタマイズします。コンテキスト（現在のURL）は常に自動的に含まれます。"
+  },
+  "tip": {
+    "message": "ヒント："
+  },
+  "tipText": {
+    "message": "コンテキスト（現在のページURL）は質問の前に自動的に追加されるため、質問テキストに含める必要はありません。"
+  },
+  "buttonName": {
+    "message": "ボタン名："
+  },
+  "questionTemplate": {
+    "message": "質問テンプレート："
+  },
+  "thisIsTheText": {
+    "message": "これはボタンに表示されるテキストです"
+  },
+  "contextWillBePrepended": {
+    "message": "コンテキスト（URL）がこの質問の前に自動的に追加されます"
+  },
+  "addNewButton": {
+    "message": "➕ 新しいボタンを追加"
+  },
+  "saveSettings": {
+    "message": "💾 設定を保存"
+  },
+  "resetToDefaults": {
+    "message": "🔄 デフォルトにリセット"
+  },
+  "removeButton": {
+    "message": "✕ 削除"
+  },
+  "button": {
+    "message": "ボタン"
+  },
+  "settingsSavedSuccessfully": {
+    "message": "✓ 設定が正常に保存されました！"
+  },
+  "errorSavingSettings": {
+    "message": "設定の保存中にエラーが発生しました"
+  },
+  "settingsResetToDefaults": {
+    "message": "✓ 設定はデフォルトにリセットされました！"
+  },
+  "errorResettingSettings": {
+    "message": "設定のリセット中にエラーが発生しました"
+  },
+  "errorLoadingSettings": {
+    "message": "設定の読み込み中にエラーが発生しました"
+  },
+  "areYouSureReset": {
+    "message": "すべての設定をデフォルトにリセットしてもよろしいですか？"
+  },
+  "removeButtonConfirm": {
+    "message": "ボタン\"$1\"を削除しますか？"
+  },
+  "mustHaveAtLeastOne": {
+    "message": "少なくとも1つのボタンが必要です"
+  },
+  "noActivetabFound": {
+    "message": "エラー：アクティブなタブが見つかりません"
+  },
+  "errorOpeningGemini": {
+    "message": "Geminiを開く際にエラーが発生しました：$1"
+  },
+  "error": {
+    "message": "エラー：$1"
+  },
+  "buyingAdvice": {
+    "message": "💡 購入アドバイス"
+  },
+  "buyingAdviceQuestion": {
+    "message": "この製品の購入アドバイスが必要です。以下を理解するのに役立ててください：\n- これは良い取引ですか？\n- 利点と欠点は何ですか？\n- より良い代替案はありますか？\n- 購入前に何を検討する必要がありますか？\n- この製品はこの価格に値しますか？\n- レビューは何と言っていますか？本物に見えますか、それともAI生成と操作の兆候が見えますか？\n- 価格履歴は何ですか？以前はもっと安かったですか？\n- 隠れた費用や長期的な費用がありますか（アクセサリー、メンテナンス、サブスクリプション）？"
+  },
+  "contentAnalysis": {
+    "message": "🔍 コンテンツ分析"
+  },
+  "contentAnalysisQuestion": {
+    "message": "このコンテンツの編集上のバイアスを分析します\n省略されたコンテキスト、不足している事実、または論理的なギャップを識別します\n真正性と論理を確認します\nプライマリゴールは何ですか（例えば、情報提供、説得、または販売）？コンテンツが「怒り参加」または特定の感情的トリガーを使用して、投票、購入、またはシェアに影響を与えているかどうかを特定します。"
+  },
+  "language": {
+    "message": "🌐 言語："
+  },
+  "languageHelperText": {
+    "message": "希望する言語を選択してください（すぐに適用されます）"
+  }
+}

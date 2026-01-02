@@ -83,15 +83,18 @@
 </head>
 <body>
   <div class="container">
-    <h2>AI Content Assistant</h2>
+    <h2 data-i18n="aiContentAssistant">AI Content Assistant</h2>
     <div id="buttons-container">
       <!-- Buttons will be dynamically loaded here -->
     </div>
-    <div class="info">
+    <div class="info" data-i18n="getAiAnalysis">
       Get AI-powered analysis for the current page
     </div>
-    <a href="#" id="settings-link" class="settings-link">⚙️ Customize buttons</a>
+    <a href="#" id="settings-link" class="settings-link">
+      <span data-i18n="customizeButtons">⚙️ Customize buttons</span>
+    </a>
   </div>
+  <script src="i18n.js"></script>
   <script src="popup.js"></script>
 </body>
 </html>

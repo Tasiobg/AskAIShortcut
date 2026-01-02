@@ -1,0 +1,107 @@
+{
+  "appName": {
+    "message": "AskAIShortcut"
+  },
+  "appDescription": {
+    "message": "Obtenha conselhos de compra com tecnologia de IA para produtos com um clique"
+  },
+  "aiContentAssistant": {
+    "message": "Assistente de Conteúdo com IA"
+  },
+  "getAiAnalysis": {
+    "message": "Obtenha análise com tecnologia de IA para a página atual"
+  },
+  "customizeButtons": {
+    "message": "⚙️ Opções"
+  },
+  "settingsTitle": {
+    "message": "⚙️ Configurações do Assistente de IA"
+  },
+  "settingsSubtitle": {
+    "message": "Personalize os nomes dos seus botões e perguntas. O contexto (URL atual) é sempre incluído automaticamente."
+  },
+  "tip": {
+    "message": "Dica:"
+  },
+  "tipText": {
+    "message": "O contexto (URL da página atual) é adicionado automaticamente antes de sua pergunta, portanto não é necessário incluí-lo no texto da pergunta."
+  },
+  "buttonName": {
+    "message": "Nome do Botão:"
+  },
+  "questionTemplate": {
+    "message": "Modelo de Pergunta:"
+  },
+  "thisIsTheText": {
+    "message": "Este é o texto exibido no botão"
+  },
+  "contextWillBePrepended": {
+    "message": "O contexto (URL) será automaticamente adicionado antes desta pergunta"
+  },
+  "addNewButton": {
+    "message": "➕ Adicionar Novo Botão"
+  },
+  "saveSettings": {
+    "message": "💾 Salvar Configurações"
+  },
+  "resetToDefaults": {
+    "message": "🔄 Restaurar Padrões"
+  },
+  "removeButton": {
+    "message": "✕ Remover"
+  },
+  "button": {
+    "message": "Botão"
+  },
+  "settingsSavedSuccessfully": {
+    "message": "✓ Configurações salvas com sucesso!"
+  },
+  "errorSavingSettings": {
+    "message": "Erro ao salvar as configurações"
+  },
+  "settingsResetToDefaults": {
+    "message": "✓ Configurações restauradas aos padrões!"
+  },
+  "errorResettingSettings": {
+    "message": "Erro ao restaurar as configurações"
+  },
+  "errorLoadingSettings": {
+    "message": "Erro ao carregar as configurações"
+  },
+  "areYouSureReset": {
+    "message": "Tem certeza de que deseja restaurar todas as configurações aos padrões?"
+  },
+  "removeButtonConfirm": {
+    "message": "Remover botão \"$1\"?"
+  },
+  "mustHaveAtLeastOne": {
+    "message": "Você deve ter pelo menos um botão"
+  },
+  "noActivetabFound": {
+    "message": "Erro: nenhuma aba ativa encontrada"
+  },
+  "errorOpeningGemini": {
+    "message": "Erro ao abrir Gemini: $1"
+  },
+  "error": {
+    "message": "Erro: $1"
+  },
+  "buyingAdvice": {
+    "message": "💡 Conselhos de compra"
+  },
+  "buyingAdviceQuestion": {
+    "message": "Preciso de conselhos de compra para este produto, ajude-me a entender:\n- Esta é uma boa oferta?\n- Quais são os prós e contras?\n- Existem alternativas melhores?\n- O que devo considerar antes de comprar?\n- Este produto vale o preço?\n- O que dizem as avaliações? Parecem autênticas ou mostram sinais de geração e manipulação por IA?\n- Qual é o histórico de preços? Já foi mais barato?\n- Existem custos ocultos ou de longo prazo (acessórios, manutenção, assinaturas)?"
+  },
+  "contentAnalysis": {
+    "message": "🔍 Análise de conteúdo"
+  },
+  "contentAnalysisQuestion": {
+    "message": "Analise este conteúdo quanto a preconceitos editoriais\nIdentifique contextos omitidos, fatos faltantes ou saltos lógicos\nVerifique autenticidade e lógica\nQual é o objetivo principal (por exemplo, informar, persuadir ou vender)? Identifique se o conteúdo usa 'engajamento de indignação' ou gatilhos emocionais específicos para influenciar um voto, compra ou compartilhamento."
+  },
+  "language": {
+    "message": "🌐 Idioma:"
+  },
+  "languageHelperText": {
+    "message": "Selecione seu idioma preferido (será aplicado imediatamente)"
+  }
+}

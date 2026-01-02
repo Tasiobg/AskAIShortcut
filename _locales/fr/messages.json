@@ -1,0 +1,107 @@
+{
+  "appName": {
+    "message": "AskAIShortcut"
+  },
+  "appDescription": {
+    "message": "Obtenez des conseils d'achat alimentés par l'IA pour les produits en un seul clic"
+  },
+  "aiContentAssistant": {
+    "message": "Assistant de Contenu IA"
+  },
+  "getAiAnalysis": {
+    "message": "Obtenez une analyse alimentée par l'IA pour la page actuelle"
+  },
+  "customizeButtons": {
+    "message": "⚙️ Options"
+  },
+  "settingsTitle": {
+    "message": "⚙️ Paramètres de l'Assistant IA"
+  },
+  "settingsSubtitle": {
+    "message": "Personnalisez les noms de vos boutons et les questions. Le contexte (URL actuelle) est toujours inclus automatiquement."
+  },
+  "tip": {
+    "message": "Conseil :"
+  },
+  "tipText": {
+    "message": "Le contexte (URL de la page actuelle) est automatiquement ajouté avant votre question, vous n'avez donc pas besoin de l'inclure dans le texte de votre question."
+  },
+  "buttonName": {
+    "message": "Nom du Bouton :"
+  },
+  "questionTemplate": {
+    "message": "Modèle de Question :"
+  },
+  "thisIsTheText": {
+    "message": "C'est le texte affiché sur le bouton"
+  },
+  "contextWillBePrepended": {
+    "message": "Le contexte (URL) sera automatiquement ajouté au début de cette question"
+  },
+  "addNewButton": {
+    "message": "➕ Ajouter un Nouveau Bouton"
+  },
+  "saveSettings": {
+    "message": "💾 Enregistrer les Paramètres"
+  },
+  "resetToDefaults": {
+    "message": "🔄 Réinitialiser les Valeurs par Défaut"
+  },
+  "removeButton": {
+    "message": "✕ Supprimer"
+  },
+  "button": {
+    "message": "Bouton"
+  },
+  "settingsSavedSuccessfully": {
+    "message": "✓ Les paramètres ont été enregistrés avec succès !"
+  },
+  "errorSavingSettings": {
+    "message": "Erreur lors de l'enregistrement des paramètres"
+  },
+  "settingsResetToDefaults": {
+    "message": "✓ Les paramètres ont été réinitialisés aux valeurs par défaut !"
+  },
+  "errorResettingSettings": {
+    "message": "Erreur lors de la réinitialisation des paramètres"
+  },
+  "errorLoadingSettings": {
+    "message": "Erreur lors du chargement des paramètres"
+  },
+  "areYouSureReset": {
+    "message": "Êtes-vous sûr de vouloir réinitialiser tous les paramètres aux valeurs par défaut ?"
+  },
+  "removeButtonConfirm": {
+    "message": "Supprimer le bouton \"$1\" ?"
+  },
+  "mustHaveAtLeastOne": {
+    "message": "Vous devez avoir au moins un bouton"
+  },
+  "noActivetabFound": {
+    "message": "Erreur : Aucun onglet actif trouvé"
+  },
+  "errorOpeningGemini": {
+    "message": "Erreur lors de l'ouverture de Gemini : $1"
+  },
+  "error": {
+    "message": "Erreur : $1"
+  },
+  "buyingAdvice": {
+    "message": "💡 Conseils d'achat"
+  },
+  "buyingAdviceQuestion": {
+    "message": "J'ai besoin de conseils d'achat pour ce produit, aidez-moi à comprendre :\n- Est-ce une bonne affaire ?\n- Quels sont les avantages et inconvénients ?\n- Y a-t-il des alternatives meilleures ?\n- Que dois-je considérer avant d'acheter ?\n- Ce produit en vaut-il le prix ?\n- Que disent les avis ? Semblent-ils authentiques ou montrent-ils des signes de génération et de manipulation par IA ?\n- Quel est l'historique des prix ? A-t-il été moins cher avant ?\n- Y a-t-il des coûts cachés ou à long terme (accessoires, maintenance, abonnements) ?"
+  },
+  "contentAnalysis": {
+    "message": "🔍 Analyse de contenu"
+  },
+  "contentAnalysisQuestion": {
+    "message": "Analysez ce contenu pour détecter les biais éditoriaux\nIdentifiez les contextes omis, les faits manquants ou les sauts logiques\nVérifiez l'authenticité et la logique\nQuel est l'objectif principal (par exemple, informer, persuader ou vendre) ? Identifiez si le contenu utilise l'« engagement par indignation » ou des déclencheurs émotionnels spécifiques pour influencer un vote, un achat ou un partage."
+  },
+  "language": {
+    "message": "🌐 Langue :"
+  },
+  "languageHelperText": {
+    "message": "Sélectionnez votre langue préférée (sera appliquée immédiatement)"
+  }
+}
