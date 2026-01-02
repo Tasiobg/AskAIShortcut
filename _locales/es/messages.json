@@ -56,6 +56,21 @@
   "settingsSavedSuccessfully": {
     "message": "✓ ¡Configuración guardada exitosamente!"
   },
+  "urlSaved": {
+    "message": "✓ ¡URL del servicio de IA guardada exitosamente!"
+  },
+  "buttonSaved": {
+    "message": "✓ ¡Configuración del botón guardada exitosamente!"
+  },
+  "buttonRemoved": {
+    "message": "✓ ¡Botón eliminado exitosamente!"
+  },
+  "urlCannotBeEmpty": {
+    "message": "La URL no puede estar vacía"
+  },
+  "errorSaving": {
+    "message": "Error al guardar la configuración"
+  },
   "errorSavingSettings": {
     "message": "Error al guardar la configuración"
   },

@@ -129,8 +129,9 @@ options.js                    📝 MODIFIED
 const buttonName = '💡 Buying advice';
 
 // After
-const buttonName = chrome.i18n.getMessage('buyingAdvice');
-// Returns translated text automatically
+const buttonName = getMessage('buyingAdvice');
+// Returns translated text automatically from custom i18n system
+// Note: Use getMessage() not chrome.i18n.getMessage() for runtime language switching
 ```
 
 ### 3. Error Messages
@@ -139,9 +140,10 @@ const buttonName = chrome.i18n.getMessage('buyingAdvice');
 alert('Error opening Gemini: ' + error.message);
 
 // After
-const msg = chrome.i18n.getMessage('errorOpeningGemini', error.message);
+const msg = getMessage('errorOpeningGemini', error.message);
 alert(msg);
 // Displays in user's language
+// Note: getMessage() supports runtime language changes
 ```
 
 ## Manifest Configuration

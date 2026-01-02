@@ -56,6 +56,21 @@
   "settingsSavedSuccessfully": {
     "message": "✓ Le impostazioni sono state salvate con successo!"
   },
+  "urlSaved": {
+    "message": "✓ URL del servizio IA salvato con successo!"
+  },
+  "buttonSaved": {
+    "message": "✓ Configurazione del pulsante salvata con successo!"
+  },
+  "buttonRemoved": {
+    "message": "✓ Pulsante rimosso con successo!"
+  },
+  "urlCannotBeEmpty": {
+    "message": "L'URL non può essere vuoto"
+  },
+  "errorSaving": {
+    "message": "Errore durante il salvataggio delle impostazioni"
+  },
   "errorSavingSettings": {
     "message": "Errore durante il salvataggio delle impostazioni"
   },

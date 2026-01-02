@@ -56,6 +56,21 @@
   "settingsSavedSuccessfully": {
     "message": "✓ Einstellungen erfolgreich gespeichert!"
   },
+  "urlSaved": {
+    "message": "✓ KI-Dienst-URL erfolgreich gespeichert!"
+  },
+  "buttonSaved": {
+    "message": "✓ Button-Konfiguration erfolgreich gespeichert!"
+  },
+  "buttonRemoved": {
+    "message": "✓ Button erfolgreich entfernt!"
+  },
+  "urlCannotBeEmpty": {
+    "message": "URL darf nicht leer sein"
+  },
+  "errorSaving": {
+    "message": "Fehler beim Speichern der Einstellungen"
+  },
   "errorSavingSettings": {
     "message": "Fehler beim Speichern der Einstellungen"
   },

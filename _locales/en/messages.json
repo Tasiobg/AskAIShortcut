@@ -75,6 +75,26 @@
     "message": "✓ Settings saved successfully!",
     "description": "Success message after saving"
   },
+  "urlSaved": {
+    "message": "✓ AI Service URL saved successfully!",
+    "description": "Success message after saving URL"
+  },
+  "buttonSaved": {
+    "message": "✓ Button configuration saved successfully!",
+    "description": "Success message after saving button config"
+  },
+  "buttonRemoved": {
+    "message": "✓ Button removed successfully!",
+    "description": "Success message after removing button"
+  },
+  "urlCannotBeEmpty": {
+    "message": "URL cannot be empty",
+    "description": "Error when URL field is empty"
+  },
+  "errorSaving": {
+    "message": "Error saving settings",
+    "description": "Generic error message when saving fails"
+  },
   "errorSavingSettings": {
     "message": "Error saving settings",
     "description": "Error message when saving fails"

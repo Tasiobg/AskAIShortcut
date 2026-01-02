@@ -55,8 +55,21 @@
   },
   "settingsSavedSuccessfully": {
     "message": "✓ Configurações salvas com sucesso!"
+  },  "urlSaved": {
+    "message": "✓ URL do serviço de IA salva com sucesso!"
   },
-  "errorSavingSettings": {
+  "buttonSaved": {
+    "message": "✓ Configuração do botão salva com sucesso!"
+  },
+  "buttonRemoved": {
+    "message": "✓ Botão removido com sucesso!"
+  },
+  "urlCannotBeEmpty": {
+    "message": "URL não pode estar vazia"
+  },
+  "errorSaving": {
+    "message": "Erro ao salvar configurações"
+  },  "errorSavingSettings": {
     "message": "Erro ao salvar as configurações"
   },
   "settingsResetToDefaults": {

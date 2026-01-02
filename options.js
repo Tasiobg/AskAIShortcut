@@ -1,6 +1,5 @@
 // Options page script
-// Note: storage is declared in i18n.js, which is loaded before this script
-const i18n = typeof chrome !== 'undefined' ? chrome.i18n : browser.i18n;
+// Note: storage and getMessage() are declared in i18n.js, which is loaded before this script
 
 // Supported languages
 const SUPPORTED_LANGUAGES = {
@@ -23,31 +22,39 @@ function initializeDefaults() {
     buttons: [
       {
         id: 'button1',
-        name: i18n.getMessage('buyingAdvice') || '💡 Buying advice',
-        question: i18n.getMessage('buyingAdviceQuestion') || 'I need buying advice...'
+        name: getMessage('buyingAdvice') || '💡 Buying advice',
+        question: getMessage('buyingAdviceQuestion') || 'I need buying advice...'
       },
       {
         id: 'button2',
-        name: i18n.getMessage('contentAnalysis') || '🔍 Content analysis',
-        question: i18n.getMessage('contentAnalysisQuestion') || 'Analyze this content...'
+        name: getMessage('contentAnalysis') || '🔍 Content analysis',
+        question: getMessage('contentAnalysisQuestion') || 'Analyze this content...'
       }
     ]
   };
 }
 
-const defaults = initializeDefaults();
-
 let currentButtons = [];
+let originalGeminiUrl = '';
+let originalButtons = [];
 
 // Load and render buttons
 async function loadSettings() {
   try {
+    // Ensure translation data is loaded before initializing defaults
+    if (!translationData || Object.keys(translationData).length === 0) {
+      await initializeLanguage();
+    }
+    
+    const defaults = initializeDefaults();
+    
     const result = await storage.sync.get({ 
       buttons: defaults.buttons, 
       language: 'en',
       geminiUrl: 'https://gemini.google.com/app'
     });
     currentButtons = result.buttons || defaults.buttons;
+    originalButtons = JSON.parse(JSON.stringify(currentButtons));
     
     // Set the language selector
     const languageSelect = document.getElementById('language-select');
@@ -58,13 +65,14 @@ async function loadSettings() {
     // Set the Gemini URL
     const geminiUrlInput = document.getElementById('gemini-url');
     if (geminiUrlInput) {
-      geminiUrlInput.value = result.geminiUrl || 'https://gemini.google.com/app';
+      originalGeminiUrl = result.geminiUrl || 'https://gemini.google.com/app';
+      geminiUrlInput.value = originalGeminiUrl;
     }
     
     renderButtons();
   } catch (error) {
     console.error('Error loading settings:', error);
-    const errorMsg = i18n.getMessage('errorLoadingSettings') || 'Error loading settings';
+    const errorMsg = getMessage('errorLoadingSettings') || 'Error loading settings';
     showStatus(errorMsg, 'error');
   }
 }
@@ -77,12 +85,12 @@ function renderButtons() {
   currentButtons.forEach((button, index) => {
     const configDiv = document.createElement('div');
     configDiv.className = 'button-config';
-    const buttonLabel = i18n.getMessage('button') || 'Button';
-    const removeText = i18n.getMessage('removeButton') || '✕ Remove';
-    const buttonNameLabel = i18n.getMessage('buttonName') || 'Button Name:';
-    const questionLabel = i18n.getMessage('questionTemplate') || 'Question Template:';
-    const nameHelperText = i18n.getMessage('thisIsTheText') || 'This is the text shown on the button';
-    const questionHelperText = i18n.getMessage('contextWillBePrepended') || 'The context (URL) will be automatically prepended to this question';
+    const buttonLabel = getMessage('button') || 'Button';
+    const removeText = getMessage('removeButton') || '✕ Remove';
+    const buttonNameLabel = getMessage('buttonName') || 'Button Name:';
+    const questionLabel = getMessage('questionTemplate') || 'Question Template:';
+    const questionHelperText = getMessage('contextWillBePrepended') || 'The context (URL) will be automatically prepended to this question';
+    const saveText = getMessage('saveSettings') || '💾 Save';
     
     configDiv.innerHTML = `
       <h2>
@@ -93,7 +101,6 @@ function renderButtons() {
       <div class="field-group">
         <label for="name-${button.id}">${buttonNameLabel}</label>
         <input type="text" id="name-${button.id}" class="button-name" data-index="${index}" placeholder="e.g., 💡 Buying advice" value="${button.name}">
-        <div class="helper-text">${nameHelperText}</div>
       </div>
 
       <div class="field-group">
@@ -101,6 +108,8 @@ function renderButtons() {
         <textarea id="question-${button.id}" class="button-question" data-index="${index}" placeholder="Enter your question template...">${button.question}</textarea>
         <div class="helper-text">${questionHelperText}</div>
       </div>
+      
+      <button class="button-config-save" data-index="${index}" disabled>${saveText}</button>
     `;
     container.appendChild(configDiv);
 
@@ -110,6 +119,11 @@ function renderButtons() {
         removeButton(index);
       });
     }
+    
+    // Add save button listener
+    configDiv.querySelector('.button-config-save').addEventListener('click', (e) => {
+      saveButtonConfig(index);
+    });
   });
 
   // Re-attach listeners to all input fields
@@ -119,13 +133,22 @@ function renderButtons() {
 // Attach listeners to dynamically created inputs
 function attachInputListeners() {
   document.querySelectorAll('.button-name, .button-question').forEach(input => {
-    input.addEventListener('change', updateCurrentButtons);
+    input.addEventListener('input', () => {
+      const index = parseInt(input.dataset.index);
+      checkButtonChanged(index);
+    });
   });
+  
+  // Attach URL input listener
+  const urlInput = document.getElementById('gemini-url');
+  if (urlInput) {
+    urlInput.addEventListener('input', checkUrlChanged);
+  }
 }
 
 // Update currentButtons array when inputs change
 function updateCurrentButtons() {
-  const buttonLabel = i18n.getMessage('button') || 'Button';
+  const buttonLabel = getMessage('button') || 'Button';
   document.querySelectorAll('.button-config').forEach((config, index) => {
     if (index < currentButtons.length) {
       currentButtons[index].name = document.querySelector(`input[data-index="${index}"]`).value.trim() || `${buttonLabel} ${index + 1}`;
@@ -134,25 +157,100 @@ function updateCurrentButtons() {
   });
 }
 
+// Check if URL has changed from original
+function checkUrlChanged() {
+  const urlInput = document.getElementById('gemini-url');
+  const saveBtn = document.getElementById('save-url-btn');
+  
+  if (urlInput && saveBtn) {
+    const hasChanged = urlInput.value.trim() !== originalGeminiUrl;
+    saveBtn.disabled = !hasChanged;
+  }
+}
+
+// Check if button config has changed from original
+function checkButtonChanged(index) {
+  const nameInput = document.querySelector(`input.button-name[data-index="${index}"]`);
+  const questionInput = document.querySelector(`textarea.button-question[data-index="${index}"]`);
+  const saveBtn = document.querySelector(`.button-config-save[data-index="${index}"]`);
+  
+  if (nameInput && questionInput && saveBtn && originalButtons[index]) {
+    const hasChanged = 
+      nameInput.value !== originalButtons[index].name ||
+      questionInput.value !== originalButtons[index].question;
+    saveBtn.disabled = !hasChanged;
+  }
+}
+
+// Save URL settings
+async function saveUrlSettings() {
+  const urlInput = document.getElementById('gemini-url');
+  const saveBtn = document.getElementById('save-url-btn');
+  const url = urlInput.value.trim();
+  
+  if (!url) {
+    showStatus(getMessage('urlCannotBeEmpty') || 'URL cannot be empty', 'error');
+    return;
+  }
+  
+  try {
+    await chrome.storage.sync.set({ geminiUrl: url });
+    originalGeminiUrl = url;
+    saveBtn.disabled = true;
+    showStatus(getMessage('urlSaved') || 'AI Service URL saved successfully', 'success');
+  } catch (error) {
+    showStatus(getMessage('errorSaving') || 'Error saving settings', 'error');
+  }
+}
+
+// Save button configuration
+async function saveButtonConfig(index) {
+  const nameInput = document.querySelector(`input.button-name[data-index="${index}"]`);
+  const questionInput = document.querySelector(`textarea.button-question[data-index="${index}"]`);
+  const saveBtn = document.querySelector(`.button-config-save[data-index="${index}"]`);
+  
+  if (!nameInput || !questionInput) return;
+  
+  const buttonLabel = getMessage('button') || 'Button';
+  currentButtons[index].name = nameInput.value.trim() || `${buttonLabel} ${index + 1}`;
+  currentButtons[index].question = questionInput.value.trim() || '';
+  
+  try {
+    await chrome.storage.sync.set({ buttons: currentButtons });
+    originalButtons[index] = JSON.parse(JSON.stringify(currentButtons[index]));
+    saveBtn.disabled = true;
+    showStatus(getMessage('buttonSaved') || 'Button configuration saved successfully', 'success');
+  } catch (error) {
+    showStatus(getMessage('errorSaving') || 'Error saving settings', 'error');
+  }
+}
+
 // Remove button from list
-function removeButton(index) {
+async function removeButton(index) {
   if (currentButtons.length === 1) {
-    const errorMsg = i18n.getMessage('mustHaveAtLeastOne') || 'You must have at least one button';
+    const errorMsg = getMessage('mustHaveAtLeastOne') || 'You must have at least one button';
     showStatus(errorMsg, 'error');
     return;
   }
-  const confirmMsg = i18n.getMessage('removeButtonConfirm', currentButtons[index].name) || 
+  const confirmMsg = getMessage('removeButtonConfirm', currentButtons[index].name) || 
                      `Remove button "${currentButtons[index].name}"?`;
   if (confirm(confirmMsg)) {
     currentButtons.splice(index, 1);
-    renderButtons();
+    try {
+      await chrome.storage.sync.set({ buttons: currentButtons });
+      originalButtons = JSON.parse(JSON.stringify(currentButtons));
+      renderButtons();
+      showStatus(getMessage('buttonRemoved') || 'Button removed successfully', 'success');
+    } catch (error) {
+      showStatus(getMessage('errorSaving') || 'Error saving settings', 'error');
+    }
   }
 }
 
 // Add new button
 function addButton() {
   const newId = 'button' + Date.now();
-  const buttonLabel = i18n.getMessage('button') || 'Button';
+  const buttonLabel = getMessage('button') || 'Button';
   currentButtons.push({
     id: newId,
     name: `${buttonLabel} ${currentButtons.length + 1}`,
@@ -167,70 +265,38 @@ function addButton() {
 }
 
 // Save settings
-async function saveSettings() {
-  updateCurrentButtons(); // Ensure all current values are captured
-  
-  if (currentButtons.length === 0) {
-    const errorMsg = i18n.getMessage('mustHaveAtLeastOne') || 'You must have at least one button';
-    showStatus(errorMsg, 'error');
-    return;
-  }
-
-  try {
-    const geminiUrl = document.getElementById('gemini-url').value.trim();
-    
-    if (!geminiUrl) {
-      const errorMsg = getMessage('aiServiceUrlRequired') || 'AI Service URL is required';
-      showStatus(errorMsg, 'error');
-      return;
-    }
-    
-    // Validate URL format
-    try {
-      new URL(geminiUrl);
-    } catch (e) {
-      const errorMsg = getMessage('invalidUrl') || 'Invalid URL format';
-      showStatus(errorMsg, 'error');
-      return;
-    }
-    
-    await storage.sync.set({ 
-      buttons: currentButtons,
-      geminiUrl: geminiUrl
-    });
-    const successMsg = i18n.getMessage('settingsSavedSuccessfully') || '✓ Settings saved successfully!';
-    showStatus(successMsg, 'success');
-  } catch (error) {
-    console.error('Error saving settings:', error);
-    const errorMsg = i18n.getMessage('errorSavingSettings') || 'Error saving settings';
-    showStatus(errorMsg, 'error');
-  }
-}
-
 // Reset to defaults
 async function resetSettings() {
-  const confirmMsg = i18n.getMessage('areYouSureReset') || 'Are you sure you want to reset all settings to defaults?';
+  const confirmMsg = getMessage('areYouSureReset') || 'Are you sure you want to reset all settings to defaults?';
   if (confirm(confirmMsg)) {
     try {
       const newDefaults = initializeDefaults();
+      const defaultUrl = 'https://gemini.google.com/app';
+      
       await storage.sync.set({ 
         buttons: newDefaults.buttons,
-        geminiUrl: 'https://gemini.google.com/app'
+        geminiUrl: defaultUrl
       });
+      
       currentButtons = JSON.parse(JSON.stringify(newDefaults.buttons));
+      originalButtons = JSON.parse(JSON.stringify(newDefaults.buttons));
+      originalGeminiUrl = defaultUrl;
       
       // Reset the AI Service URL field
       const geminiUrlInput = document.getElementById('gemini-url');
       if (geminiUrlInput) {
-        geminiUrlInput.value = 'https://gemini.google.com/app';
+        geminiUrlInput.value = defaultUrl;
       }
       
+      // Disable all save buttons
+      document.getElementById('save-url-btn').disabled = true;
+      
       renderButtons();
-      const successMsg = i18n.getMessage('settingsResetToDefaults') || '✓ Settings reset to defaults!';
+      const successMsg = getMessage('settingsResetToDefaults') || '✓ Settings reset to defaults!';
       showStatus(successMsg, 'success');
     } catch (error) {
       console.error('Error resetting settings:', error);
-      const errorMsg = i18n.getMessage('errorResettingSettings') || 'Error resetting settings';
+      const errorMsg = getMessage('errorResettingSettings') || 'Error resetting settings';
       showStatus(errorMsg, 'error');
     }
   }
@@ -322,7 +388,7 @@ async function changeLanguage(languageCode) {
 }
 
 // Event listeners
-document.getElementById('save-btn').addEventListener('click', saveSettings);
+document.getElementById('save-url-btn').addEventListener('click', saveUrlSettings);
 document.getElementById('reset-btn').addEventListener('click', resetSettings);
 document.getElementById('add-button-btn').addEventListener('click', addButton);
 

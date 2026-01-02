@@ -120,6 +120,44 @@
       font-family: inherit;
     }
 
+    .save-section-btn {
+      margin-top: 15px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 10px 20px;
+      font-size: 13px;
+    }
+
+    .save-section-btn:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+    }
+
+    .save-section-btn:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+
+    .button-config-save {
+      margin-top: 15px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 8px 16px;
+      font-size: 12px;
+    }
+
+    .button-config-save:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+    }
+
+    .button-config-save:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+
     #save-btn {
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       color: white;
@@ -253,6 +291,7 @@
         <input type="text" id="gemini-url" placeholder="https://gemini.google.com/app" style="width: 100%; padding: 10px; font-size: 14px; border: 2px solid #ddd; border-radius: 6px; box-sizing: border-box; font-family: inherit;">
         <div class="helper-text" data-i18n="aiServiceUrlHelperText">Enter the URL where AI Service should open</div>
       </div>
+      <button id="save-url-btn" class="save-section-btn" disabled data-i18n="saveSettings">💾 Save</button>
     </div>
 
     <div id="buttons-container"></div>
@@ -262,7 +301,6 @@
     </div>
 
     <div class="button-group">
-      <button id="save-btn" data-i18n="saveSettings">💾 Save Settings</button>
       <button id="reset-btn" data-i18n="resetToDefaults">🔄 Reset to Defaults</button>
     </div>
 

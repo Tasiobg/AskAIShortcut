@@ -55,8 +55,21 @@
   },
   "settingsSavedSuccessfully": {
     "message": "✓ Les paramètres ont été enregistrés avec succès !"
+  },  "urlSaved": {
+    "message": "✓ URL du service IA enregistrée avec succès !"
   },
-  "errorSavingSettings": {
+  "buttonSaved": {
+    "message": "✓ Configuration du bouton enregistrée avec succès !"
+  },
+  "buttonRemoved": {
+    "message": "✓ Bouton supprimé avec succès !"
+  },
+  "urlCannotBeEmpty": {
+    "message": "L'URL ne peut pas être vide"
+  },
+  "errorSaving": {
+    "message": "Erreur lors de l'enregistrement des paramètres"
+  },  "errorSavingSettings": {
     "message": "Erreur lors de l'enregistrement des paramètres"
   },
   "settingsResetToDefaults": {
