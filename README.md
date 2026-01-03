@@ -81,6 +81,7 @@ If you find these curated questions helpful but prefer not to install the extens
 4. **AI responds** — New tab opens with your chosen AI service (Google Gemini by default)
    - Current page URL included as context
    - Your question pre-filled and ready
+   - Success notification appears (closeable by clicking × button)
 
 5. **Review & submit** — Check the AI's response or press Enter to submit
 
@@ -220,7 +221,7 @@ Edit the selector list in [ai-service-filler.js](ai-service-filler.js) to add de
 - **Manifest Version**: V3 (latest standard)
 - **Cross-Browser Compatibility**: Uses feature detection for `browser` vs `chrome` namespaces
 - **Storage**: `chrome.storage.sync` for settings synchronization across devices
-- **Permissions**: `scripting` (inject scripts), `tabs` (manage tabs), `storage` (save settings), `<all_urls>` (access all websites)
+- **Permissions**: `scripting` (inject scripts), `activeTab` (open new tab), `storage` (save settings), `<all_urls>` (access all websites)
 - **Background**: Service worker pattern (Chrome) with scripts fallback (Firefox)
 - **Notifications**: Closeable in-page notifications with auto-dismiss after 20 seconds
 
