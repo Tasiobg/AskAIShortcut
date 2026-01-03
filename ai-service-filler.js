@@ -302,7 +302,6 @@
 
     function showNotification(message) {
       const notification = document.createElement('div');
-      notification.textContent = message;
       notification.style.cssText = `
         position: fixed;
         top: 20px;
@@ -319,15 +318,72 @@
         font-weight: 500;
         max-width: 300px;
         animation: slideIn 0.3s ease-out;
+        display: flex;
+        align-items: center;
+        gap: 12px;
       `;
       
-      document.body.appendChild(notification);
+      const messageText = document.createElement('span');
+      messageText.textContent = message;
       
-      setTimeout(() => {
+      const closeButton = document.createElement('button');
+      closeButton.textContent = '×';
+      closeButton.style.cssText = `
+        background: rgba(255, 255, 255, 0.3);
+        border: none;
+        color: white;
+        width: 24px;
+        height: 24px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 20px;
+        line-height: 1;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        transition: background 0.2s ease;
+      `;
+      
+      closeButton.onmouseover = () => {
+        closeButton.style.background = 'rgba(255, 255, 255, 0.5)';
+      };
+      closeButton.onmouseout = () => {
+        closeButton.style.background = 'rgba(255, 255, 255, 0.3)';
+      };
+      
+      closeButton.onclick = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
         notification.style.opacity = '0';
         notification.style.transition = 'opacity 0.3s ease-out';
         setTimeout(() => notification.remove(), 300);
+      };
+      
+      notification.appendChild(messageText);
+      notification.appendChild(closeButton);
+      document.body.appendChild(notification);
+      
+      // Auto-dismiss after 20 seconds if not manually closed
+      const timeoutId = setTimeout(() => {
+        if (notification.parentNode) {
+          notification.style.opacity = '0';
+          notification.style.transition = 'opacity 0.3s ease-out';
+          setTimeout(() => {
+            if (notification.parentNode) {
+              notification.remove();
+            }
+          }, 300);
+        }
       }, 20000);
+      
+      // Clear timeout if manually closed
+      const originalOnclick = closeButton.onclick;
+      closeButton.onclick = (e) => {
+        clearTimeout(timeoutId);
+        originalOnclick(e);
+      };
     }
 
     // Try immediately
