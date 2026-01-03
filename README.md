@@ -106,13 +106,10 @@ Customize Button Names and Questions
 ### Advanced Customization
 
 **Change Popup Appearance:**
-Edit [popup.html](popup.html) to modify colors, style, or layout.
+Edit [popup.html](popup.html) and [popup.js](popup.js) to modify the popup menu colors, style, or layout.
 
 **Modify Default Settings:**
-Edit the `defaults` object in [options.js](options.js) and [background.js](background.js)
-### Change Popup Appearance
-
-Edit [popup.html](popup.html) and [popup.js](popup.js) to modify the popup menu colors, style, or layout.
+Edit the `initializeDefaults()` function in [options.js](options.js) to change default button names and questions.
 
 ## Troubleshooting
 
