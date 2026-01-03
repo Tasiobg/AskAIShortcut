@@ -110,7 +110,7 @@
     "message": "🔍 Análise de conteúdo"
   },
   "contentAnalysisQuestion": {
-    "message": "Analise este conteúdo quanto a preconceitos editoriais\nIdentifique contextos omitidos, fatos faltantes ou saltos lógicos\nVerifique autenticidade e lógica\nQual é o objetivo principal (por exemplo, informar, persuadir ou vender)? Identifique se o conteúdo usa 'engajamento de indignação' ou gatilhos emocionais específicos para influenciar um voto, compra ou compartilhamento."
+    "message": "- Analise este conteúdo em busca de viés editorial\n- Identifique qualquer contexto omitido, fatos ausentes ou saltos lógicos\n- Verifique autenticidade e lógica\n- Qual é o objetivo principal (por exemplo, informar, persuadir ou vender)? Identifique se o conteúdo usa 'engajamento de indignação' ou gatilhos emocionais específicos para influenciar um voto, uma compra ou compartilhamento social."
   },
   "language": {
     "message": "🌐 Idioma:"

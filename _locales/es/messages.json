@@ -111,7 +111,7 @@
     "message": "🔍 Análisis de contenido"
   },
   "contentAnalysisQuestion": {
-    "message": "Analiza este contenido en busca de sesgos editoriales\nIdentifica cualquier contexto omitido, hechos faltantes o saltos lógicos\nVerifica autenticidad y lógica\n¿Cuál es el objetivo principal (por ejemplo, informar, persuadir o vender)? Identifica si el contenido utiliza 'compromiso de indignación' o desencadenantes emocionales específicos para influir en un voto, una compra o compartir en redes sociales."
+    "message": "- Analiza este contenido en busca de sesgo editorial\n- Identifica cualquier contexto omitido, hechos faltantes o saltos lógicos\n- Verifica la autenticidad y la lógica\n- ¿Cuál es el objetivo principal (por ejemplo, informar, persuadir o vender)? Identifica si el contenido utiliza 'compromiso de indignación' o desencadenantes emocionales específicos para influir en un voto, una compra o el intercambio social."
   },
   "language": {
     "message": "🌐 Idioma:"

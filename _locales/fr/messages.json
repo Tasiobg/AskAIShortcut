@@ -109,7 +109,7 @@
     "message": "🔍 Analyse de contenu"
   },
   "contentAnalysisQuestion": {
-    "message": "Analysez ce contenu pour détecter les biais éditoriaux\nIdentifiez les contextes omis, les faits manquants ou les sauts logiques\nVérifiez l'authenticité et la logique\nQuel est l'objectif principal (par exemple, informer, persuader ou vendre) ? Identifiez si le contenu utilise l'« engagement par indignation » ou des déclencheurs émotionnels spécifiques pour influencer un vote, un achat ou un partage."
+    "message": "- Analysez ce contenu pour détecter les biais éditoriaux\n- Identifiez tout contexte omis, faits manquants ou sauts logiques\n- Vérifiez l'authenticité et la logique\n- Quel est l'objectif principal (par exemple, informer, persuader ou vendre) ? Identifiez si le contenu utilise 'l'engagement par l'indignation' ou des déclencheurs émotionnels spécifiques pour influencer un vote, un achat ou un partage social."
   },
   "language": {
     "message": "🌐 Langue :"

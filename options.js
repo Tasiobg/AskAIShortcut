@@ -1,4 +1,5 @@
-// Options page script
+// Options page script for AskAIShortcut extension
+// Handles button configuration, language settings, and AI service URL customization
 // Note: storage and getMessage() are declared in i18n.js, which is loaded before this script
 
 // Supported languages
@@ -207,7 +208,7 @@ async function saveUrlSettings() {
   }
   
   try {
-    await chrome.storage.sync.set({ aiServiceUrl: url });
+    await storage.sync.set({ aiServiceUrl: url });
     originalAIServiceUrl = url;
     saveBtn.disabled = true;
     showStatus(getMessage('urlSaved') || 'AI Chat URL saved successfully', 'success');
@@ -229,7 +230,7 @@ async function saveButtonConfig(index) {
   currentButtons[index].question = questionInput.value.trim() || '';
   
   try {
-    await chrome.storage.sync.set({ buttons: currentButtons });
+    await storage.sync.set({ buttons: currentButtons });
     // Update or add to originalButtons
     if (originalButtons.length <= index) {
       // New button - expand originalButtons array
@@ -257,7 +258,7 @@ async function removeButton(index) {
   if (confirm(confirmMsg)) {
     currentButtons.splice(index, 1);
     try {
-      await chrome.storage.sync.set({ buttons: currentButtons });
+      await storage.sync.set({ buttons: currentButtons });
       originalButtons = JSON.parse(JSON.stringify(currentButtons));
       renderButtons();
       showStatus(getMessage('buttonRemoved') || 'Button removed successfully', 'success');
@@ -394,9 +395,12 @@ async function changeLanguage(languageCode) {
     }
     
     // Send message to background script to notify of language change
-    chrome.runtime.sendMessage({ action: 'languageChanged', language: languageCode }, () => {
+    const runtimeAPI = (typeof browser !== 'undefined') ? browser.runtime : chrome.runtime;
+    runtimeAPI.sendMessage({ action: 'languageChanged', language: languageCode }, () => {
       // Ignore errors
-      chrome.runtime.lastError; // Clear the error
+      if (runtimeAPI.lastError) {
+        // Clear the error
+      }
     });
     
     // Optionally reload after a slight delay for other pages to update

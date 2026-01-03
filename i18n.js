@@ -1,16 +1,18 @@
-// i18n helper script for translating UI elements
-// Supports runtime language switching by loading locale JSON files
+// i18n (internationalization) helper script for AskAIShortcut extension
+// Handles runtime language switching by loading locale JSON files
+// Supports 11 languages: en, es, fr, de, pt_BR, zh_CN, ja, ko, hi, it, ar
 
 let currentLanguage = 'en';
 let translationData = {};
 
-// Get storage API
+// Cross-browser compatibility: Get storage API
 const storage = (typeof browser !== 'undefined') ? browser.storage : chrome.storage;
+const runtime = (typeof browser !== 'undefined') ? browser.runtime : chrome.runtime;
 
 // Load translation data from locale JSON file
 async function loadLanguageData(language) {
   try {
-    const response = await fetch(chrome.runtime.getURL(`_locales/${language}/messages.json`));
+    const response = await fetch(runtime.getURL(`_locales/${language}/messages.json`));
     if (!response.ok) {
       throw new Error(`Failed to load language: ${language}`);
     }
@@ -54,8 +56,8 @@ async function initializeLanguage() {
     // Get saved language preference
     const result = await new Promise((resolve, reject) => {
       storage.sync.get({ language: null }, (data) => {
-        if (chrome.runtime.lastError) {
-          reject(chrome.runtime.lastError);
+        if (runtime.lastError) {
+          reject(runtime.lastError);
         } else {
           resolve(data);
         }
@@ -93,7 +95,7 @@ if (document.readyState === 'loading') {
 }
 
 // Listen for language changes
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === 'languageChanged') {
     initializeLanguage();
   }

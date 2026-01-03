@@ -166,7 +166,7 @@
     "description": "Default button 2 name"
   },
   "contentAnalysisQuestion": {
-    "message": "Analyze this content for editorial bias\nIdentify any omitted context, missing facts, or logical leaps\nVerify authenticity and logic\nWhat is the primary goal (e.g., to inform, persuade, or sell). Identify if the content uses 'outrage engagement' or specific emotional triggers to influence a vote, a purchase, or social sharing.",
+    "message": "- Analyze this content for editorial bias\n- Identify any omitted context, missing facts, or logical leaps\n- Verify authenticity and logic\n- What is the primary goal (e.g., to inform, persuade, or sell). Identify if the content uses 'outrage engagement' or specific emotional triggers to influence a vote, a purchase, or social sharing.",
     "description": "Default button 2 question"
   },
   "language": {

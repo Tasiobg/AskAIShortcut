@@ -111,7 +111,7 @@
     "message": "🔍 Inhaltsanalyse"
   },
   "contentAnalysisQuestion": {
-    "message": "Analysieren Sie diesen Inhalt auf redaktionelle Voreingenommenheit\nIdentifizieren Sie fehlende Kontexte, fehlende Fakten oder logische Lücken\nÜberprüfen Sie Authentizität und Logik\nWas ist das primäre Ziel (z. B. informieren, überreden oder verkaufen)? Identifizieren Sie, ob der Inhalt \"Empörungsengagement\" oder spezifische emotionale Auslöser verwendet, um Abstimmungen, Käufe oder Freigaben zu beeinflussen."
+    "message": "- Analysieren Sie diesen Inhalt auf redaktionelle Voreingenommenheit\n- Identifizieren Sie fehlende Kontexte, fehlende Fakten oder logische Sprünge\n- Überprüfen Sie Authentizität und Logik\n- Was ist das Hauptziel (z. B. informieren, überzeugen oder verkaufen)? Identifizieren Sie, ob der Inhalt 'Empörungs-Engagement' oder spezifische emotionale Auslöser verwendet, um eine Abstimmung, einen Kauf oder soziales Teilen zu beeinflussen."
   },
   "language": {
     "message": "🌐 Sprache:"

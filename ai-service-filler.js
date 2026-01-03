@@ -1,17 +1,19 @@
-// Script injected into AI Service page to fill the input field
+// Script injected into AI service pages to auto-fill the input field with questions
+// Supports various AI services (Gemini, ChatGPT, Claude, etc.) by detecting different input field types
 (function() {
   'use strict';
 
-  // Use browser namespace with fallback to chrome
+  // Cross-browser compatibility: Use browser namespace with fallback to chrome
   const runtime = (typeof browser !== 'undefined') ? browser.runtime : chrome.runtime;
+  const i18n = (typeof browser !== 'undefined') ? browser.i18n : chrome.i18n;
   
-  // Get translated messages
+  // Get translated messages for notifications
   const messages = {
-    questionLoaded: chrome.i18n.getMessage('questionLoaded') || 'AskAIShortcut has loaded the question! You can edit or press Enter to submit.',
-    couldNotFindInputField: chrome.i18n.getMessage('couldNotFindInputField') || 'Could not find AI Service input field. Please paste the question manually.'
+    questionLoaded: i18n.getMessage('questionLoaded') || 'AskAIShortcut has loaded the question! You can edit or press Enter to submit.',
+    couldNotFindInputField: i18n.getMessage('couldNotFindInputField') || 'Could not find AI Service input field. Please paste the question manually.'
   };
 
-  console.log('AskAIShortcut: AI Service filler script loaded');
+  console.log('AskAIShortcut: AI service filler script loaded');
 
   // Listen for message from background script
   runtime.onMessage.addListener((message, sender, sendResponse) => {

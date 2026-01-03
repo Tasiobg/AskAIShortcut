@@ -1,15 +1,16 @@
-// Popup script
-// Use browser namespace with fallback to chrome for compatibility
-const runtime = (typeof browser !== 'undefined') ? browser : chrome;
+// Popup script for AskAIShortcut extension
+// Displays action buttons and handles button clicks to open AI service
+
+// Cross-browser compatibility: Use APIs from i18n.js (storage, runtime)
+// Get tabs API
 const tabs = (typeof browser !== 'undefined') ? browser.tabs : chrome.tabs;
-// Note: storage is declared in i18n.js, which is loaded before this script
 
 console.log('AskAIShortcut: Popup opened');
 
-// Default buttons (will be created from i18n messages if available)
+// Default buttons (loaded from i18n messages)
 let defaultButtons = [];
 
-// Initialize default buttons from custom i18n messages
+// Initialize default buttons from i18n messages
 async function initializeDefaultButtons() {
   try {
     // Ensure translation data is loaded
@@ -42,7 +43,7 @@ async function initializeDefaultButtons() {
       }
     ];
   } catch (error) {
-    console.error('Error initializing default buttons:', error);
+    console.error('AskAIShortcut: Error initializing default buttons:', error);
   }
 }
 
@@ -65,13 +66,13 @@ async function loadAndRenderButtons() {
       container.appendChild(btn);
     });
   } catch (error) {
-    console.error('Error loading buttons:', error);
+    console.error('AskAIShortcut: Error loading buttons:', error);
   }
 }
 
 // Handle button click
 async function handleButtonClick(button) {
-  console.log('Button clicked:', button.name);
+  console.log('AskAIShortcut: Button clicked:', button.name);
   
   try {
     // Get the current active tab
@@ -81,29 +82,29 @@ async function handleButtonClick(button) {
       console.log('Current tab URL:', tab.url);
       
       // Send message to background script
-      chrome.runtime.sendMessage({
+      runtime.sendMessage({
         action: 'openAIServiceWithQuestion',
         question: button.question,
         productUrl: tab.url
       }, (response) => {
-        if (chrome.runtime.lastError) {
-          console.error('Error:', chrome.runtime.lastError);
-          const errorMsg = getMessage('errorOpeningAIService', chrome.runtime.lastError.message) || 
-                          'Error opening AI Service: ' + chrome.runtime.lastError.message;
+        if (runtime.lastError) {
+          console.error('AskAIShortcut: Error:', runtime.lastError);
+          const errorMsg = getMessage('errorOpeningAIService', runtime.lastError.message) || 
+                          'Error opening AI Service: ' + runtime.lastError.message;
           alert(errorMsg);
         } else {
-          console.log('Success!');
+          console.log('AskAIShortcut: Success!');
           // Close popup immediately on success
           window.close();
         }
       });
     } else {
-      console.error('No active tab found');
+      console.error('AskAIShortcut: No active tab found');
       const errorMsg = getMessage('noActivetabFound') || 'Error: No active tab found';
       alert(errorMsg);
     }
   } catch (error) {
-    console.error('Exception:', error);
+    console.error('AskAIShortcut: Exception:', error);
     const errorMsg = getMessage('error', error.message) || ('Error: ' + error.message);
     alert(errorMsg);
   }
@@ -126,5 +127,5 @@ initPopup();
 // Settings link handler
 document.getElementById('settings-link').addEventListener('click', (e) => {
   e.preventDefault();
-  chrome.runtime.openOptionsPage();
+  runtime.openOptionsPage();
 });

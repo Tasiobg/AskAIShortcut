@@ -111,7 +111,7 @@
     "message": "🔍 Analisi Contenuti"
   },
   "contentAnalysisQuestion": {
-    "message": "Analizzare questo contenuto per bias editoriali\nIdentificare qualsiasi contesto omesso, fatti mancanti o salti logici\nVerificare autenticità e logica\nQual è l'obiettivo principale (ad es. informare, persuadere o vendere)? Identificare se il contenuto utilizza \"coinvolgimento con scandalo\" o specifici trigger emotivi per influenzare un voto, un acquisto o una condivisione."
+    "message": "- Analizzare questo contenuto per bias editoriali\n- Identificare qualsiasi contesto omesso, fatti mancanti o salti logici\n- Verificare autenticità e logica\n- Qual è l'obiettivo principale (ad es. informare, persuadere o vendere)? Identificare se il contenuto utilizza \"coinvolgimento con scandalo\" o specifici trigger emotivi per influenzare un voto, un acquisto o una condivisione."
   },
   "language": {
     "message": "🌐 Lingua:"
