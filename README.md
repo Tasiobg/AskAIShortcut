@@ -234,9 +234,14 @@ This extension respects your privacy:
 
 ## 📄 License
 
-MIT License - Free to use, modify, and distribute for personal or commercial purposes.
+AskAIShortcut is source-available software.
+
+Free for non-commercial use with attribution.
+Commercial use is not permitted without prior written permission.
 
 See [LICENSE](LICENSE) file for details.
+
+© Tasiobg
 
 ## 🤝 Contributing
 
