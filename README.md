@@ -70,7 +70,7 @@ If you find these curated questions helpful but prefer not to install the extens
 
 ### Basic Usage
 
-1. **Visit any webpage** — Works on all websites instantly
+1. **Visit any webpage** — Works on all publicly accessible websites
 
 2. **Click the extension icon** — Located in your browser toolbar
 
@@ -220,8 +220,9 @@ Edit the selector list in [ai-service-filler.js](ai-service-filler.js) to add de
 - **Manifest Version**: V3 (latest standard)
 - **Cross-Browser Compatibility**: Uses feature detection for `browser` vs `chrome` namespaces
 - **Storage**: `chrome.storage.sync` for settings synchronization across devices
-- **Permissions**: `scripting`, `tabs`, `storage`, `<all_urls>`
+- **Permissions**: `scripting` (inject scripts), `tabs` (manage tabs), `storage` (save settings), `<all_urls>` (access all websites)
 - **Background**: Service worker pattern (Chrome) with scripts fallback (Firefox)
+- **Notifications**: Closeable in-page notifications with auto-dismiss after 20 seconds
 
 ### Adding New Languages
 
@@ -270,7 +271,6 @@ Contributions are welcome! Here's how you can help:
 
 - 🐛 **Report Bugs**: Open an issue describing the problem
 - 💡 **Suggest Features**: Share your ideas for improvements
-- 🌍 **Add Translations**: Contribute new language translations
 - 🔧 **Submit Pull Requests**: Fix bugs or implement features
 - ⭐ **Star the Repository**: Show your support!
 
