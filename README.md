@@ -1,19 +1,19 @@
 # AskAIShortcut
 
-A cross-browser extension that adds a "Buying advice" button to product pages, allowing you to instantly get AI-powered buying advice from Google Gemini.
+A powerful cross-browser extension that provides instant AI-powered assistance for any webpage. Get buying advice, content analysis, or create custom AI queries with a single click.
 
-## Features
+## ✨ Features
 
-- 💡 One-click buying advice from extension popup
-- 🔍 Content analysis button for editorial bias detection
-- 🤖 Automatically opens Gemini with a pre-filled question including the page URL
-- ⚙️ Customizable button names and questions
-- 🌐 Works on all websites
-- 🎨 Beautiful popup interface
-- 🌐 Cross-browser compatible (Chrome, Edge, Firefox, Brave, Opera)
-- 💾 Settings saved in sync storage (syncs across devices)
+- 💡 **Smart AI Assistance**: Pre-configured buttons for buying advice and content analysis
+- 🎯 **Customizable AI Service**: Use Google Gemini (default) or any AI service of your choice
+- ⚙️ **Flexible Configuration**: Customize button names, questions, and add unlimited buttons
+- 🌍 **Multilingual Support**: Automatically adapts to 11 languages (EN, ES, FR, DE, PT-BR, ZH-CN, JA, KO, HI, IT, AR)
+- 🌐 **Universal Compatibility**: Works on all websites and pages
+- 🔄 **Cross-Browser**: Chrome, Edge, Firefox, Brave, and Opera support
+- 💾 **Cloud Sync**: Settings automatically sync across all your devices
+- 🎨 **Beautiful UI**: Modern, intuitive popup interface
 
-## Installation
+## 📦 Installation
 
 ### Chrome, Edge, Brave, Opera
 
@@ -27,7 +27,7 @@ A cross-browser extension that adds a "Buying advice" button to product pages, a
 
 3. Click "Load unpacked"
 
-4. Select the `extension` folder
+4. Select the **AskAIShortcut** folder (the folder containing `manifest.json`)
 
 5. The extension is now installed!
 
@@ -37,13 +37,13 @@ A cross-browser extension that adds a "Buying advice" button to product pages, a
 
 2. Click "Load Temporary Add-on"
 
-3. Navigate to the extension folder and select `manifest.json`
+3. Navigate to the **AskAIShortcut** folder and select `manifest.json`
 
 4. The extension is now installed temporarily (until browser restart)
 
-**Note:** Firefox support is enabled. The extension uses Manifest V3 with cross-browser compatibility fallbacks for the `browser` namespace.
+**Note for Firefox:** For permanent installation, the extension needs to be signed. Temporary installation is perfect for development and testing.
 
-## How to Use
+## 🚀 How to Use
 
 ### Basic Usage
 
@@ -51,103 +51,232 @@ A cross-browser extension that adds a "Buying advice" button to product pages, a
 
 2. Click the extension icon in your browser toolbar
 
-3. A popup menu appears with two buttons:
+3. A popup menu appears with two default buttons:
    - **"💡 Buying advice"** - Get AI-powered buying advice
    - **"🔍 Content analysis"** - Analyze content for bias and authenticity
 
 4. Click a button in the popup
 
-5. A new tab opens with Google Gemini, pre-filled with your question including:
+5. A new tab opens with your configured AI service (Google Gemini by default), pre-filled with:
    - The current page URL as context
    - Your customized question template
 
 6. Review the AI-generated response or press Enter to submit the question
 
-### Customizing Buttons
+### Customizing Buttons & Settings
 
 1. Click the extension icon in your browser toolbar
 
-2. Click "⚙️ Customize buttons" at the bottom of the popup
+2. Click **"⚙️ Customize buttons"** at the bottom of the popup
 
 3. The settings page opens where you can:
-   - Change button names (e.g., "💡 Buying advice" → "🛒 Shopping Help")
-   - Modify question templates for each button
-   - Keep the context (URL) automatic while customizing questions
+   - **Add/Remove Buttons**: Create unlimited custom AI query buttons
+   - **Edit Button Names**: Change displayed text (e.g., "💡 Buying advice" → "🛒 Shopping Help")
+   - **Customize Questions**: Modify question templates for each button
+   - **Change AI Service**: Switch between Gemini, ChatGPT, Claude, or any AI service URL
+   - **Select Language**: Choose from 11 supported languages
 
 4. Click **"💾 Save Settings"** to save your changes
 
 5. Click **"🔄 Reset to Defaults"** to restore original settings
 
-**Note:** The context (current page URL) is always automatically included, so you only need to customize the question text.
+**Note:** The current page URL is automatically included as context for all queries.
 
-## Files Structure
+### Changing the AI Service
+
+The extension works with any AI chat service. To use a different AI service:
+
+1. Go to settings (click "⚙️ Customize buttons" in the popup)
+
+2. Under "AI Service Settings", change the URL to your preferred service:
+   - **Google Gemini**: `https://gemini.google.com/app` (default)
+   - **ChatGPT**: `https://chat.openai.com/`
+   - **Claude**: `https://claude.ai/`
+   - **Or any other AI chat service**
+
+3. Save your settings
+
+The extension will automatically detect and fill the input field on most AI services.
+
+## 📁 Project Structure
 
 ```
-extension/
-├── manifest.json         # Extension configuration (Manifest V3)
-├── popup.html           # Popup menu UI
-├── popup.js             # Popup menu logic
-├── background.js        # Handles tab creation and coordination
-├── ai-service-filler.js # Fills AI Service input field
-└── icons/               # Extension icons (16x16, 48x48, 128x128)
-    └── README.md        # Instructions for creating icons
+AskAIShortcut/
+├── manifest.json              # Extension configuration (Manifest V3)
+├── popup.html                 # Popup menu UI
+├── popup.js                   # Popup menu logic
+├── options.html               # Settings page UI
+├── options.js                 # Settings page logic
+├── background.js              # Service worker for tab/message handling
+├── ai-service-filler.js       # Auto-fills AI service input fields
+├── i18n.js                    # Internationalization helper
+├── _locales/                  # Translation files (11 languages)
+│   ├── en/messages.json       # English
+│   ├── es/messages.json       # Spanish
+│   ├── fr/messages.json       # French
+│   ├── de/messages.json       # German
+│   ├── pt_BR/messages.json    # Portuguese (Brazil)
+│   ├── zh_CN/messages.json    # Chinese (Simplified)
+│   ├── ja/messages.json       # Japanese
+│   ├── ko/messages.json       # Korean
+│   ├── hi/messages.json       # Hindi
+│   ├── it/messages.json       # Italian
+│   └── ar/messages.json       # Arabic
+├── icons/                     # Extension icons
+│   ├── icon16.png             # 16x16 icon
+│   ├── icon48.png             # 48x48 icon
+│   └── icon128.png            # 128x128 icon
+├── README.md                  # This file
+└── LICENSE                    # License file
 ```
-Customize Button Names and Questions
 
-1. Right-click the extension icon and select "Options"
-   - Or click "⚙️ Customize buttons" in the popup menu
+## 🌍 Language Support
 
-2. Modify:
-   - **Button Name**: The text displayed on the button
-   - **Question Template**: The question sent to Gemini (context/URL is auto-added)
+The extension automatically detects your browser language and displays the interface in one of 11 supported languages:
 
-3. Save your changes
+| Language | Code | Status |
+|----------|------|--------|
+| English | en | ✅ Default |
+| Spanish | es | ✅ |
+| French | fr | ✅ |
+| German | de | ✅ |
+| Portuguese (Brazil) | pt_BR | ✅ |
+| Chinese (Simplified) | zh_CN | ✅ |
+| Japanese | ja | ✅ |
+| Korean | ko | ✅ |
+| Hindi | hi | ✅ |
+| Italian | it | ✅ |
+| Arabic | ar | ✅ |
+
+You can manually change the language in the extension settings if needed.
 
 ### Advanced Customization
 
 **Change Popup Appearance:**
-Edit [popup.html](popup.html) and [popup.js](popup.js) to modify the popup menu colors, style, or layout.
+Edit styles in [popup.html](popup.html) and [popup.js](popup.js) to modify the popup menu colors, layout, or styling.
 
 **Modify Default Settings:**
 Edit the `initializeDefaults()` function in [options.js](options.js) to change default button names and questions.
 
-## Troubleshooting
+**Support New AI Services:**
+Edit the selector list in [ai-service-filler.js](ai-service-filler.js) to add detection for new AI service input fields.
+
+## 🆘 Troubleshooting
 
 **Button doesn't appear in popup:**
 - Try refreshing your browser
 - Check if the extension is enabled in your browser
 - Disable and re-enable the extension
 
-**Gemini input doesn't fill:**
-- Google may have updated their page structure
-- The script will retry for up to 15 seconds
-- Check browser console for errors
+**AI service input doesn't auto-fill:**
+- The AI service may have updated their page structure
+- The script will retry for up to 15 seconds with multiple detection methods
+- You can manually paste the question (it's still pre-formatted for you)
+- Try a different AI service URL in settings
+- Check browser console for detailed error messages
 
 **Extension doesn't load:**
-- Make sure you have icon files in the `icons/` folder (even placeholder images work)
+- Make sure you have icon files in the `icons/` folder
 - Check for errors in the browser's extension management page
+- Try reloading the extension
 
-## Development
+**Settings don't save:**
+- Check browser console for errors
+- Ensure your browser allows extension storage
+- Try resetting to defaults and reconfiguring
 
-To modify and test:
+## 🛠️ Development
 
-1. Make your changes to the source files
+### Making Changes
+
+1. Make your edits to the source files
 2. Go to your browser's extension page
-3. Click the refresh/reload button for this extension
-4. Test on a product page
+3. Click the refresh/reload button for AskAIShortcut
+4. Test the changes on any webpage
 
-## Privacy
+### Technical Details
 
-This extension:
-- Works on all websites you visit
-- Only sends the page URL to Gemini when you click the button
-- Does not collect or store any personal data
-- Does not track your browsing history
+- **Manifest Version**: V3 (latest standard)
+- **Cross-Browser Compatibility**: Uses feature detection for `browser` vs `chrome` namespaces
+- **Storage**: `chrome.storage.sync` for settings synchronization across devices
+- **Permissions**: `activeTab`, `scripting`, `tabs`, `storage`, `<all_urls>`
+- **Background**: Service worker pattern (Chrome) with scripts fallback (Firefox)
 
-## License
+### Adding New Languages
 
-Free to use and modify for personal or commercial purposes.
+1. Create a new folder in `_locales/` with the language code (e.g., `ru` for Russian)
+2. Copy `_locales/en/messages.json` to the new folder
+3. Translate all message values (keep the keys unchanged)
+4. Add the language to `SUPPORTED_LANGUAGES` in [options.js](options.js)
+5. Test by changing your browser language or using the language selector
 
-## Contributing
+### Key Files to Customize
 
-Feel free to submit issues, fork the repository, and create pull requests for any improvements.
+- **Default Buttons**: Edit `initializeDefaults()` in [options.js](options.js)
+- **UI Styling**: Edit styles in [popup.html](popup.html) and [options.html](options.html)
+- **Input Detection**: Edit selectors in [ai-service-filler.js](ai-service-filler.js) to support new AI services
+
+## 🔒 Privacy & Security
+
+This extension respects your privacy:
+
+- ✅ **No Data Collection**: Does not collect, store, or transmit any personal data
+- ✅ **No Tracking**: Does not track your browsing history or behavior
+- ✅ **Local Storage Only**: All settings stored locally in your browser (synced via browser's native sync)
+- ✅ **No External Servers**: Extension code runs entirely locally in your browser
+- ✅ **Minimal Permissions**: Only requests necessary permissions for core functionality
+- ✅ **Open Source**: Code is fully auditable
+
+**What gets shared:**
+- When you click a button, only the current page URL is sent to your chosen AI service (e.g., Gemini, ChatGPT)
+- This happens only when you explicitly click a button
+- The URL is visible in the AI service interface for your review
+
+## 📄 License
+
+MIT License - Free to use, modify, and distribute for personal or commercial purposes.
+
+See [LICENSE](LICENSE) file for details.
+
+## 🤝 Contributing
+
+Contributions are welcome! Here's how you can help:
+
+- 🐛 **Report Bugs**: Open an issue describing the problem
+- 💡 **Suggest Features**: Share your ideas for improvements
+- 🌍 **Add Translations**: Contribute new language translations
+- 🔧 **Submit Pull Requests**: Fix bugs or implement features
+- ⭐ **Star the Repository**: Show your support!
+
+### Development Setup
+
+```bash
+# Clone the repository
+git clone https://github.com/Tasiobg/AskAIShortcut.git
+cd AskAIShortcut
+
+# Load in browser (see Installation section above)
+# Make changes, test, and submit a PR
+```
+
+## 📚 Documentation
+
+For more detailed information, see:
+
+- **[INTERNATIONALIZATION.md](INTERNATIONALIZATION.md)**: Complete i18n implementation guide
+- **[DOCUMENTATION_INDEX.md](DOCUMENTATION_INDEX.md)**: Index of all documentation files
+- **[FEATURE_CHANGES.md](FEATURE_CHANGES.md)**: Button management feature details
+- **[I18N_IMPLEMENTATION.md](I18N_IMPLEMENTATION.md)**: Technical i18n details
+- **[COMPLETION_SUMMARY.md](COMPLETION_SUMMARY.md)**: Project completion summary
+
+## 💬 Support
+
+If you encounter issues or have questions:
+
+1. Check the [Troubleshooting](#troubleshooting) section
+2. Search existing [GitHub Issues](https://github.com/Tasiobg/AskAIShortcut/issues)
+3. Open a new issue with detailed information and screenshots if applicable
+
+---
+
+**Made with ❤️ for AI enthusiasts**
