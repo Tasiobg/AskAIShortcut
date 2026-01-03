@@ -186,5 +186,13 @@
   },
   "invalidUrl": {
     "message": "Invalid URL format"
+  },
+  "questionLoaded": {
+    "message": "AskAIShortcut has loaded the question! You can edit or press Enter to submit.",
+    "description": "Success notification when question is filled"
+  },
+  "couldNotFindInputField": {
+    "message": "Could not find AI Service input field. Please paste the question manually.",
+    "description": "Error notification when input field is not found"
   }
 }

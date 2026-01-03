@@ -114,8 +114,12 @@
     "message": "AI चैट URL अनिवार्य है"
   },
   "invalidUrl": {
-    "message": "URL प्रारूप अमुक नही सुहा"
+    "message": "अमान्य URL प्रारूप"
+  },
+  "questionLoaded": {
+    "message": "AskAIShortcut ने प्रश्न लोड कर दिया है! आप इसे संपादित कर सकते हैं या सबमिट करने के लिए Enter दबा सकते हैं।"
+  },
+  "couldNotFindInputField": {
+    "message": "AI सेवा इनपुट फ़ील्ड नहीं मिला। कृपया प्रश्न मैन्युअल रूप से पेस्ट करें।"
   }
 }
-
-

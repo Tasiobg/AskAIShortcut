@@ -114,7 +114,11 @@
     "message": "AI聊天 URL 是必需的"
   },
   "invalidUrl": {
-    "message": "不效的 URL 格式"
-  }
+    "message": "不效的 URL 格式"  },
+  "questionLoaded": {
+    "message": "AskAIShortcut已加载问题！您可以编辑或按Enter键提交。"
+  },
+  "couldNotFindInputField": {
+    "message": "找不到AI服务输入字段。请手动粘贴问题。"  }
 }
 

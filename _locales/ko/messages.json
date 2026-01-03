@@ -114,8 +114,12 @@
     "message": "AI 채팅 URL은 필수입니다"
   },
   "invalidUrl": {
-    "message": "유효하지 않은 URL 형식"
-  }
+    "message": "유효하지 않은 URL 형식"  },
+  "questionLoaded": {
+    "message": "AskAIShortcut이 질문을 로드했습니다! 편집하거나 Enter 키를 눌러 제출할 수 있습니다."
+  },
+  "couldNotFindInputField": {
+    "message": "AI 서비스 입력 필드를 찾을 수 없습니다. 수동으로 질문을 붙여넣으세요."  }
 }
 
 

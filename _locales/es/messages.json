@@ -130,5 +130,11 @@
   },
   "invalidUrl": {
     "message": "Formato de URL inválido"
+  },
+  "questionLoaded": {
+    "message": "¡AskAIShortcut ha cargado la pregunta! Puedes editarla o presionar Enter para enviar."
+  },
+  "couldNotFindInputField": {
+    "message": "No se pudo encontrar el campo de entrada del servicio de IA. Por favor, pega la pregunta manualmente."
   }
 }

@@ -115,6 +115,12 @@
   },
   "invalidUrl": {
     "message": "URL 形式が無効です"
+  },
+  "questionLoaded": {
+    "message": "AskAIShortcutが質問を読み込みました！編集するか、Enterキーを押して送信できます。"
+  },
+  "couldNotFindInputField": {
+    "message": "AIサービスの入力フィールドが見つかりませんでした。手動で質問を貼り付けてください。"
   }
 }
 

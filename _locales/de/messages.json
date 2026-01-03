@@ -130,6 +130,12 @@
   },
   "invalidUrl": {
     "message": "Ungültiges URL-Format"
+  },
+  "questionLoaded": {
+    "message": "AskAIShortcut hat die Frage geladen! Sie können sie bearbeiten oder Enter drücken, um sie abzusenden."
+  },
+  "couldNotFindInputField": {
+    "message": "KI-Service-Eingabefeld konnte nicht gefunden werden. Bitte fügen Sie die Frage manuell ein."
   }
 }
 

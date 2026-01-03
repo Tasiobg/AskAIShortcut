@@ -114,7 +114,11 @@
     "message": "رابط محادثة الذكاء الاصطناعي مطلوب"
   },
   "invalidUrl": {
-    "message": "صيغة URL غير صحيحة"
-  }
+    "message": "صيغة URL غير صحيحة"  },
+  "questionLoaded": {
+    "message": "قام AskAIShortcut بتحميل السؤال! يمكنك تعديله أو الضغط على Enter للإرسال."
+  },
+  "couldNotFindInputField": {
+    "message": "تعذر العثور على حقل إدخال خدمة الذكاء الاصطناعي. يرجى لصق السؤال يدويًا."  }
 }
 

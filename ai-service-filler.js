@@ -4,6 +4,12 @@
 
   // Use browser namespace with fallback to chrome
   const runtime = (typeof browser !== 'undefined') ? browser.runtime : chrome.runtime;
+  
+  // Get translated messages
+  const messages = {
+    questionLoaded: chrome.i18n.getMessage('questionLoaded') || 'AskAIShortcut has loaded the question! You can edit or press Enter to submit.',
+    couldNotFindInputField: chrome.i18n.getMessage('couldNotFindInputField') || 'Could not find AI Service input field. Please paste the question manually.'
+  };
 
   console.log('AskAIShortcut: AI Service filler script loaded');
 
@@ -202,7 +208,7 @@
         }
 
         console.log('AskAIShortcut: Successfully filled input field!');
-        showNotification('AskAIShortcut has loaded the question! You can edit or press Enter to submit.');
+        showNotification(messages.questionLoaded);
       } catch (error) {
         console.error('AskAIShortcut: Error filling input:', error);
       }
@@ -354,7 +360,7 @@
       if (!foundInput) {
         observer.disconnect();
         console.error('AskAIShortcut: Timeout - Could not find AI Service input field after', TIMEOUT_MS / 1000, 'seconds');
-        showNotification('Could not find AI Service input field. Please paste the question manually.');
+        showNotification(messages.couldNotFindInputField);
       }
     }, TIMEOUT_MS);
   }
