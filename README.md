@@ -66,11 +66,8 @@ A cross-browser extension that adds a "Buying advice" button to product pages, a
 ### Customizing Buttons
 
 1. Click the extension icon in your browser toolbar
-options.html         # Settings page UI
-├── options.js           # Settings page logic
-├── background.js        # Handles tab creation and coordination
-├── ai-service-filler.js # Fills AI Service input field
-├── content.js           # Injects button into web pages
+
+2. Click "⚙️ Customize buttons" at the bottom of the popup
 
 3. The settings page opens where you can:
    - Change button names (e.g., "💡 Buying advice" → "🛒 Shopping Help")

@@ -52,15 +52,22 @@ function getMessage(messageKey, substitutions = null) {
 async function initializeLanguage() {
   try {
     // Get saved language preference
-    const result = await new Promise((resolve) => {
-      storage.sync.get({ language: null }, resolve);
+    const result = await new Promise((resolve, reject) => {
+      storage.sync.get({ language: null }, (data) => {
+        if (chrome.runtime.lastError) {
+          reject(chrome.runtime.lastError);
+        } else {
+          resolve(data);
+        }
+      });
     });
     
-    const userLanguage = result.language || 'en';
+    const userLanguage = (result && result.language) || 'en';
     await loadLanguageData(userLanguage);
     translatePage();
   } catch (error) {
     console.error('Error initializing language:', error);
+    // Fallback to English if storage fails
     await loadLanguageData('en');
     translatePage();
   }
