@@ -220,7 +220,7 @@ Edit the selector list in [ai-service-filler.js](ai-service-filler.js) to add de
 - **Manifest Version**: V3 (latest standard)
 - **Cross-Browser Compatibility**: Uses feature detection for `browser` vs `chrome` namespaces
 - **Storage**: `chrome.storage.sync` for settings synchronization across devices
-- **Permissions**: `activeTab`, `scripting`, `tabs`, `storage`, `<all_urls>`
+- **Permissions**: `scripting`, `tabs`, `storage`, `<all_urls>`
 - **Background**: Service worker pattern (Chrome) with scripts fallback (Firefox)
 
 ### Adding New Languages
