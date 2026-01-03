@@ -1,6 +1,6 @@
 # AskAIShortcut
 
-A powerful cross-browser extension that provides instant AI-powered assistance for any webpage. Get buying advice, content analysis, or create custom AI queries with a single click.
+Instant AI-powered assistance for every webpage. This extension contains a curated library of expert prompts that you can send to any AI chat regarding the current page. Get buying advice, analyze content, or ask custom questions with a single click.
 
 ## ✨ Features
 
@@ -8,10 +8,33 @@ A powerful cross-browser extension that provides instant AI-powered assistance f
 - 🎯 **Customizable AI Service**: Use Google Gemini (default) or any AI service of your choice
 - ⚙️ **Flexible Configuration**: Customize button names, questions, and add unlimited buttons
 - 🌍 **Multilingual Support**: Automatically adapts to 11 languages (EN, ES, FR, DE, PT-BR, ZH-CN, JA, KO, HI, IT, AR)
-- 🌐 **Universal Compatibility**: Works on all websites and pages
 - 🔄 **Cross-Browser**: Chrome, Edge, Firefox, Brave, and Opera support
 - 💾 **Cloud Sync**: Settings automatically sync across all your devices
 - 🎨 **Beautiful UI**: Modern, intuitive popup interface
+
+## ℹ️ Requirements
+- Some AI Chats require to be signed in
+- Target website should be publicly accessible (pages behind login may not work properly in AI chat)
+
+## ❔ Questions
+If you find these curated questions helpful but prefer not to install the extension, feel free to copy and paste them directly from here:
+
+💡 Buying advice
+>I need buying advice for this product, please help me understand:
+>- Is this a good deal?
+>- What are the pros and cons?
+>- Are there better alternatives?
+>- What should I consider before buying?
+>- Is this product worth the price?
+>- What do the reviews say? Do they appear authentic, or do they show signs of AI generation and manipulation?
+>- What's the price history? Has it been cheaper before?
+>- Are there any hidden or long-term costs (accessories, maintenance, subscriptions)?
+
+🔍 Content analysis
+>- Analyze this content for editorial bias
+>- Identify any omitted context, missing facts, or logical leaps
+>- Verify authenticity and logic
+>- What is the primary goal (e.g., to inform, persuade, or sell). Identify if the content uses 'outrage engagement' or specific emotional triggers to influence a vote, a purchase, or social sharing.
 
 ## 📦 Installation
 
@@ -47,40 +70,38 @@ A powerful cross-browser extension that provides instant AI-powered assistance f
 
 ### Basic Usage
 
-1. Visit any webpage (works best on product pages)
+1. **Visit any webpage** — Works on all websites instantly
 
-2. Click the extension icon in your browser toolbar
+2. **Click the extension icon** — Located in your browser toolbar
 
-3. A popup menu appears with two default buttons:
-   - **"💡 Buying advice"** - Get AI-powered buying advice
-   - **"🔍 Content analysis"** - Analyze content for bias and authenticity
+3. **Choose a button** — Pre-configured options appear:
+   - **💡 Buying advice** — Get AI insights on products and deals
+   - **🔍 Content analysis** — Detect bias, verify authenticity, identify emotional triggers
 
-4. Click a button in the popup
+4. **AI responds** — New tab opens with your chosen AI service (Google Gemini by default)
+   - Current page URL included as context
+   - Your question pre-filled and ready
 
-5. A new tab opens with your configured AI service (Google Gemini by default), pre-filled with:
-   - The current page URL as context
-   - Your customized question template
-
-6. Review the AI-generated response or press Enter to submit the question
+5. **Review & submit** — Check the AI's response or press Enter to submit
 
 ### Customizing Buttons & Settings
 
-1. Click the extension icon in your browser toolbar
+1. **Open the popup** — Click the extension icon in your toolbar
 
-2. Click **"⚙️ Customize buttons"** at the bottom of the popup
+2. **Click "⚙️ Customize buttons"** — Opens your personal settings
 
-3. The settings page opens where you can:
-   - **Add/Remove Buttons**: Create unlimited custom AI query buttons
-   - **Edit Button Names**: Change displayed text (e.g., "💡 Buying advice" → "🛒 Shopping Help")
-   - **Customize Questions**: Modify question templates for each button
-   - **Change AI Service**: Switch between Gemini, ChatGPT, Claude, or any AI service URL
-   - **Select Language**: Choose from 11 supported languages
+3. **Customize your experience:**
+   - **Create unlimited buttons** — Add custom AI queries for any task
+   - **Edit names** — Personalize button labels (e.g., "💡 Buying advice" → "🛒 Shopping Help")
+   - **Modify questions** — Update templates to match your workflow
+   - **Switch AI services** — Use Gemini, ChatGPT, Claude, or any AI platform
+   - **Change language** — Auto-detected from browser, but manually selectable from 11 options
 
-4. Click **"💾 Save Settings"** to save your changes
+4. **Save** — Click "💾 Save Settings" to apply changes
 
-5. Click **"🔄 Reset to Defaults"** to restore original settings
+5. **Reset anytime** — Click "🔄 Reset to Defaults" to restore original configuration
 
-**Note:** The current page URL is automatically included as context for all queries.
+💡 **Pro tip:** The current page URL is automatically sent to your AI service for better context.
 
 ### Changing the AI Service
 
@@ -218,19 +239,19 @@ Edit the selector list in [ai-service-filler.js](ai-service-filler.js) to add de
 
 ## 🔒 Privacy & Security
 
-This extension respects your privacy:
+Your privacy is our priority. This extension is completely privacy-focused:
 
-- ✅ **No Data Collection**: Does not collect, store, or transmit any personal data
-- ✅ **No Tracking**: Does not track your browsing history or behavior
-- ✅ **Local Storage Only**: All settings stored locally in your browser (synced via browser's native sync)
-- ✅ **No External Servers**: Extension code runs entirely locally in your browser
-- ✅ **Minimal Permissions**: Only requests necessary permissions for core functionality
-- ✅ **Open Source**: Code is fully auditable
+✅ **Zero Data Collection** — No personal data collected, stored, or transmitted
+✅ **No Tracking** — No browsing history monitoring or behavior tracking
+✅ **Local-First** — All settings stored locally on your device (synced via your browser's native sync)
+✅ **No Servers** — Extension code runs entirely in your browser, no external connections
+✅ **Minimal Permissions** — Only requests the minimum necessary for core functionality
+✅ **Fully Auditable** — Open source code you can inspect anytime
 
-**What gets shared:**
-- When you click a button, only the current page URL is sent to your chosen AI service (e.g., Gemini, ChatGPT)
-- This happens only when you explicitly click a button
-- The URL is visible in the AI service interface for your review
+**What's shared and when:**
+- Only the current page URL is sent to your AI service when you explicitly click a button
+- You control what gets shared — nothing happens automatically
+- The URL appears in your AI chat for transparency and context
 
 ## 📄 License
 
