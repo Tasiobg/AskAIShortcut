@@ -104,23 +104,42 @@
     function fillInputField(el, text) {
       console.log('AskAIShortcut: Filling', el.tagName);
       try {
+        // 1. Force focus and click to trigger framework "active" states
         el.focus();
+        el.click();
 
-        // Handle different types
+        // 2. Handle based on element type
         if (el.hasAttribute('contenteditable')) {
           el.textContent = text;
+          // Move cursor to end for ContentEditable
+          const range = document.createRange();
+          const sel = window.getSelection();
+          range.selectNodeContents(el);
+          range.collapse(false);
+          sel.removeAllRanges();
+          sel.addRange(range);
         } else {
           el.value = text;
         }
 
-        // Trigger interaction logic to satisfy SPA frameworks (React/Vue/etc.)
-        const events = ['input', 'change', 'blur'];
-        events.forEach(type => {
-          el.dispatchEvent(new Event(type, { bubbles: true }));
-        });
+        // 3. Dispatch comprehensive suite of events to satisfy React/Vue/etc.
+        const eventOptions = { bubbles: true, cancelable: true };
+        const events = [
+          new Event('focus', eventOptions),
+          new Event('input', eventOptions),
+          new Event('change', eventOptions),
+          new KeyboardEvent('keydown', { ...eventOptions, key: ' ' }),
+          new KeyboardEvent('keyup', { ...eventOptions, key: ' ' }),
+          new Event('blur', eventOptions)
+        ];
+
+        events.forEach(evt => el.dispatchEvent(evt));
 
         showNotification('questionLoaded');
-        if (observer) observer.disconnect();
+        if (observer) {
+          observer.disconnect();
+          observer = null;
+        }
       } catch (err) {
         console.error('AskAIShortcut: Error filling field', err);
       }
@@ -179,19 +198,25 @@
       }, 5000);
     }
 
-    // Execution
-    if (!tryFindAndFill()) {
-      observer = new MutationObserver(() => {
-        if (tryFindAndFill()) observer.disconnect();
-      });
-      observer.observe(document.body, { childList: true, subtree: true });
-
+    // Execution: Attempt multiple times early on to handle rapid SPA updates
+    const initialAttempts = [0, 500, 1000, 2000];
+    initialAttempts.forEach(delay => {
       setTimeout(() => {
-        if (!foundInput) {
-          observer.disconnect();
-          showNotification('couldNotFindInputField');
-        }
-      }, TIMEOUT_MS);
-    }
+        if (!foundInput) tryFindAndFill();
+      }, delay);
+    });
+
+    // Persistent observation for slower loads
+    observer = new MutationObserver(() => {
+      if (!foundInput) tryFindAndFill();
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
+
+    setTimeout(() => {
+      if (!foundInput) {
+        observer.disconnect();
+        showNotification('couldNotFindInputField');
+      }
+    }, TIMEOUT_MS);
   }
 })();
