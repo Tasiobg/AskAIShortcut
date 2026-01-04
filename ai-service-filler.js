@@ -174,7 +174,12 @@
       `;
 
       const icon = type === 'questionLoaded' ? '✅' : '⚠️';
-      div.innerHTML = `<span>${icon}</span> <span>${message || type}</span>`;
+      const iconSpan = document.createElement('span');
+      iconSpan.textContent = icon;
+      const messageSpan = document.createElement('span');
+      messageSpan.textContent = message || type;
+      div.appendChild(iconSpan);
+      div.appendChild(messageSpan);
 
       // Animation style
       const style = document.createElement('style');
