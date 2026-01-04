@@ -1,24 +1,12 @@
 // Options page script for AskAIShortcut extension
 // Handles button configuration, language settings, and AI service URL customization
-// Note: storage and getMessage() are declared in i18n.js, which is loaded before this script
 
-// Supported languages
-const SUPPORTED_LANGUAGES = {
-  'en': 'English',
-  'es': 'Español',
-  'fr': 'Français',
-  'de': 'Deutsch',
-  'pt_BR': 'Português (Brasil)',
-  'zh_CN': '中文 (简体)',
-  'ja': '日本語',
-  'ko': '한국어',
-  'hi': 'हिंदी',
-  'it': 'Italiano',
-  'ar': 'العربية'
-};
+let currentButtons = [];
+let originalAIServiceUrl = '';
+let originalButtons = [];
 
-// Initialize defaults from i18n messages
-function initializeDefaults() {
+// Initialize defaults
+function getDefaults() {
   return {
     buttons: [
       {
@@ -31,400 +19,217 @@ function initializeDefaults() {
         name: getMessage('contentAnalysis') || '🔍 Content analysis',
         question: getMessage('contentAnalysisQuestion') || 'Analyze this content...'
       }
-    ]
+    ],
+    aiServiceUrl: 'https://gemini.google.com/app',
+    language: 'en'
   };
 }
 
-let currentButtons = [];
-let originalAIServiceUrl = '';
-let originalButtons = [];
-
-// Load and render buttons
+// Load settings
 async function loadSettings() {
   try {
-    // Ensure translation data is loaded before initializing defaults
-    if (!translationData || Object.keys(translationData).length === 0) {
-      await initializeLanguage();
-    }
-    
-    const defaults = initializeDefaults();
-    
-    const result = await storage.sync.get({ 
-      buttons: defaults.buttons, 
+    const defaults = getDefaults();
+    const result = await getStorage({
+      buttons: null,
       language: 'en',
-      aiServiceUrl: 'https://gemini.google.com/app'
+      aiServiceUrl: defaults.aiServiceUrl
     });
+
     currentButtons = result.buttons || defaults.buttons;
     originalButtons = JSON.parse(JSON.stringify(currentButtons));
-    
-    // Set the language selector
+    originalAIServiceUrl = result.aiServiceUrl;
+
+    // Set UI elements
     const languageSelect = document.getElementById('language-select');
-    if (languageSelect) {
-      languageSelect.value = result.language || 'en';
-    }
-    
-    // Set the AI Chat URL
+    if (languageSelect) languageSelect.value = result.language;
+
     const aiServiceUrlInput = document.getElementById('ai-service-url');
-    if (aiServiceUrlInput) {
-      let aiServiceUrl = result.aiServiceUrl || 'https://gemini.google.com/app';
-      originalAIServiceUrl = aiServiceUrl;
-      aiServiceUrlInput.value = originalAIServiceUrl;
-    }
-    
+    if (aiServiceUrlInput) aiServiceUrlInput.value = originalAIServiceUrl;
+
     renderButtons();
   } catch (error) {
-    console.error('Error loading settings:', error);
-    const errorMsg = getMessage('errorLoadingSettings') || 'Error loading settings';
-    showStatus(errorMsg, 'error');
+    console.error('AskAIShortcut: Error loading settings:', error);
+    showStatus(getMessage('errorLoadingSettings'), 'error');
   }
 }
 
-// Render button configuration UI
+// Render UI
 function renderButtons() {
   const container = document.getElementById('buttons-container');
   container.innerHTML = '';
 
   currentButtons.forEach((button, index) => {
-    const configDiv = document.createElement('div');
-    configDiv.className = 'button-config';
-    const buttonLabel = getMessage('button') || 'Button';
-    const removeText = getMessage('removeButton') || '✕ Remove';
-    const buttonNameLabel = getMessage('buttonName') || 'Button Name:';
-    const questionLabel = getMessage('questionTemplate') || 'Question Template:';
-    const questionHelperText = getMessage('contextWillBePrepended') || 'The context (URL) will be automatically prepended to this question';
-    const saveText = getMessage('saveSettings') || '💾 Save';
-    
-    configDiv.innerHTML = `
+    const div = document.createElement('div');
+    div.className = 'button-config';
+
+    div.innerHTML = `
       <h2>
-        <span>${buttonLabel} ${index + 1}</span>
-        ${currentButtons.length > 1 ? `<button class="remove-button-btn" data-index="${index}">${removeText}</button>` : ''}
+        <span>${getMessage('button')} ${index + 1}</span>
+        ${currentButtons.length > 1 ? `<button class="remove-button-btn" data-index="${index}">${getMessage('removeButton')}</button>` : ''}
       </h2>
       
       <div class="field-group">
-        <label for="name-${button.id}">${buttonNameLabel}</label>
-        <input type="text" id="name-${button.id}" class="button-name" data-index="${index}" placeholder="e.g., 💡 Buying advice" value="${button.name}">
+        <label>${getMessage('buttonName')}</label>
+        <input type="text" class="button-name" data-index="${index}" value="${button.name}">
       </div>
 
       <div class="field-group">
-        <label for="question-${button.id}">${questionLabel}</label>
-        <textarea id="question-${button.id}" class="button-question" data-index="${index}" placeholder="Enter your question template...">${button.question}</textarea>
-        <div class="helper-text">${questionHelperText}</div>
+        <label>${getMessage('questionTemplate')}</label>
+        <textarea class="button-question" data-index="${index}">${button.question}</textarea>
+        <div class="helper-text">${getMessage('contextWillBePrepended')}</div>
       </div>
       
-      <button class="button-config-save" data-index="${index}" disabled>${saveText}</button>
+      <button class="button-config-save" data-index="${index}" disabled>${getMessage('saveSettings')}</button>
     `;
-    container.appendChild(configDiv);
 
-    // Add remove button listener
+    container.appendChild(div);
+
+    // Events
     if (currentButtons.length > 1) {
-      configDiv.querySelector('.remove-button-btn').addEventListener('click', (e) => {
-        removeButton(index);
-      });
+      div.querySelector('.remove-button-btn').onclick = () => removeButton(index);
     }
-    
-    // Add save button listener
-    configDiv.querySelector('.button-config-save').addEventListener('click', (e) => {
-      saveButtonConfig(index);
+    div.querySelector('.button-config-save').onclick = () => saveButtonConfig(index);
+
+    const inputs = div.querySelectorAll('input, textarea');
+    inputs.forEach(input => {
+      input.oninput = () => {
+        const idx = parseInt(input.dataset.index);
+        const nameVal = div.querySelector('.button-name').value;
+        const qVal = div.querySelector('.button-question').value;
+
+        const hasChanged = !originalButtons[idx] ||
+          nameVal !== originalButtons[idx].name ||
+          qVal !== originalButtons[idx].question;
+
+        div.querySelector('.button-config-save').disabled = !hasChanged;
+      };
     });
   });
-
-  // Re-attach listeners to all input fields
-  attachInputListeners();
 }
 
-// Attach listeners to dynamically created inputs
-function attachInputListeners() {
-  document.querySelectorAll('.button-name, .button-question').forEach(input => {
-    input.addEventListener('input', () => {
-      const index = parseInt(input.dataset.index);
-      checkButtonChanged(index);
-    });
-  });
-  
-  // Attach URL input listener
-  const urlInput = document.getElementById('ai-service-url');
-  if (urlInput) {
-    urlInput.addEventListener('input', checkUrlChanged);
-  }
-}
-
-// Update currentButtons array when inputs change
-function updateCurrentButtons() {
-  const buttonLabel = getMessage('button') || 'Button';
-  document.querySelectorAll('.button-config').forEach((config, index) => {
-    if (index < currentButtons.length) {
-      currentButtons[index].name = document.querySelector(`input[data-index="${index}"]`).value.trim() || `${buttonLabel} ${index + 1}`;
-      currentButtons[index].question = document.querySelector(`textarea[data-index="${index}"]`).value.trim() || '';
-    }
-  });
-}
-
-// Check if URL has changed from original
-function checkUrlChanged() {
-  const urlInput = document.getElementById('ai-service-url');
-  const saveBtn = document.getElementById('save-url-btn');
-  
-  if (urlInput && saveBtn) {
-    const hasChanged = urlInput.value.trim() !== originalAIServiceUrl;
-    saveBtn.disabled = !hasChanged;
-  }
-}
-
-// Check if button config has changed from original
-function checkButtonChanged(index) {
-  const nameInput = document.querySelector(`input.button-name[data-index="${index}"]`);
-  const questionInput = document.querySelector(`textarea.button-question[data-index="${index}"]`);
-  const saveBtn = document.querySelector(`.button-config-save[data-index="${index}"]`);
-  
-  if (nameInput && questionInput && saveBtn) {
-    // If originalButtons[index] doesn't exist, this is a new button - always allow saving
-    if (!originalButtons[index]) {
-      saveBtn.disabled = false;
-      return;
-    }
-    
-    const hasChanged = 
-      nameInput.value !== originalButtons[index].name ||
-      questionInput.value !== originalButtons[index].question;
-    saveBtn.disabled = !hasChanged;
-  }
-}
-
-// Save URL settings
+// Actions
 async function saveUrlSettings() {
-  const urlInput = document.getElementById('ai-service-url');
-  const saveBtn = document.getElementById('save-url-btn');
-  let url = urlInput.value.trim();
-  
-  if (!url) {
-    showStatus(getMessage('urlCannotBeEmpty') || 'URL cannot be empty', 'error');
-    return;
-  }
-  
-  // Add protocol if missing
-  if (!url.match(/^https?:\/\//i)) {
-    url = 'https://' + url;
-    urlInput.value = url; // Update the input field to show the complete URL
-  }
-  
+  const input = document.getElementById('ai-service-url');
+  let url = input.value.trim();
+  if (!url) return showStatus(getMessage('urlCannotBeEmpty'), 'error');
+
+  if (!url.startsWith('http')) url = 'https://' + url;
+
   try {
-    await storage.sync.set({ aiServiceUrl: url });
+    await setStorage({ aiServiceUrl: url });
     originalAIServiceUrl = url;
-    saveBtn.disabled = true;
-    showStatus(getMessage('urlSaved') || 'AI Chat URL saved successfully', 'success');
-  } catch (error) {
-    showStatus(getMessage('errorSaving') || 'Error saving settings', 'error');
+    document.getElementById('save-url-btn').disabled = true;
+    showStatus(getMessage('urlSaved'), 'success');
+  } catch (e) {
+    showStatus(getMessage('errorSaving'), 'error');
   }
 }
 
-// Save button configuration
 async function saveButtonConfig(index) {
-  const nameInput = document.querySelector(`input.button-name[data-index="${index}"]`);
-  const questionInput = document.querySelector(`textarea.button-question[data-index="${index}"]`);
-  const saveBtn = document.querySelector(`.button-config-save[data-index="${index}"]`);
-  
-  if (!nameInput || !questionInput) return;
-  
-  const buttonLabel = getMessage('button') || 'Button';
-  currentButtons[index].name = nameInput.value.trim() || `${buttonLabel} ${index + 1}`;
-  currentButtons[index].question = questionInput.value.trim() || '';
-  
+  const div = document.querySelectorAll('.button-config')[index];
+  const name = div.querySelector('.button-name').value.trim();
+  const question = div.querySelector('.button-question').value.trim();
+
+  currentButtons[index].name = name;
+  currentButtons[index].question = question;
+
   try {
-    await storage.sync.set({ buttons: currentButtons });
-    // Update or add to originalButtons
-    if (originalButtons.length <= index) {
-      // New button - expand originalButtons array
-      originalButtons = JSON.parse(JSON.stringify(currentButtons));
-    } else {
-      // Existing button - update just this one
-      originalButtons[index] = JSON.parse(JSON.stringify(currentButtons[index]));
-    }
-    saveBtn.disabled = true;
-    showStatus(getMessage('buttonSaved') || 'Button configuration saved successfully', 'success');
-  } catch (error) {
-    showStatus(getMessage('errorSaving') || 'Error saving settings', 'error');
+    await setStorage({ buttons: currentButtons });
+    originalButtons[index] = { name, question };
+    div.querySelector('.button-config-save').disabled = true;
+    showStatus(getMessage('buttonSaved'), 'success');
+  } catch (e) {
+    showStatus(getMessage('errorSaving'), 'error');
   }
 }
 
-// Remove button from list
 async function removeButton(index) {
-  if (currentButtons.length === 1) {
-    const errorMsg = getMessage('mustHaveAtLeastOne') || 'You must have at least one button';
-    showStatus(errorMsg, 'error');
-    return;
-  }
-  const confirmMsg = getMessage('removeButtonConfirm', currentButtons[index].name) || 
-                     `Remove button "${currentButtons[index].name}"?`;
-  if (confirm(confirmMsg)) {
+  if (confirm(getMessage('areYouSureRemove') || 'Remove this button?')) {
     currentButtons.splice(index, 1);
-    try {
-      await storage.sync.set({ buttons: currentButtons });
-      originalButtons = JSON.parse(JSON.stringify(currentButtons));
-      renderButtons();
-      showStatus(getMessage('buttonRemoved') || 'Button removed successfully', 'success');
-    } catch (error) {
-      showStatus(getMessage('errorSaving') || 'Error saving settings', 'error');
-    }
+    await setStorage({ buttons: currentButtons });
+    originalButtons = JSON.parse(JSON.stringify(currentButtons));
+    renderButtons();
+    showStatus(getMessage('buttonRemoved'), 'success');
   }
 }
 
-// Add new button
 function addButton() {
-  const newId = 'button' + Date.now();
-  const buttonLabel = getMessage('button') || 'Button';
-  const newButton = {
-    id: newId,
-    name: `${buttonLabel} ${currentButtons.length + 1}`,
-    question: ''
-  };
-  currentButtons.push(newButton);
-  // Don't add to originalButtons yet - it will be added when saved
-  // This ensures the save button is enabled for new buttons
+  currentButtons.push({ id: 'btn_' + Date.now(), name: getMessage('button') + ' ' + (currentButtons.length + 1), question: '' });
   renderButtons();
-  // Scroll to the new button
-  setTimeout(() => {
-    const buttons = document.querySelectorAll('.button-config');
-    buttons[buttons.length - 1].scrollIntoView({ behavior: 'smooth' });
-  }, 100);
 }
 
-// Reset to defaults
 async function resetSettings() {
-  const confirmMsg = getMessage('areYouSureReset') || 'Are you sure you want to reset all settings to defaults?';
-  if (confirm(confirmMsg)) {
-    try {
-      const newDefaults = initializeDefaults();
-      const defaultUrl = 'https://gemini.google.com/app';
-      
-      await storage.sync.set({ 
-        buttons: newDefaults.buttons,
-        aiServiceUrl: defaultUrl
-      });
-      
-      currentButtons = JSON.parse(JSON.stringify(newDefaults.buttons));
-      originalButtons = JSON.parse(JSON.stringify(newDefaults.buttons));
-      originalAIServiceUrl = defaultUrl;
-      
-      // Reset the AI Chat URL field
-      const aiServiceUrlInput = document.getElementById('ai-service-url');
-      if (aiServiceUrlInput) {
-        aiServiceUrlInput.value = defaultUrl;
-      }
-      
-      // Disable all save buttons
-      document.getElementById('save-url-btn').disabled = true;
-      
-      renderButtons();
-      const successMsg = getMessage('settingsResetToDefaults') || '✓ Settings reset to defaults!';
-      showStatus(successMsg, 'success');
-    } catch (error) {
-      console.error('Error resetting settings:', error);
-      const errorMsg = getMessage('errorResettingSettings') || 'Error resetting settings';
-      showStatus(errorMsg, 'error');
-    }
+  if (confirm(getMessage('areYouSureReset'))) {
+    const defaults = getDefaults();
+    await setStorage({ buttons: defaults.buttons, aiServiceUrl: defaults.aiServiceUrl });
+    location.reload();
   }
 }
 
-// Show status message
-function showStatus(message, type) {
-  const statusEl = document.getElementById('status');
-  statusEl.textContent = message;
-  statusEl.className = `status-message ${type}`;
-  statusEl.style.display = 'block';
-  
-  setTimeout(() => {
-    statusEl.style.display = 'none';
-  }, 3000);
+function showStatus(msg, type) {
+  const el = document.getElementById('status');
+  el.textContent = msg;
+  el.className = `status-message ${type}`;
+  el.style.display = 'block';
+  setTimeout(() => el.style.display = 'none', 3000);
 }
 
-// Save language preference and reload extension
-async function changeLanguage(languageCode) {
+// Listeners
+document.getElementById('save-url-btn').onclick = saveUrlSettings;
+document.getElementById('reset-btn').onclick = resetSettings;
+document.getElementById('add-button-btn').onclick = addButton;
+document.getElementById('ai-service-url').oninput = (e) => {
+  document.getElementById('save-url-btn').disabled = (e.target.value === originalAIServiceUrl);
+};
+
+document.getElementById('language-select').onchange = async (e) => {
+  const newLang = e.target.value;
+
   try {
-    // Get current defaults in current language
-    const oldDefaults = [
-      {
-        name: getMessage('buyingAdvice') || '💡 Buying advice',
-        question: getMessage('buyingAdviceQuestion') || 'I need buying advice...'
-      },
-      {
-        name: getMessage('contentAnalysis') || '🔍 Content analysis',
-        question: getMessage('contentAnalysisQuestion') || 'Analyze this content...'
-      }
-    ];
-    
-    // Save the language preference
-    await storage.sync.set({ language: languageCode });
-    
-    // Update translations immediately
-    await loadLanguageData(languageCode);
-    translatePage();
-    
-    // Get new defaults in new language
-    const newDefaults = [
-      {
-        name: getMessage('buyingAdvice') || '💡 Buying advice',
-        question: getMessage('buyingAdviceQuestion') || 'I need buying advice...'
-      },
-      {
-        name: getMessage('contentAnalysis') || '🔍 Content analysis',
-        question: getMessage('contentAnalysisQuestion') || 'Analyze this content...'
-      }
-    ];
-    
-    // Update buttons that match old defaults to use new language defaults
-    let buttonsUpdated = false;
-    currentButtons.forEach((button, index) => {
-      if (index < oldDefaults.length) {
-        // Check if button name matches old default (hasn't been customized)
-        if (button.name === oldDefaults[index].name) {
-          button.name = newDefaults[index].name;
-          buttonsUpdated = true;
-        }
-        // Check if question matches old default (hasn't been customized)
-        if (button.question === oldDefaults[index].question) {
-          button.question = newDefaults[index].question;
-          buttonsUpdated = true;
+    // 1. Capture defaults in CURRENT language (before switching)
+    const oldDefaults = getDefaults().buttons;
+
+    // 2. Load the NEW language data
+    await loadLanguageData(newLang);
+
+    // 3. Capture defaults in NEW language
+    const newDefaults = getDefaults().buttons;
+
+    // 4. Update unmodified default buttons in currentButtons
+    let updated = false;
+    currentButtons.forEach(btn => {
+      // Find matching default for this button ID
+      const oldDef = oldDefaults.find(d => d.id === btn.id);
+      if (oldDef && btn.name === oldDef.name && btn.question === oldDef.question) {
+        // It's a default button and it hasn't been modified
+        const newDef = newDefaults.find(d => d.id === btn.id);
+        if (newDef) {
+          btn.name = newDef.name;
+          btn.question = newDef.question;
+          updated = true;
         }
       }
     });
-    
-    // Save updated buttons if any were changed
-    if (buttonsUpdated) {
-      await storage.sync.set({ buttons: currentButtons });
-      renderButtons();
+
+    // 5. Save EVERYTHING (new language AND potentially updated buttons)
+    const storageData = { language: newLang };
+    if (updated) {
+      storageData.buttons = currentButtons;
     }
-    
-    // Send message to background script to notify of language change
-    const runtimeAPI = (typeof browser !== 'undefined') ? browser.runtime : chrome.runtime;
-    runtimeAPI.sendMessage({ action: 'languageChanged', language: languageCode }, () => {
-      // Ignore errors
-      if (runtimeAPI.lastError) {
-        // Clear the error
-      }
-    });
-    
-    // Optionally reload after a slight delay for other pages to update
-    setTimeout(() => {
-      // Don't reload options page itself, just update the UI
-      // location.reload(); // Commented out - we update UI in real-time above
-    }, 100);
-  } catch (error) {
-    console.error('Error changing language:', error);
+
+    await setStorage(storageData);
+
+    // 6. Notify background and reload
+    runtime.sendMessage({ action: 'languageChanged', language: newLang });
+    location.reload();
+  } catch (err) {
+    console.error('AskAIShortcut: Error switching language:', err);
+    // Fallback: just save language and reload
+    await setStorage({ language: newLang });
+    location.reload();
   }
-}
+};
 
-// Event listeners
-document.getElementById('save-url-btn').addEventListener('click', saveUrlSettings);
-document.getElementById('reset-btn').addEventListener('click', resetSettings);
-document.getElementById('add-button-btn').addEventListener('click', addButton);
-
-// Language selector listener
-const languageSelect = document.getElementById('language-select');
-if (languageSelect) {
-  languageSelect.addEventListener('change', (e) => {
-    changeLanguage(e.target.value);
-  });
-}
-
-// Load settings when page loads
-loadSettings();
+// Start
+document.addEventListener('AskAIShortcut:LanguageReady', loadSettings);
+if (Object.keys(translationData).length > 0) loadSettings();

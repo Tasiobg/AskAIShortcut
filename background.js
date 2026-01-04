@@ -12,7 +12,7 @@ console.log('AskAIShortcut: Background script loaded');
 // Handle messages from popup
 runtime.onMessage.addListener((message, sender, sendResponse) => {
   console.log('AskAIShortcut: Message received in background', message);
-  
+
   if (message.action === 'openAIServiceWithQuestion') {
     handleOpenAIServiceWithQuestion(message.question, message.productUrl)
       .then(() => {
@@ -24,7 +24,7 @@ runtime.onMessage.addListener((message, sender, sendResponse) => {
       });
     return true; // Keep the message channel open for async response
   }
-  
+
   if (message.action === 'languageChanged') {
     console.log('AskAIShortcut: Language changed to:', message.language);
     sendResponse({ success: true });
@@ -35,12 +35,14 @@ runtime.onMessage.addListener((message, sender, sendResponse) => {
 async function handleOpenAIServiceWithQuestion(questionText, productUrl) {
   try {
     // Get the AI service URL from storage
-    const result = await storage.sync.get({ aiServiceUrl: 'https://gemini.google.com/app' });
+    const result = await new Promise((resolve) => {
+      storage.sync.get({ aiServiceUrl: 'https://gemini.google.com/app' }, resolve);
+    });
     const aiServiceUrl = result.aiServiceUrl || 'https://gemini.google.com/app';
-    
+
     // Create the question with context
     const question = createQuestionWithContext(productUrl, questionText);
-    
+
     // Open AI service in a new tab
     const tab = await tabs.create({
       url: aiServiceUrl,
@@ -49,48 +51,51 @@ async function handleOpenAIServiceWithQuestion(questionText, productUrl) {
 
     console.log('AskAIShortcut: Opened AI service tab:', tab.id);
 
-    // Wait for the tab to load, then inject the script to fill the input
-    return new Promise((resolve) => {
-      const listener = function(tabId, changeInfo) {
-        if (tabId === tab.id && changeInfo.status === 'complete') {
-          // Remove listener to avoid memory leaks
-          tabs.onUpdated.removeListener(listener);
-          
-          console.log('AskAIShortcut: Tab loaded, injecting script...');
-          
-          // Inject the script to fill the AI service input
-          scripting.executeScript({
-            target: { tabId: tab.id },
-            files: ['ai-service-filler.js']
-          }).then(() => {
-            console.log('AskAIShortcut: Script injected, sending question...');
-            // Send the question to the injected script
-            tabs.sendMessage(tab.id, {
-              action: 'fillAIServiceInput',
-              question: question
-            }).then(() => {
-              console.log('AskAIShortcut: Question sent successfully');
-              resolve();
-            }).catch(err => {
-              console.error('AskAIShortcut: Error sending message to tab:', err);
-              resolve(); // Resolve anyway to prevent hanging
-            });
+    // Function to inject script when tab is ready
+    const injectFiller = (tabId) => {
+      console.log('AskAIShortcut: Tab ready, injecting script...');
+      scripting.executeScript({
+        target: { tabId },
+        files: ['ai-service-filler.js']
+      }).then(() => {
+        console.log('AskAIShortcut: Script injected, sending question...');
+        // Small delay to let the script initialize
+        setTimeout(() => {
+          tabs.sendMessage(tabId, {
+            action: 'fillAIServiceInput',
+            question: question
           }).catch(err => {
-            console.error('AskAIShortcut: Error injecting script:', err);
-            resolve(); // Resolve anyway to prevent hanging
+            console.error('AskAIShortcut: Error sending message to tab:', err);
           });
-        }
-      };
-      
-      tabs.onUpdated.addListener(listener);
-      
-      // Timeout after 20 seconds to prevent hanging
-      setTimeout(() => {
+        }, 100);
+      }).catch(err => {
+        console.error('AskAIShortcut: Error injecting script:', err);
+      });
+    };
+
+    // Wait for the tab to load
+    const listener = (tabId, changeInfo) => {
+      if (tabId === tab.id && changeInfo.status === 'complete') {
         tabs.onUpdated.removeListener(listener);
-        console.log('AskAIShortcut: Tab load timeout');
-        resolve();
-      }, 20000);
-    });
+        injectFiller(tab.id);
+      }
+    };
+
+    tabs.onUpdated.addListener(listener);
+
+    // Fallback: If tab is already completed (rare but possible)
+    const currentTab = await tabs.get(tab.id);
+    if (currentTab.status === 'complete') {
+      tabs.onUpdated.removeListener(listener);
+      injectFiller(tab.id);
+    }
+
+    // Timeout fallback after 15 seconds to prevent hanging listeners
+    setTimeout(() => {
+      tabs.onUpdated.removeListener(listener);
+    }, 15000);
+
+    return true;
   } catch (error) {
     console.error('AskAIShortcut: Error opening AI service:', error);
     throw error;
@@ -99,6 +104,7 @@ async function handleOpenAIServiceWithQuestion(questionText, productUrl) {
 
 // Helper function to create question with context
 function createQuestionWithContext(productUrl, questionText) {
-  return `Context: ${productUrl}\n\n${questionText}`;
+  // Use a clear separator for context
+  return `Context: ${productUrl}\n\nTask: ${questionText}`;
 }
 

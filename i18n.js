@@ -5,14 +5,46 @@
 let currentLanguage = 'en';
 let translationData = {};
 
-// Cross-browser compatibility: Get storage API
-const storage = (typeof browser !== 'undefined') ? browser.storage : chrome.storage;
+// Cross-browser compatibility
 const runtime = (typeof browser !== 'undefined') ? browser.runtime : chrome.runtime;
+const storage = (typeof browser !== 'undefined') ? browser.storage : chrome.storage;
+const i18nAPI = (typeof browser !== 'undefined') ? browser.i18n : chrome.i18n;
+
+/**
+ * Promisified storage.sync.get
+ */
+function getStorage(keys) {
+  return new Promise((resolve, reject) => {
+    storage.sync.get(keys, (result) => {
+      if (runtime.lastError) {
+        reject(runtime.lastError);
+      } else {
+        resolve(result);
+      }
+    });
+  });
+}
+
+/**
+ * Promisified storage.sync.set
+ */
+function setStorage(data) {
+  return new Promise((resolve, reject) => {
+    storage.sync.set(data, () => {
+      if (runtime.lastError) {
+        reject(runtime.lastError);
+      } else {
+        resolve();
+      }
+    });
+  });
+}
 
 // Load translation data from locale JSON file
 async function loadLanguageData(language) {
   try {
-    const response = await fetch(runtime.getURL(`_locales/${language}/messages.json`));
+    const url = runtime.getURL(`_locales/${language}/messages.json`);
+    const response = await fetch(url);
     if (!response.ok) {
       throw new Error(`Failed to load language: ${language}`);
     }
@@ -20,7 +52,7 @@ async function loadLanguageData(language) {
     currentLanguage = language;
     return translationData;
   } catch (error) {
-    console.error('Error loading language data:', error);
+    console.error('AskAIShortcut: Error loading language data:', error);
     // Fall back to English
     if (language !== 'en') {
       return loadLanguageData('en');
@@ -31,13 +63,18 @@ async function loadLanguageData(language) {
 
 // Get translated message
 function getMessage(messageKey, substitutions = null) {
-  if (!translationData[messageKey]) {
-    return messageKey; // Return key if translation not found
+  if (!translationData || !translationData[messageKey]) {
+    // If not loaded yet or missing, try falling back to standard i18n API if available (for manifest/description)
+    if (i18nAPI && i18nAPI.getMessage) {
+      const msg = i18nAPI.getMessage(messageKey, substitutions);
+      if (msg) return msg;
+    }
+    return messageKey;
   }
-  
+
   let message = translationData[messageKey].message || '';
-  
-  // Handle substitutions
+
+  // Handle substitutions ($1, $2, etc.)
   if (substitutions) {
     if (!Array.isArray(substitutions)) {
       substitutions = [substitutions];
@@ -46,70 +83,46 @@ function getMessage(messageKey, substitutions = null) {
       message = message.replace(new RegExp('\\$' + (index + 1), 'g'), sub);
     });
   }
-  
+
   return message;
 }
 
 // Get browser's UI language, normalized to supported language code
 function getBrowserLanguage() {
-  // Supported languages list
   const supportedLanguages = ['en', 'es', 'fr', 'de', 'pt_BR', 'zh_CN', 'ja', 'ko', 'hi', 'it', 'ar'];
-  
-  // Get the browser's UI language
-  const browserLang = (typeof browser !== 'undefined') 
-    ? browser.i18n.getUILanguage() 
-    : chrome.i18n.getUILanguage();
-  
-  // Normalize the language code (e.g., 'en-US' -> 'en')
+
+  const browserLang = i18nAPI.getUILanguage();
+
+  // Normalize (e.g., 'en-US' -> 'en')
   let normalized = browserLang.split('-')[0].toLowerCase();
-  
-  // Handle pt_BR special case (Portuguese Brazil)
-  if (browserLang.toLowerCase().startsWith('pt') && browserLang.toLowerCase().includes('br')) {
+
+  // Handle pt_BR special case
+  if (browserLang.toLowerCase().includes('pt') && browserLang.toLowerCase().includes('br')) {
     normalized = 'pt_BR';
   }
-  
-  // Return supported language, fallback to 'en' if not supported
+
   return supportedLanguages.includes(normalized) ? normalized : 'en';
 }
 
 // Translate page based on saved language preference or browser language
 async function initializeLanguage() {
   try {
-    // Get saved language preference
-    const result = await new Promise((resolve, reject) => {
-      storage.sync.get({ language: null }, (data) => {
-        if (runtime.lastError) {
-          reject(runtime.lastError);
-        } else {
-          resolve(data);
-        }
-      });
-    });
-    
-    // Use saved language, or detect browser language, or fall back to English
-    let userLanguage;
-    if (result && result.language) {
-      userLanguage = result.language;
-    } else {
+    const result = await getStorage({ language: null });
+
+    let userLanguage = result.language;
+    if (!userLanguage) {
       userLanguage = getBrowserLanguage();
-      // Save the detected browser language for future use
-      try {
-        await new Promise((resolve) => {
-          storage.sync.set({ language: userLanguage }, () => {
-            resolve();
-          });
-        });
-      } catch (e) {
-        // If we can't save, it's not critical
-        console.debug('Could not save detected language preference');
-      }
+      // Cache the detected language
+      await setStorage({ language: userLanguage });
     }
-    
+
     await loadLanguageData(userLanguage);
     translatePage();
+
+    // Dispatch custom event when language is ready
+    document.dispatchEvent(new CustomEvent('AskAIShortcut:LanguageReady', { detail: { language: userLanguage } }));
   } catch (error) {
-    console.error('Error initializing language:', error);
-    // Fallback to English if storage fails
+    console.error('AskAIShortcut: Error initializing language:', error);
     await loadLanguageData('en');
     translatePage();
   }
@@ -122,21 +135,26 @@ function translatePage() {
     const messageKey = el.getAttribute('data-i18n');
     const message = getMessage(messageKey);
     if (message && message !== messageKey) {
-      el.textContent = message;
+      // Check if it's an input/textarea (placeholder) or a standard element
+      if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+        el.placeholder = message;
+      } else {
+        el.textContent = message;
+      }
     }
   });
 }
 
-// Initialize when DOM is ready
+// Initialize
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', initializeLanguage);
 } else {
   initializeLanguage();
 }
 
-// Listen for language changes
-runtime.onMessage.addListener((request, sender, sendResponse) => {
+// Listen for language changes from other parts of the extension
+runtime.onMessage.addListener((request) => {
   if (request.action === 'languageChanged') {
-    initializeLanguage();
+    loadLanguageData(request.language).then(translatePage);
   }
 });

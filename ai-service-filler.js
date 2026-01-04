@@ -1,16 +1,15 @@
 // Script injected into AI service pages to auto-fill the input field with questions
 // Supports various AI services (Gemini, ChatGPT, Claude, etc.) by detecting different input field types
-(function() {
+(function () {
   'use strict';
 
   // Cross-browser compatibility: Use browser namespace with fallback to chrome
   const runtime = (typeof browser !== 'undefined') ? browser.runtime : chrome.runtime;
-  const i18n = (typeof browser !== 'undefined') ? browser.i18n : chrome.i18n;
-  
-  // Get translated messages for notifications
-  const messages = {
-    questionLoaded: i18n.getMessage('questionLoaded') || 'AskAIShortcut has loaded the question! You can edit or press Enter to submit.',
-    couldNotFindInputField: i18n.getMessage('couldNotFindInputField') || 'Could not find AI Service input field. Please paste the question manually.'
+
+  // Localized messages (fallback if i18n is not ready)
+  const defaultMessages = {
+    questionLoaded: 'AskAIShortcut has loaded the question!',
+    couldNotFindInputField: 'Could not find AI Service input field. Please paste manually.'
   };
 
   console.log('AskAIShortcut: AI service filler script loaded');
@@ -19,391 +18,180 @@
   runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.action === 'fillAIServiceInput') {
       console.log('AskAIShortcut: Received fillAIServiceInput message');
-      
-      // Wait for page to be ready before attempting to fill
-      if (document.readyState === 'loading') {
-        console.log('AskAIShortcut: Page still loading, waiting for DOMContentLoaded...');
-        document.addEventListener('DOMContentLoaded', () => {
-          setTimeout(() => fillAIServiceInput(message.question), 500); // Small delay after DOM ready
-        });
-      } else {
-        // Page already loaded, add small delay to ensure dynamic content is ready
+
+      const fill = () => {
+        // Small additional delay for some SPAs to fully render the input
         setTimeout(() => fillAIServiceInput(message.question), 500);
+      };
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', fill);
+      } else {
+        fill();
       }
-      
+
       sendResponse({ status: 'success' });
     }
     return true;
   });
 
   function fillAIServiceInput(question) {
-    console.log('AskAIShortcut: Starting input field search...');
-    
-    const TIMEOUT_MS = 15000; // 15 seconds timeout
-    let foundInput = false;
-    let timeoutId = null;
-    let observer = null; // Declare observer here to avoid reference error
+    console.log('AskAIShortcut: Searching for input field...');
 
-    // Comprehensive list of selectors to try
+    const TIMEOUT_MS = 10000;
+    let foundInput = false;
+    let observer = null;
+
+    // Enhanced selectors for modern AI services
     const inputSelectors = [
-      // Rich text editor
-      'rich-textarea',
-      // Contenteditable divs
-      '[contenteditable="true"][role="textbox"]',
-      '[contenteditable="true"][aria-label]',
-      'div[contenteditable="true"]',
-      // Generic fallbacks
+      '#prompt-textarea', // ChatGPT
+      'div[contenteditable="true"][aria-placeholder*="Ask"]', // ChatGPT/Gemini variant
+      'div[contenteditable="true"][aria-label*="Ask"]',
+      'div[contenteditable="true"][aria-label*="Enter"]',
+      'rich-textarea', // Some web frameworks
+      'textarea[placeholder*="Ask"]',
+      'textarea[placeholder*="message"]',
+      'textarea[placeholder*="Claude"]', // Claude
+      'div[role="textbox"][contenteditable="true"]',
       'textarea',
       'input[type="text"]'
     ];
 
-    function tryFindAndFillInput() {
-      console.log('AskAIShortcut: Searching for input field...');
+    function tryFindAndFill() {
+      if (foundInput) return true;
 
-      // First, try to find the currently focused element
-      const focusedElement = getFocusedInputElement();
-      
-      if (focusedElement) {
-        console.log('AskAIShortcut: Found focused input element:', focusedElement.tagName);
+      // 1. Check focused element
+      const focused = document.activeElement;
+      if (isInputElement(focused) && isElementVisible(focused)) {
         foundInput = true;
-        clearTimeout(timeoutId);
-        if (observer) observer.disconnect();
-        
-        fillInputField(focusedElement, question);
+        fillInputField(focused, question);
         return true;
       }
 
-      // If no focused element found, fall back to selector search
+      // 2. Scan selectors
       for (const selector of inputSelectors) {
         const elements = document.querySelectorAll(selector);
-        
-        for (const inputField of elements) {
-          // Skip hidden or invisible elements
-          if (!isElementVisible(inputField)) {
-            continue;
+        for (const el of elements) {
+          if (isElementVisible(el)) {
+            foundInput = true;
+            fillInputField(el, question);
+            return true;
           }
-
-          console.log('AskAIShortcut: Found input field with selector:', selector);
-          foundInput = true;
-          clearTimeout(timeoutId);
-          if (observer) observer.disconnect();
-
-          // Fill the input field
-          fillInputField(inputField, question);
-          return true;
         }
       }
       return false;
     }
 
-    function getFocusedInputElement() {
-      const focusedElement = document.activeElement;
-      
-      // Check if focused element is a valid input
-      if (!focusedElement || focusedElement === document.body) {
-        return null;
-      }
+    function isElementVisible(el) {
+      if (!el) return false;
+      const style = window.getComputedStyle(el);
+      if (style.display === 'none' || style.visibility === 'hidden' || style.opacity === '0') return false;
 
-      // Check if element is visible
-      if (!isElementVisible(focusedElement)) {
-        return null;
-      }
-
-      // Comprehensive check for valid input types
-      const isValidInput = isInputElement(focusedElement);
-      
-      if (!isValidInput) {
-        return null;
-      }
-
-      return focusedElement;
+      const rect = el.getBoundingClientRect();
+      return rect.width > 0 && rect.height > 0;
     }
 
-    function isElementVisible(element) {
-      const style = window.getComputedStyle(element);
-      const rect = element.getBoundingClientRect();
-      
-      return (
-        style.display !== 'none' &&
-        style.visibility !== 'hidden' &&
-        style.opacity !== '0' &&
-        rect.width >= 10 &&
-        rect.height >= 10
-      );
+    function isInputElement(el) {
+      if (!el) return false;
+      const tag = el.tagName;
+      return tag === 'TEXTAREA' ||
+        tag === 'INPUT' ||
+        tag === 'RICH-TEXTAREA' ||
+        el.hasAttribute('contenteditable') ||
+        el.getAttribute('role') === 'textbox';
     }
 
-    function isInputElement(element) {
-      // Standard form inputs
-      if (element.tagName === 'TEXTAREA' || element.tagName === 'INPUT') {
-        return true;
-      }
-
-      // Custom web components
-      if (element.tagName === 'RICH-TEXTAREA') {
-        return true;
-      }
-
-      // Contenteditable elements
-      if (element.hasAttribute('contenteditable')) {
-        return true;
-      }
-
-      // Check for common input patterns
-      if (element.tagName === 'DIV' && element.hasAttribute('contenteditable')) {
-        return true;
-      }
-
-      if (element.tagName === 'P' && element.hasAttribute('contenteditable')) {
-        return true;
-      }
-
-      // Check for role-based input elements
-      if (element.getAttribute('role') === 'textbox') {
-        return true;
-      }
-
-      return false;
-    }
-
-    function fillInputField(inputField, text) {
-      console.log('AskAIShortcut: Filling input field...');
-      console.log('Element tag:', inputField.tagName);
-
+    function fillInputField(el, text) {
+      console.log('AskAIShortcut: Filling', el.tagName);
       try {
-        // Focus the element first
-        inputField.focus();
-        inputField.click();
+        el.focus();
 
-        // Dispatch focus event to ensure proper initialization
-        inputField.dispatchEvent(new FocusEvent('focus', { bubbles: true, cancelable: true }));
-
-        // Handle based on element type
-        if (inputField.tagName === 'RICH-TEXTAREA') {
-          fillRichTextarea(inputField, text);
-        } else if (inputField.tagName === 'TEXTAREA' || inputField.tagName === 'INPUT') {
-          fillFormElement(inputField, text);
-        } else if (inputField.hasAttribute('contenteditable') || inputField.getAttribute('role') === 'textbox') {
-          fillContenteditableElement(inputField, text);
+        // Handle different types
+        if (el.hasAttribute('contenteditable')) {
+          el.textContent = text;
         } else {
-          // Fallback: try as contenteditable first, then as form element
-          if (inputField.textContent !== undefined) {
-            fillContenteditableElement(inputField, text);
-          } else {
-            fillFormElement(inputField, text);
-          }
+          el.value = text;
         }
 
-        console.log('AskAIShortcut: Successfully filled input field!');
-        showNotification(messages.questionLoaded);
-      } catch (error) {
-        console.error('AskAIShortcut: Error filling input:', error);
+        // Trigger interaction logic to satisfy SPA frameworks (React/Vue/etc.)
+        const events = ['input', 'change', 'blur'];
+        events.forEach(type => {
+          el.dispatchEvent(new Event(type, { bubbles: true }));
+        });
+
+        showNotification('questionLoaded');
+        if (observer) observer.disconnect();
+      } catch (err) {
+        console.error('AskAIShortcut: Error filling field', err);
       }
     }
 
-    function fillRichTextarea(richTextarea, text) {
-      console.log('Filling RICH-TEXTAREA (custom web component)');
-      
-      // Find the <p> tag inside rich-textarea
-      let paragraph = richTextarea.querySelector('p');
-      
-      if (paragraph) {
-        console.log('Found <p> tag inside rich-textarea');
-        // Clear existing content
-        paragraph.textContent = '';
-        
-        // Set text content
-        paragraph.textContent = text;
-        paragraph.focus();
-        
-        // Trigger input events on the paragraph
-        dispatchInputEvents(paragraph);
-      }
-      
-      // Trigger events on the rich-textarea itself
-      dispatchInputEvents(richTextarea);
-      
-      console.log('Successfully filled rich-textarea');
-    }
+    function showNotification(type) {
+      // Use cross-browser i18n API if available, otherwise fallback
+      const i18nAPI = (typeof browser !== 'undefined') ? browser.i18n : chrome.i18n;
+      const message = (i18nAPI && i18nAPI.getMessage)
+        ? i18nAPI.getMessage(type)
+        : defaultMessages[type];
 
-    function fillFormElement(formElement, text) {
-      console.log('Filling TEXTAREA/INPUT element');
-      
-      // Store original value for comparison
-      const originalValue = formElement.value;
-      
-      // Set the value
-      formElement.value = text;
-      
-      // If value didn't change, try setting it character by character
-      if (formElement.value === originalValue && text.length > 0) {
-        console.log('Direct assignment failed, trying character-by-character method');
-        formElement.value = '';
-        for (const char of text) {
-          formElement.value += char;
-        }
-      }
-      
-      // Trigger all input events
-      dispatchInputEvents(formElement);
-    }
-
-    function fillContenteditableElement(element, text) {
-      console.log('Filling contenteditable element');
-      
-      // Clear existing content
-      element.textContent = '';
-      
-      // Create a text node with the text
-      const textNode = document.createTextNode(text);
-      element.appendChild(textNode);
-      
-      // Move cursor to end
-      const range = document.createRange();
-      const sel = window.getSelection();
-      range.selectNodeContents(element);
-      range.collapse(false);
-      sel.removeAllRanges();
-      sel.addRange(range);
-      
-      // Trigger input events
-      dispatchInputEvents(element);
-    }
-
-    function dispatchInputEvents(element) {
-      // Create and dispatch a comprehensive set of events
-      const events = [
-        new Event('input', { bubbles: true, cancelable: true }),
-        new Event('change', { bubbles: true, cancelable: true }),
-        new KeyboardEvent('keydown', { bubbles: true, cancelable: true }),
-        new KeyboardEvent('keyup', { bubbles: true, cancelable: true }),
-        new KeyboardEvent('keypress', { bubbles: true, cancelable: true })
-      ];
-      
-      for (const event of events) {
-        element.dispatchEvent(event);
-      }
-    }
-
-    function showNotification(message) {
-      const notification = document.createElement('div');
-      notification.style.cssText = `
+      const div = document.createElement('div');
+      div.id = 'ask-ai-shortcut-notification';
+      div.style.cssText = `
         position: fixed;
-        top: 20px;
-        left: 50%;
-        transform: translateX(-50%);
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        padding: 16px 24px;
-        border-radius: 8px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        z-index: 999999;
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        top: 24px;
+        right: 24px;
+        padding: 16px 20px;
+        background: #333;
+        color: #fff;
+        border-radius: 12px;
+        font-family: system-ui, -apple-system, sans-serif;
         font-size: 14px;
-        font-weight: 500;
-        max-width: 300px;
-        animation: slideIn 0.3s ease-out;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+        z-index: 9999999;
         display: flex;
         align-items: center;
         gap: 12px;
+        border: 1px solid rgba(255,255,255,0.1);
+        animation: aishortcut-fadein 0.3s ease-out;
       `;
-      
-      const messageText = document.createElement('span');
-      messageText.textContent = message;
-      
-      const closeButton = document.createElement('button');
-      closeButton.textContent = '×';
-      closeButton.style.cssText = `
-        background: rgba(255, 255, 255, 0.3);
-        border: none;
-        color: white;
-        width: 24px;
-        height: 24px;
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 20px;
-        line-height: 1;
-        padding: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
-        transition: background 0.2s ease;
-      `;
-      
-      closeButton.onmouseover = () => {
-        closeButton.style.background = 'rgba(255, 255, 255, 0.5)';
-      };
-      closeButton.onmouseout = () => {
-        closeButton.style.background = 'rgba(255, 255, 255, 0.3)';
-      };
-      
-      closeButton.onclick = (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        notification.style.opacity = '0';
-        notification.style.transition = 'opacity 0.3s ease-out';
-        setTimeout(() => notification.remove(), 300);
-      };
-      
-      notification.appendChild(messageText);
-      notification.appendChild(closeButton);
-      document.body.appendChild(notification);
-      
-      // Auto-dismiss after 20 seconds if not manually closed
-      const timeoutId = setTimeout(() => {
-        if (notification.parentNode) {
-          notification.style.opacity = '0';
-          notification.style.transition = 'opacity 0.3s ease-out';
-          setTimeout(() => {
-            if (notification.parentNode) {
-              notification.remove();
-            }
-          }, 300);
+
+      const icon = type === 'questionLoaded' ? '✅' : '⚠️';
+      div.innerHTML = `<span>${icon}</span> <span>${message || type}</span>`;
+
+      // Animation style
+      const style = document.createElement('style');
+      style.textContent = `
+        @keyframes aishortcut-fadein {
+          from { opacity: 0; transform: translateY(-10px); }
+          to { opacity: 1; transform: translateY(0); }
         }
-      }, 20000);
-      
-      // Clear timeout if manually closed
-      const originalOnclick = closeButton.onclick;
-      closeButton.onclick = (e) => {
-        clearTimeout(timeoutId);
-        originalOnclick(e);
-      };
+      `;
+      document.head.appendChild(style);
+
+      document.body.appendChild(div);
+
+      setTimeout(() => {
+        div.style.opacity = '0';
+        div.style.transition = 'opacity 0.5s ease';
+        setTimeout(() => {
+          div.remove();
+          style.remove();
+        }, 500);
+      }, 5000);
     }
 
-    // Try immediately
-    if (tryFindAndFillInput()) {
-      return;
-    }
+    // Execution
+    if (!tryFindAndFill()) {
+      observer = new MutationObserver(() => {
+        if (tryFindAndFill()) observer.disconnect();
+      });
+      observer.observe(document.body, { childList: true, subtree: true });
 
-    // Set up MutationObserver to watch for DOM changes
-    console.log('AskAIShortcut: Input not found, setting up MutationObserver...');
-    
-    observer = new MutationObserver((mutations) => {
-      if (foundInput) return;
-      
-      // Check if new nodes were added
-      for (const mutation of mutations) {
-        if (mutation.addedNodes.length > 0) {
-          if (tryFindAndFillInput()) {
-            return;
-          }
+      setTimeout(() => {
+        if (!foundInput) {
+          observer.disconnect();
+          showNotification('couldNotFindInputField');
         }
-      }
-    });
-
-    // Start observing
-    observer.observe(document.body, {
-      childList: true,
-      subtree: true
-    });
-
-    // Set timeout fallback
-    timeoutId = setTimeout(() => {
-      if (!foundInput) {
-        observer.disconnect();
-        console.error('AskAIShortcut: Timeout - Could not find AI Service input field after', TIMEOUT_MS / 1000, 'seconds');
-        showNotification(messages.couldNotFindInputField);
-      }
-    }, TIMEOUT_MS);
+      }, TIMEOUT_MS);
+    }
   }
 })();
