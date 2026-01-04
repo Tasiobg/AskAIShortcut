@@ -47,22 +47,11 @@
     // Comprehensive list of selectors to try
     const inputSelectors = [
       // Rich text editor
-      'rich-textarea[aria-label*="Ask"]',
-      'rich-textarea[aria-label*="Enter"]',
       'rich-textarea',
-      // Standard textareas
-      'textarea[aria-label*="Ask"]',
-      'textarea[aria-label*="Enter"]',
-      'textarea[placeholder*="Ask"]',
-      'textarea[placeholder*="Enter"]',
-      'textarea.ql-editor',
       // Contenteditable divs
       '[contenteditable="true"][role="textbox"]',
       '[contenteditable="true"][aria-label]',
       'div[contenteditable="true"]',
-      // AI Service specific selectors
-      '.ql-editor',
-      '[data-placeholder*="Ask"]',
       // Generic fallbacks
       'textarea',
       'input[type="text"]'
@@ -125,11 +114,6 @@
       
       if (!isValidInput) {
         return null;
-      }
-
-      // If it's a <p> or other child inside rich-textarea, use the parent rich-textarea
-      if (focusedElement.closest('rich-textarea')) {
-        return focusedElement.closest('rich-textarea');
       }
 
       return focusedElement;
