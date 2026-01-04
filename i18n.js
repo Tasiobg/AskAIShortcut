@@ -50,7 +50,29 @@ function getMessage(messageKey, substitutions = null) {
   return message;
 }
 
-// Translate page based on saved language preference
+// Get browser's UI language, normalized to supported language code
+function getBrowserLanguage() {
+  // Supported languages list
+  const supportedLanguages = ['en', 'es', 'fr', 'de', 'pt_BR', 'zh_CN', 'ja', 'ko', 'hi', 'it', 'ar'];
+  
+  // Get the browser's UI language
+  const browserLang = (typeof browser !== 'undefined') 
+    ? browser.i18n.getUILanguage() 
+    : chrome.i18n.getUILanguage();
+  
+  // Normalize the language code (e.g., 'en-US' -> 'en')
+  let normalized = browserLang.split('-')[0].toLowerCase();
+  
+  // Handle pt_BR special case (Portuguese Brazil)
+  if (browserLang.toLowerCase().startsWith('pt') && browserLang.toLowerCase().includes('br')) {
+    normalized = 'pt_BR';
+  }
+  
+  // Return supported language, fallback to 'en' if not supported
+  return supportedLanguages.includes(normalized) ? normalized : 'en';
+}
+
+// Translate page based on saved language preference or browser language
 async function initializeLanguage() {
   try {
     // Get saved language preference
@@ -64,7 +86,25 @@ async function initializeLanguage() {
       });
     });
     
-    const userLanguage = (result && result.language) || 'en';
+    // Use saved language, or detect browser language, or fall back to English
+    let userLanguage;
+    if (result && result.language) {
+      userLanguage = result.language;
+    } else {
+      userLanguage = getBrowserLanguage();
+      // Save the detected browser language for future use
+      try {
+        await new Promise((resolve) => {
+          storage.sync.set({ language: userLanguage }, () => {
+            resolve();
+          });
+        });
+      } catch (e) {
+        // If we can't save, it's not critical
+        console.debug('Could not save detected language preference');
+      }
+    }
+    
     await loadLanguageData(userLanguage);
     translatePage();
   } catch (error) {
