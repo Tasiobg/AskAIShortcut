@@ -62,25 +62,59 @@ function renderButtons() {
     const div = document.createElement('div');
     div.className = 'button-config';
 
-    div.innerHTML = `
-      <h2>
-        <span>${getMessage('button')} ${index + 1}</span>
-        ${currentButtons.length > 1 ? `<button class="remove-button-btn" data-index="${index}">${getMessage('removeButton')}</button>` : ''}
-      </h2>
-      
-      <div class="field-group">
-        <label>${getMessage('buttonName')}</label>
-        <input type="text" class="button-name" data-index="${index}" value="${button.name}">
-      </div>
+    // Create header
+    const h2 = document.createElement('h2');
+    const spanNode = document.createElement('span');
+    spanNode.textContent = `${getMessage('button')} ${index + 1}`;
+    h2.appendChild(spanNode);
 
-      <div class="field-group">
-        <label>${getMessage('questionTemplate')}</label>
-        <textarea class="button-question" data-index="${index}">${button.question}</textarea>
-        <div class="helper-text">${getMessage('contextWillBePrepended')}</div>
-      </div>
-      
-      <button class="button-config-save" data-index="${index}" disabled>${getMessage('saveSettings')}</button>
-    `;
+    if (currentButtons.length > 1) {
+      const removeBtn = document.createElement('button');
+      removeBtn.className = 'remove-button-btn';
+      removeBtn.dataset.index = index;
+      removeBtn.textContent = getMessage('removeButton');
+      h2.appendChild(removeBtn);
+    }
+    div.appendChild(h2);
+
+    // Create Name field
+    const nameGroup = document.createElement('div');
+    nameGroup.className = 'field-group';
+    const nameLabel = document.createElement('label');
+    nameLabel.textContent = getMessage('buttonName');
+    const nameInput = document.createElement('input');
+    nameInput.type = 'text';
+    nameInput.className = 'button-name';
+    nameInput.dataset.index = index;
+    nameInput.value = button.name;
+    nameGroup.appendChild(nameLabel);
+    nameGroup.appendChild(nameInput);
+    div.appendChild(nameGroup);
+
+    // Create Question field
+    const qGroup = document.createElement('div');
+    qGroup.className = 'field-group';
+    const qLabel = document.createElement('label');
+    qLabel.textContent = getMessage('questionTemplate');
+    const qTextarea = document.createElement('textarea');
+    qTextarea.className = 'button-question';
+    qTextarea.dataset.index = index;
+    qTextarea.textContent = button.question;
+    const helperText = document.createElement('div');
+    helperText.className = 'helper-text';
+    helperText.textContent = getMessage('contextWillBePrepended');
+    qGroup.appendChild(qLabel);
+    qGroup.appendChild(qTextarea);
+    qGroup.appendChild(helperText);
+    div.appendChild(qGroup);
+
+    // Create Save button
+    const saveBtn = document.createElement('button');
+    saveBtn.className = 'button-config-save';
+    saveBtn.dataset.index = index;
+    saveBtn.disabled = true;
+    saveBtn.textContent = getMessage('saveSettings');
+    div.appendChild(saveBtn);
 
     container.appendChild(div);
 
