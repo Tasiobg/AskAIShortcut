@@ -286,16 +286,6 @@ cd AskAIShortcut
 # Make changes, test, and submit a PR
 ```
 
-## 📚 Documentation
-
-For more detailed information, see:
-
-- **[INTERNATIONALIZATION.md](INTERNATIONALIZATION.md)**: Complete i18n implementation guide
-- **[DOCUMENTATION_INDEX.md](DOCUMENTATION_INDEX.md)**: Index of all documentation files
-- **[FEATURE_CHANGES.md](FEATURE_CHANGES.md)**: Button management feature details
-- **[I18N_IMPLEMENTATION.md](I18N_IMPLEMENTATION.md)**: Technical i18n details
-- **[COMPLETION_SUMMARY.md](COMPLETION_SUMMARY.md)**: Project completion summary
-
 ## 💬 Support
 
 If you encounter issues or have questions:
