@@ -18,6 +18,11 @@ function getDefaults() {
         id: 'button2',
         name: getMessage('contentAnalysis') || '🔍 Content analysis',
         question: getMessage('contentAnalysisQuestion') || 'Analyze this content...'
+      },
+      {
+        id: 'button3',
+        name: getMessage('summary') || '📝 Summary',
+        question: getMessage('summaryQuestion') || 'Summary'
       }
     ],
     aiServiceUrl: 'https://gemini.google.com/app',

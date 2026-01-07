@@ -17,6 +17,11 @@ const DEFAULT_BUTTONS = [
     id: 'button2',
     name: '🔍 Content analysis',
     question: 'Analyze this content for editorial bias...'
+  },
+  {
+    id: 'button3',
+    name: '📝 Summary',
+    question: 'Summary'
   }
 ];
 
@@ -40,6 +45,11 @@ async function loadAndRenderButtons() {
           id: 'button2',
           name: getMessage('contentAnalysis') || DEFAULT_BUTTONS[1].name,
           question: getMessage('contentAnalysisQuestion') || DEFAULT_BUTTONS[1].question
+        },
+        {
+          id: 'button3',
+          name: getMessage('summary') || DEFAULT_BUTTONS[2].name,
+          question: getMessage('summaryQuestion') || DEFAULT_BUTTONS[2].question
         }
       ];
     }
