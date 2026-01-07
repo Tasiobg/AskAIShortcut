@@ -4,7 +4,7 @@ Instant AI-powered assistance for every webpage. This extension contains a curat
 
 ## ✨ Features
 
-- 💡 **Smart AI Assistance**: Pre-configured buttons for buying advice and content analysis
+- 💡 **Smart AI Assistance**: Pre-configured buttons for buying advice, content analysis, and page summaries
 - 🎯 **Customizable AI Service**: Use Google Gemini (default) or any AI service of your choice
 - ⚙️ **Flexible Configuration**: Customize button names, questions, and add unlimited buttons
 - 🌍 **Multilingual Support**: Automatically adapts to 11 languages (EN, ES, FR, DE, PT-BR, ZH-CN, JA, KO, HI, IT, AR)
@@ -77,6 +77,7 @@ If you find these curated questions helpful but prefer not to install the extens
 3. **Choose a button** — Pre-configured options appear:
    - **💡 Buying advice** — Get AI insights on products and deals
    - **🔍 Content analysis** — Detect bias, verify authenticity, identify emotional triggers
+   - **📝 Summary** — Quickly get a concise summary of the page content
 
 4. **AI responds** — New tab opens with your chosen AI service (Google Gemini by default)
    - Current page URL included as context
