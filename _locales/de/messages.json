@@ -113,6 +113,12 @@
   "contentAnalysisQuestion": {
     "message": "- Analysieren Sie diesen Inhalt auf redaktionelle Voreingenommenheit\n- Identifizieren Sie fehlende Kontexte, fehlende Fakten oder logische Sprünge\n- Überprüfen Sie Authentizität und Logik\n- Was ist das Hauptziel (z. B. informieren, überzeugen oder verkaufen)? Identifizieren Sie, ob der Inhalt 'Empörungs-Engagement' oder spezifische emotionale Auslöser verwendet, um eine Abstimmung, einen Kauf oder soziales Teilen zu beeinflussen."
   },
+  "summary": {
+    "message": "📝 Zusammenfassung"
+  },
+  "summaryQuestion": {
+    "message": "Zusammenfassung"
+  },
   "language": {
     "message": "🌐 Sprache:"
   },

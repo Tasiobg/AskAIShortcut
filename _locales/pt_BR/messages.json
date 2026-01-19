@@ -112,6 +112,12 @@
   "contentAnalysisQuestion": {
     "message": "- Analise este conteúdo em busca de viés editorial\n- Identifique qualquer contexto omitido, fatos ausentes ou saltos lógicos\n- Verifique autenticidade e lógica\n- Qual é o objetivo principal (por exemplo, informar, persuadir ou vender)? Identifique se o conteúdo usa 'engajamento de indignação' ou gatilhos emocionais específicos para influenciar um voto, uma compra ou compartilhamento social."
   },
+  "summary": {
+    "message": "📝 Resumo"
+  },
+  "summaryQuestion": {
+    "message": "Resumo"
+  },
   "language": {
     "message": "🌐 Idioma:"
   },
