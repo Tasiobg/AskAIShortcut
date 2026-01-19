@@ -2,6 +2,10 @@
 
 Instant AI-powered assistance for every webpage. This extension contains a curated library of expert prompts that you can send to any AI chat regarding the current page. Get buying advice, analyze content, or ask custom questions with a single click.
 
+[![alt text](buttons/addtochrome256cut.png)](https://chromewebstore.google.com/detail/askaishortcut/dfanofhjjpnjbbmglcdcknpkhnhdfbjk)
+[![alt text](buttons/addtoedge256cut.png)](https://microsoftedge.microsoft.com/addons/detail/askaishortcut/jlgbpcahaafnabfchjhfeonanfcefnbm)
+[![alt text](buttons/addtofirefox256cut.png)](https://microsoftedge.microsoft.com/addons/detail/askaishortcut/jlgbpcahaafnabfchjhfeonanfcefnbm)
+
 ## ✨ Features
 
 - 💡 **Smart AI Assistance**: Pre-configured buttons for buying advice, content analysis, and page summaries
